@@ -129,7 +129,7 @@
                 <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                 <span id="notif-dot" class="hidden absolute top-1 right-1 md:top-1.5 md:right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border border-white"></span>
             </button>
-            <img id="header-avatar" src="" onerror="this.src='https://ui-avatars.com/api/?name=Guest&background=0D8ABC&color=fff'" class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200 object-cover border-2 border-black dark:border-gray-400 cursor-pointer" onclick="window.navTo('profile')">
+            <img id="header-avatar" src="" class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200 object-cover border-2 border-black dark:border-gray-400 cursor-pointer" onclick="window.navTo('profile')">
         </div>
     </header>
 
@@ -433,55 +433,44 @@
         <section id="page-chat" class="page-section hidden px-3 md:px-6 lg:px-10 pt-4 md:pt-6">
             <div id="chat-history-list" class="pb-20 max-w-md md:max-w-full lg:max-w-4xl mx-auto flex flex-col gap-2 md:gap-3 lg:grid lg:grid-cols-2 lg:gap-4"><p class="text-center text-gray-400 py-10 col-span-full">جاري تحميل المحادثات...</p></div>
         </section>
+    </div>
 
-        <!-- USER DETAILS PAGE -->
-        <section id="page-user-details" class="page-section hidden px-0">
-            <div class="h-14 md:h-16 bg-white dark:bg-gray-800 flex items-center px-3 gap-2 border-b-2 border-gray-200 dark:border-gray-700 sticky top-14 md:top-16 z-20 xl:max-w-7xl xl:mx-auto">
-                <button onclick="window.goBack()" class="p-1 md:p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full active:scale-90 transition-transform">
-                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-                </button>
-                <span class="font-bold text-sm md:text-base text-gray-600 dark:text-gray-300">التفاصيل</span>
-            </div>
-            <div class="p-4 md:p-6 max-w-md md:max-w-2xl mx-auto pb-24">
-                <div class="bg-white dark:bg-gray-800 rounded-xl border-black-custom p-5 md:p-8 relative shadow-sm flex flex-col items-center">
-                    <img id="details-img" src="" onclick="window.openImageViewer(this.src)" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-black dark:border-gray-500 mb-2 object-cover cursor-pointer active:scale-95 transition-transform shadow-sm">
-                    <h2 id="details-name" class="text-lg md:text-xl font-extrabold dark:text-white"></h2>
-                    <p id="details-role" class="text-xs md:text-sm text-blue-600 font-bold mb-3 md:mb-4"></p>
-                   
-                    <div class="w-full bg-gray-50 dark:bg-gray-700 p-3 md:p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 text-center mb-4 md:mb-5">
-                        <div class="grid grid-cols-2 gap-2 text-xs md:text-sm">
-                            <div>
-                                <span class="text-gray-400 block">العنوان</span>
-                                <span id="details-addr-detail" class="font-bold block text-[10px] md:text-xs text-gray-600 dark:text-gray-300"></span>
-                                <span id="details-addr" class="font-bold"></span>
-                            </div>
-                            <div><span class="text-gray-400 block">الجنس</span><span id="details-gender" class="font-bold"></span></div>
+    <!-- PROFILE POPUP -->
+    <div id="profile-modal" class="modal-overlay hidden overflow-y-auto">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-sm md:max-w-md rounded-xl border-black-custom p-5 md:p-8 relative shadow-2xl my-10 animate-pop">
+            <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="absolute top-3 left-3 md:top-4 md:left-4 font-bold text-gray-400 hover:text-red-500 text-xl md:text-2xl">✕</button>
+            <div class="flex flex-col items-center">
+                <img id="modal-img" src="" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-black dark:border-gray-500 mb-2 object-cover">
+                <h2 id="modal-name" class="text-lg md:text-xl font-extrabold dark:text-white"></h2>
+                <p id="modal-role" class="text-xs md:text-sm text-blue-600 font-bold mb-3 md:mb-4"></p>
+               
+                <div class="w-full bg-gray-50 dark:bg-gray-700 p-3 md:p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 text-center mb-4 md:mb-5">
+                    <div class="grid grid-cols-2 gap-2 text-xs md:text-sm">
+                        <div>
+                            <span class="text-gray-400 block">العنوان</span>
+                            <span id="modal-addr-detail" class="font-bold block text-[10px] md:text-xs text-gray-600 dark:text-gray-300"></span>
+                            <span id="modal-addr" class="font-bold"></span>
                         </div>
-                        <div class="mt-2 md:mt-3 border-t border-gray-200 pt-2 md:pt-3">
-                            <span class="text-gray-400 block">الهاتف</span><span id="details-phone-disp" class="font-bold text-sm md:text-base" dir="ltr"></span>
-                        </div>
+                        <div><span class="text-gray-400 block">الجنس</span><span id="modal-gender" class="font-bold"></span></div>
                     </div>
+                    <div class="mt-2 md:mt-3 border-t border-gray-200 pt-2 md:pt-3">
+                        <span class="text-gray-400 block">الهاتف</span><span id="modal-phone-disp" class="font-bold text-sm md:text-base" dir="ltr"></span>
+                    </div>
+                </div>
 
-                    <div class="flex gap-2 md:gap-3 w-full mb-4 md:mb-5" id="details-actions"></div>
+                <div class="flex gap-2 md:gap-3 w-full mb-4 md:mb-5" id="modal-actions"></div>
 
-                    <div class="w-full border-t-2 border-gray-100 pt-3 md:pt-4 dark:border-gray-700">
-                        <h4 class="font-bold text-xs md:text-sm mb-2 flex items-center justify-between">
-                            <span>التقييمات</span>
-                            <span id="details-stars-display" class="text-yellow-500 font-bold"></span>
-                        </h4>
-                        <div class="border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 p-1 md:p-2">
-                            <div id="details-reviews-list" class="space-y-2 max-h-[150px] md:max-h-[200px] overflow-y-auto custom-scrollbar pr-1"></div>
-                        </div>
+                <div class="w-full border-t-2 border-gray-100 pt-3 md:pt-4 dark:border-gray-700">
+                    <h4 class="font-bold text-xs md:text-sm mb-2 flex items-center justify-between">
+                        <span>التقييمات</span>
+                        <span id="modal-stars-display" class="text-yellow-500 font-bold"></span>
+                    </h4>
+                    <div class="border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 p-1 md:p-2">
+                        <div id="modal-reviews-list" class="space-y-2 max-h-[150px] md:max-h-[200px] overflow-y-auto custom-scrollbar pr-1"></div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-
-    <!-- IMAGE VIEWER MODAL -->
-    <div id="image-viewer-modal" class="fixed inset-0 z-[300] bg-black bg-opacity-90 hidden flex flex-col items-center justify-center backdrop-blur-sm">
-        <button onclick="document.getElementById('image-viewer-modal').classList.add('hidden')" class="absolute top-6 right-6 text-white font-bold text-3xl hover:text-red-500 z-50">✕</button>
-        <img id="full-image-display" src="" class="max-w-full max-h-full object-contain p-4 transition-transform duration-300 scale-95">
+        </div>
     </div>
 
     <!-- RATE MODAL -->
@@ -505,19 +494,18 @@
         </div>
     </div>
 
-    <!-- FILTER MODAL COMPACT BAR -->
+    <!-- FILTER MODAL DROPDOWN -->
     <div id="filter-modal-wrap" class="hidden">
         <div id="filter-modal-backdrop" onclick="document.getElementById('filter-modal-wrap').classList.add('hidden')" class="fixed inset-0 z-[130]"></div>
         
-        <div id="filter-modal" class="absolute top-[110px] md:top-[120px] left-4 right-4 md:max-w-md md:mx-auto z-[140] bg-white dark:bg-gray-800 rounded-xl border-2 border-black dark:border-gray-500 shadow-[4px_4px_0px_#000] p-2 md:p-3 animate-fade">
-            <div class="flex flex-row gap-1 md:gap-2 mb-2">
-                <select id="filter-center" onchange="window.updateVillages('filter')" class="flex-1 w-1/3 p-1.5 md:p-2 rounded-lg text-[10px] md:text-xs border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black text-center"></select>
-                <select id="filter-village" class="flex-1 w-1/3 p-1.5 md:p-2 rounded-lg text-[10px] md:text-xs border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black text-center"><option value="">القرية...</option></select>
-                <select id="filter-prof" class="flex-1 w-1/3 p-1.5 md:p-2 rounded-lg text-[10px] md:text-xs border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black text-center"></select>
-            </div>
-            <div class="flex gap-1 md:gap-2">
-                <button onclick="window.applyFilter()" class="flex-1 bg-black text-white py-1.5 rounded-lg font-bold text-[10px] md:text-xs active:scale-95 transition-transform">تطبيق التصفية</button>
-                <button onclick="window.clearFilter()" class="flex-1 bg-red-500 text-white py-1.5 rounded-lg font-bold text-[10px] md:text-xs active:scale-95 transition-transform">إلغاء</button>
+        <div id="filter-modal" class="absolute top-[110px] md:top-[120px] left-4 right-4 md:max-w-md md:mx-auto z-[140] bg-white dark:bg-gray-800 rounded-xl border-2 border-black dark:border-gray-500 shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#6b7280] p-4 md:p-6 animate-fade">
+            <h3 class="text-center font-bold mb-3 text-sm md:text-base border-b-2 border-gray-100 dark:border-gray-700 pb-2">تصفية البحث</h3>
+            <select id="filter-center" onchange="window.updateVillages('filter')" class="w-full p-2 md:p-3 mb-2 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"></select>
+            <select id="filter-village" class="w-full p-2 md:p-3 mb-2 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"><option value="">القرية...</option></select>
+            <select id="filter-prof" class="w-full p-2 md:p-3 mb-4 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"></select>
+            <div class="flex gap-2">
+                <button onclick="window.applyFilter()" class="flex-1 bg-black text-white py-2 rounded-lg font-bold text-xs md:text-sm active:scale-95 transition-transform">تطبيق</button>
+                <button onclick="window.clearFilter()" class="flex-1 bg-red-500 text-white py-2 rounded-lg font-bold text-xs md:text-sm active:scale-95 transition-transform">إلغاء</button>
             </div>
         </div>
     </div>
@@ -637,7 +625,7 @@
             return `https://images.pexels.com/photos/${photoId}/pexels-photo-${photoId}.jpeg?auto=compress&cs=tinysrgb&w=200`;
         }
 
-        let isGuest = true; 
+        let isGuest = true; // متغير جديد للزائر
         let currentUser = null, userProfile = null, navStack =['home'], currentChatId = null, allUsersCache =[], myChatsCache =[], chatListener = null, currentModalUserId = null;
         let tempSelectedFile = null;
         let globalUnsubs =[];
@@ -696,6 +684,7 @@
         window.hideLoader = () => document.getElementById('loader').classList.add('hidden');
         window.showLoader = () => document.getElementById('loader').classList.remove('hidden');
 
+        // وظائف إدارة العرض للتسجيل
         window.showAuthView = () => {
             document.getElementById('app-view').classList.add('hidden');
             document.getElementById('app-header').classList.add('hidden');
@@ -762,7 +751,6 @@
             if(pageId === 'chat-room') activeIdx = 2;
             if(pageId === 'edit-profile' || pageId === 'settings') activeIdx = 3;
             if(pageId === 'category-details') activeIdx = 0;
-            if(pageId === 'user-details') activeIdx = 1;
 
             if(activeIdx !== undefined && activeIdx !== -1 && btns[activeIdx]) {
                 btns[activeIdx].classList.add('text-blue-600', 'active');
@@ -818,7 +806,7 @@
            
             const backBtn = document.getElementById('btn-back');
             if (pageId === 'home') { 
-                document.getElementById('page-title').innerHTML = isGuest ? 'مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">دليل الشرقية</span>' : `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">${userProfile ? userProfile.name : ''}</span>`; 
+                document.getElementById('page-title').innerHTML = isGuest ? 'مرحباً بك في دليل الشرقية' : `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">${userProfile ? userProfile.name : ''}</span>`; 
                 backBtn.classList.add('hidden'); 
             } else { 
                 backBtn.classList.remove('hidden'); 
@@ -864,7 +852,7 @@
             const backBtn = document.getElementById('btn-back');
             if (pageId === 'home') {
                 backBtn.classList.add('hidden');
-                document.getElementById('page-title').innerHTML = isGuest ? 'مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">دليل الشرقية</span>' : `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">${userProfile ? userProfile.name : ''}</span>`;
+                document.getElementById('page-title').innerHTML = isGuest ? 'مرحباً بك في دليل الشرقية' : `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">${userProfile ? userProfile.name : ''}</span>`;
             } else {
                 backBtn.classList.remove('hidden');
                 document.getElementById('page-title').innerText = pageId === 'activity' ? 'النشاط' : 'رجوع';
@@ -891,7 +879,7 @@
                     document.getElementById('btn-profile-matching').classList.add('hidden');
                 }
             } else {
-                document.getElementById('page-title').innerHTML = 'مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">دليل الشرقية</span>';
+                document.getElementById('page-title').innerHTML = 'مرحباً بك في دليل الشرقية';
             }
         }
 
@@ -1111,7 +1099,7 @@
                 history.replaceState({ pageId: 'exit_trap' }, "", window.location.pathname);
                 history.pushState({ pageId: 'home' }, "", window.location.pathname);
 
-                document.getElementById('header-avatar').src = 'icons/icon-192x192.png';
+                document.getElementById('header-avatar').src = 'https://ui-avatars.com/api/?name=Guest&background=0D8ABC&color=fff';
                 
                 window.hideAuthView(); 
                 initApp(); startListeners();
@@ -1218,6 +1206,7 @@
             globalUnsubs.forEach(u => u());
             globalUnsubs =[];
 
+            // --- Public Listeners (For Guests & Users) ---
             const unsubProfiles = onSnapshot(collection(db, 'artifacts', APP_ID, 'public', 'data', 'profiles'), (snap) => {
                 allUsersCache =[];
                 snap.forEach(d => {
@@ -1274,6 +1263,7 @@
             });
             globalUnsubs.push(unsubJobs);
 
+            // --- Private Listeners (Only for logged-in users) ---
             if(isGuest) return;
 
             const chatQuery = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'chats'), where('users', 'array-contains', currentUser.uid));
@@ -1422,18 +1412,18 @@
 
         window.deleteRequest = async (id) => { if(confirm('حذف هذا النشاط؟')) await deleteDoc(doc(db, 'artifacts', APP_ID, 'public', 'data', 'requests', id)); };
 
-        window.openUserDetails = async (userStr) => {
+        window.openProfileModal = async (userStr) => {
             const user = JSON.parse(decodeURIComponent(userStr));
             currentModalUserId = user.uid;
-            document.getElementById('details-img').src = window.getCloudinaryUrl(user.photoURL, 'medium');
-            document.getElementById('details-name').innerText = user.name;
-            document.getElementById('details-role').innerText = user.role === 'provider' ? user.profession : 'عميل';
-            document.getElementById('details-addr').innerText = `${user.area || ''} - ${user.city || ''}`;
-            document.getElementById('details-addr-detail').innerText = user.addressDetail ? user.addressDetail + '،' : 'لا يوجد تفاصيل،';
-            document.getElementById('details-phone-disp').innerText = (user.settings?.hidePhone) ? 'مخفي 🔒' : user.phone;
-            document.getElementById('details-gender').innerText = user.gender === 'male' ? 'ذكر' : 'أنثى';
+            document.getElementById('modal-img').src = window.getCloudinaryUrl(user.photoURL, 'medium');
+            document.getElementById('modal-name').innerText = user.name;
+            document.getElementById('modal-role').innerText = user.role === 'provider' ? user.profession : 'عميل';
+            document.getElementById('modal-addr').innerText = `${user.area || ''} - ${user.city || ''}`;
+            document.getElementById('modal-addr-detail').innerText = user.addressDetail ? user.addressDetail + '،' : 'لا يوجد تفاصيل،';
+            document.getElementById('modal-phone-disp').innerText = (user.settings?.hidePhone) ? 'مخفي 🔒' : user.phone;
+            document.getElementById('modal-gender').innerText = user.gender === 'male' ? 'ذكر' : 'أنثى';
 
-            const actionsDiv = document.getElementById('details-actions'); actionsDiv.innerHTML = '';
+            const actionsDiv = document.getElementById('modal-actions'); actionsDiv.innerHTML = '';
             if (!user.settings?.hidePhone) {
                 const justPhone = user.phone.replace('+20', '');
                 actionsDiv.innerHTML = `<a href="https://wa.me/20${justPhone}" target="_blank" class="flex-1 py-2 md:py-3 bg-green-500 text-white rounded-lg font-bold text-xs md:text-sm text-center hover:bg-green-600 shadow flex items-center justify-center gap-1 active:scale-95 transition-transform">WhatsApp</a>`;
@@ -1441,23 +1431,15 @@
             const chatBtn = document.createElement('button');
             chatBtn.className = "flex-1 py-2 md:py-3 bg-black text-white rounded-lg font-bold text-xs md:text-sm shadow hover:bg-gray-800 active:scale-95 transition-transform";
             chatBtn.innerText = "محادثة";
-            chatBtn.onclick = () => { window.openChat(user.uid); };
+            chatBtn.onclick = () => { document.getElementById('profile-modal').classList.add('hidden'); window.openChat(user.uid); };
             actionsDiv.appendChild(chatBtn);
            
             loadReviews(user.uid);
-            window.navTo('user-details');
-        };
-
-        window.openImageViewer = (src) => {
-            const highResSrc = src.replace('w_100,h_100,c_fill', 'w_800,c_limit');
-            document.getElementById('full-image-display').src = highResSrc;
-            const viewer = document.getElementById('image-viewer-modal');
-            viewer.classList.remove('hidden');
-            setTimeout(() => document.getElementById('full-image-display').classList.replace('scale-95', 'scale-100'), 50);
+            document.getElementById('profile-modal').classList.remove('hidden');
         };
 
         async function loadReviews(targetId) {
-             const list = document.getElementById('details-reviews-list'); const starsDisplay = document.getElementById('details-stars-display');
+             const list = document.getElementById('modal-reviews-list'); const starsDisplay = document.getElementById('modal-stars-display');
              list.innerHTML = '<p class="text-[10px] md:text-xs text-gray-400 text-center p-2">جاري التحميل...</p>';
              const q = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'reviews'), where('toId', '==', targetId));
              const snap = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js").then(m => m.getDocs(q));
@@ -1526,7 +1508,7 @@
                 document.getElementById('chat-room-name').innerText = name;
                 document.getElementById('chat-room-avatar').src = window.getCloudinaryUrl(photoURL, 'thumb');
                 document.getElementById('chat-header-profile').onclick = () => {
-                    if(encodedUserStr) window.openUserDetails(encodedUserStr);
+                    if(encodedUserStr) window.openProfileModal(encodedUserStr);
                 };
             };
 
@@ -1736,19 +1718,16 @@
             
             return `
             <div class="fast-render-card">
-                <div onclick="window.openUserDetails('${userStr}')" class="bg-white dark:bg-gray-800 p-3 md:p-4 rounded-xl border-2 border-black dark:border-gray-500 shadow-[2px_2px_0px_#000] dark:shadow-[2px_2px_0px_#6b7280] cursor-pointer active:scale-[0.98] transition-transform flex justify-between items-start gap-2">
-                    
-                    <div class="flex-1 text-right min-w-0 flex flex-col gap-1.5 pt-1">
-                        <div class="text-[11px] md:text-sm truncate"><span class="text-gray-500 font-bold">${isClient ? 'العميل:' : 'الاسم:'}</span> <strong class="text-black dark:text-white">${u.name}</strong></div>
-                        <div class="text-[10px] md:text-xs truncate"><span class="text-gray-500 font-bold">الوظيفة:</span> <strong class="text-black dark:text-white">${profStr}</strong></div>
-                        <div class="text-[10px] md:text-xs truncate"><span class="text-gray-500 font-bold">العنوان:</span> <strong class="text-gray-800 dark:text-gray-200">${finalLocation}</strong></div>
+                <div onclick="window.openProfileModal('${userStr}')" class="bg-white dark:bg-gray-800 p-2.5 md:p-4 rounded-xl border-2 border-black dark:border-gray-500 shadow-[2px_2px_0px_#000] dark:shadow-[2px_2px_0px_#6b7280] cursor-pointer flex items-start gap-2.5 md:gap-4 active:scale-[0.98] transition-transform">
+                    <img src="${window.getCloudinaryUrl(u.photoURL, 'thumb')}" loading="lazy" class="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover border border-black dark:border-gray-400 shrink-0 bg-gray-100 mt-1">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[10px] md:text-sm"><span class="text-gray-500 font-bold">${isClient ? 'اسم العميل:' : 'الاسم:'}</span> <strong class="text-black dark:text-white">${u.name}</strong></span>
+                            <span class="text-[9px] md:text-xs text-gray-500 font-bold shrink-0">انضمام: ${joinDate}</span>
+                        </div>
+                        <div class="text-[10px] md:text-xs mb-1"><span class="text-gray-500 font-bold">الوظيفة:</span> <strong class="text-black dark:text-white">${profStr}</strong></div>
+                        <div class="text-[10px] md:text-xs"><span class="text-gray-500 font-bold">العنوان:</span> <strong class="text-gray-800 dark:text-gray-200">${finalLocation}</strong></div>
                     </div>
-
-                    <div class="flex flex-col items-end shrink-0 gap-2">
-                        <span class="text-[9px] md:text-[10px] text-gray-500 font-bold bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded border border-gray-200 dark:border-gray-600">انضمام: ${joinDate}</span>
-                        <img src="${window.getCloudinaryUrl(u.photoURL, 'thumb')}" loading="lazy" class="w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover border border-black dark:border-gray-400 bg-gray-100 shadow-sm">
-                    </div>
-
                 </div>
             </div>`;
         }
