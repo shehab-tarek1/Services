@@ -67,6 +67,22 @@
         input:focus, select:focus, textarea:focus { border-color: #000000; outline: none; }
         .dark input, .dark select, .dark textarea { background-color: #1f2937; border-color: #4b5563; color: white; }
         .dark input:focus { border-color: #fff; }
+
+        /* تخصيص القوائم المنسدلة لتظهر بشكل عصري */
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23000000'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 10px center;
+            background-size: 16px;
+            padding-left: 30px !important;
+            cursor: pointer;
+        }
+        .dark select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        }
        
         .border-black-custom { border: 2px solid #000000 !important; box-shadow: 2px 2px 0px #000000 !important; }
         .dark .border-black-custom { border: 2px solid #6b7280 !important; box-shadow: 2px 2px 0px #6b7280 !important; }
@@ -433,44 +449,44 @@
         <section id="page-chat" class="page-section hidden px-3 md:px-6 lg:px-10 pt-4 md:pt-6">
             <div id="chat-history-list" class="pb-20 max-w-md md:max-w-full lg:max-w-4xl mx-auto flex flex-col gap-2 md:gap-3 lg:grid lg:grid-cols-2 lg:gap-4"><p class="text-center text-gray-400 py-10 col-span-full">جاري تحميل المحادثات...</p></div>
         </section>
-    </div>
 
-    <!-- PROFILE POPUP -->
-    <div id="profile-modal" class="modal-overlay hidden overflow-y-auto">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-sm md:max-w-md rounded-xl border-black-custom p-5 md:p-8 relative shadow-2xl my-10 animate-pop">
-            <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="absolute top-3 left-3 md:top-4 md:left-4 font-bold text-gray-400 hover:text-red-500 text-xl md:text-2xl">✕</button>
-            <div class="flex flex-col items-center">
-                <img id="modal-img" src="" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-black dark:border-gray-500 mb-2 object-cover">
-                <h2 id="modal-name" class="text-lg md:text-xl font-extrabold dark:text-white"></h2>
-                <p id="modal-role" class="text-xs md:text-sm text-blue-600 font-bold mb-3 md:mb-4"></p>
-               
-                <div class="w-full bg-gray-50 dark:bg-gray-700 p-3 md:p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 text-center mb-4 md:mb-5">
-                    <div class="grid grid-cols-2 gap-2 text-xs md:text-sm">
-                        <div>
-                            <span class="text-gray-400 block">العنوان</span>
-                            <span id="modal-addr-detail" class="font-bold block text-[10px] md:text-xs text-gray-600 dark:text-gray-300"></span>
-                            <span id="modal-addr" class="font-bold"></span>
+        <!-- USER DETAILS PAGE -->
+        <section id="page-user-details" class="page-section hidden px-3 md:px-6">
+            <div class="max-w-md md:max-w-2xl mx-auto">
+                <div class="bg-white dark:bg-gray-800 rounded-xl border-black-custom p-4 md:p-6 relative overflow-hidden mt-4 md:mt-6">
+                    <div class="flex flex-col items-center">
+                        <img id="user-details-img" src="" onclick="window.openFullScreenImage(this.src)" class="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-black dark:border-gray-500 bg-white object-cover cursor-pointer hover:opacity-90 transition-opacity">
+                        <h2 id="user-details-name" class="text-lg md:text-xl font-extrabold mt-3 md:mt-4 dark:text-white"></h2>
+                        <div class="flex items-center gap-2 mt-1 mb-4">
+                            <span id="user-details-role" class="badge bg-blue-100 text-blue-800 border-blue-800 md:text-xs md:px-2 md:py-1"></span>
+                            <span id="user-details-address" class="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-bold"></span>
                         </div>
-                        <div><span class="text-gray-400 block">الجنس</span><span id="modal-gender" class="font-bold"></span></div>
-                    </div>
-                    <div class="mt-2 md:mt-3 border-t border-gray-200 pt-2 md:pt-3">
-                        <span class="text-gray-400 block">الهاتف</span><span id="modal-phone-disp" class="font-bold text-sm md:text-base" dir="ltr"></span>
+                        
+                        <div class="w-full bg-gray-50 dark:bg-gray-700 p-3 md:p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 text-center mb-4">
+                            <div class="grid grid-cols-2 gap-2 text-xs md:text-sm">
+                                <div><span class="text-gray-400 block">التفاصيل</span><span id="user-details-addr-detail" class="font-bold block text-[10px] md:text-xs text-gray-600 dark:text-gray-300"></span></div>
+                                <div><span class="text-gray-400 block">الجنس</span><span id="user-details-gender" class="font-bold"></span></div>
+                            </div>
+                            <div class="mt-2 md:mt-3 border-t border-gray-200 pt-2 md:pt-3">
+                                <span class="text-gray-400 block">الهاتف</span><span id="user-details-phone-disp" class="font-bold text-sm md:text-base" dir="ltr"></span>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2 md:gap-4 w-full" id="user-details-actions"></div>
                     </div>
                 </div>
 
-                <div class="flex gap-2 md:gap-3 w-full mb-4 md:mb-5" id="modal-actions"></div>
-
-                <div class="w-full border-t-2 border-gray-100 pt-3 md:pt-4 dark:border-gray-700">
-                    <h4 class="font-bold text-xs md:text-sm mb-2 flex items-center justify-between">
+                <div class="w-full mt-4 bg-white dark:bg-gray-800 rounded-xl border-black-custom p-4 md:p-6 pb-20">
+                    <h4 class="font-bold text-xs md:text-sm mb-3 flex items-center justify-between">
                         <span>التقييمات</span>
-                        <span id="modal-stars-display" class="text-yellow-500 font-bold"></span>
+                        <span id="user-details-stars-display" class="text-yellow-500 font-bold text-lg"></span>
                     </h4>
-                    <div class="border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 p-1 md:p-2">
-                        <div id="modal-reviews-list" class="space-y-2 max-h-[150px] md:max-h-[200px] overflow-y-auto custom-scrollbar pr-1"></div>
+                    <div class="border border-gray-200 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 p-2">
+                        <div id="user-details-reviews-list" class="space-y-2 max-h-[250px] overflow-y-auto custom-scrollbar pr-1"></div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 
     <!-- RATE MODAL -->
@@ -498,7 +514,7 @@
     <div id="filter-modal-wrap" class="hidden">
         <div id="filter-modal-backdrop" onclick="document.getElementById('filter-modal-wrap').classList.add('hidden')" class="fixed inset-0 z-[130]"></div>
         
-        <div id="filter-modal" class="absolute top-[110px] md:top-[120px] left-4 right-4 md:max-w-md md:mx-auto z-[140] bg-white dark:bg-gray-800 rounded-xl border-2 border-black dark:border-gray-500 shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#6b7280] p-4 md:p-6 animate-fade">
+        <div id="filter-modal" class="absolute top-[100px] md:top-[110px] left-4 right-4 md:max-w-sm md:mx-auto z-[140] bg-white dark:bg-gray-800 rounded-xl border-2 border-black dark:border-gray-500 shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#6b7280] p-3 animate-fade">
             <h3 class="text-center font-bold mb-3 text-sm md:text-base border-b-2 border-gray-100 dark:border-gray-700 pb-2">تصفية البحث</h3>
             <select id="filter-center" onchange="window.updateVillages('filter')" class="w-full p-2 md:p-3 mb-2 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"></select>
             <select id="filter-village" class="w-full p-2 md:p-3 mb-2 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"><option value="">القرية...</option></select>
@@ -544,6 +560,14 @@
             <input type="text" id="msg-input" class="flex-1 p-2 md:p-3 rounded-full bg-gray-100 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-sm md:text-base outline-none focus:border-black" placeholder="اكتب رسالة..." autocomplete="off">
             <button type="submit" id="btn-send-msg" class="p-2 md:p-3 bg-black text-white rounded-full shadow-md active:scale-90 transition-transform"><svg class="w-5 h-5 md:w-6 md:h-6 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
         </form>
+    </div>
+
+    <!-- FULLSCREEN IMAGE VIEWER -->
+    <div id="fullscreen-image-viewer" class="fixed inset-0 bg-black/95 z-[9999] hidden flex flex-col items-center justify-center animate-fade">
+        <button onclick="document.getElementById('fullscreen-image-viewer').classList.add('hidden')" class="absolute top-6 left-6 text-white bg-black/50 hover:bg-red-500 rounded-full p-2 border border-gray-600 transition-colors">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <img id="fullscreen-image" src="" class="max-w-full max-h-full object-contain p-4">
     </div>
 
     <!-- NAV -->
@@ -684,6 +708,15 @@
         window.hideLoader = () => document.getElementById('loader').classList.add('hidden');
         window.showLoader = () => document.getElementById('loader').classList.remove('hidden');
 
+        // وظيفة فتح الصورة بملء الشاشة
+        window.openFullScreenImage = (src) => {
+            if(!src || src.includes('ui-avatars') || src.includes('via.placeholder')) return; 
+            const viewer = document.getElementById('fullscreen-image-viewer');
+            const img = document.getElementById('fullscreen-image');
+            img.src = src.replace('w_100,h_100,c_fill,', 'w_800,c_limit,').replace('w_500,c_limit,', 'w_800,c_limit,');
+            viewer.classList.remove('hidden');
+        };
+
         // وظائف إدارة العرض للتسجيل
         window.showAuthView = () => {
             document.getElementById('app-view').classList.add('hidden');
@@ -751,6 +784,7 @@
             if(pageId === 'chat-room') activeIdx = 2;
             if(pageId === 'edit-profile' || pageId === 'settings') activeIdx = 3;
             if(pageId === 'category-details') activeIdx = 0;
+            if(pageId === 'user-details') activeIdx = 1; // إضاءة تبويب الدليل عند عرض البروفايل الداخلي
 
             if(activeIdx !== undefined && activeIdx !== -1 && btns[activeIdx]) {
                 btns[activeIdx].classList.add('text-blue-600', 'active');
@@ -806,11 +840,14 @@
            
             const backBtn = document.getElementById('btn-back');
             if (pageId === 'home') { 
-                document.getElementById('page-title').innerHTML = isGuest ? 'مرحباً بك في دليل الشرقية' : `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">${userProfile ? userProfile.name : ''}</span>`; 
+                document.getElementById('page-title').innerHTML = isGuest ? `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">دليل الشرقية</span>` : `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">${userProfile ? userProfile.name : ''}</span>`; 
                 backBtn.classList.add('hidden'); 
             } else { 
                 backBtn.classList.remove('hidden'); 
-                document.getElementById('page-title').innerText = pageId === 'activity' ? 'النشاط' : 'رجوع'; 
+                // لا نغير العنوان في حالة صفحة تفاصيل المستخدم لأننا نغيره في دالة الفتح
+                if(pageId !== 'user-details' && pageId !== 'category-details') {
+                    document.getElementById('page-title').innerText = pageId === 'activity' ? 'النشاط' : 'رجوع'; 
+                }
             }
            
             window.updateBottomNav(pageId);
@@ -852,10 +889,12 @@
             const backBtn = document.getElementById('btn-back');
             if (pageId === 'home') {
                 backBtn.classList.add('hidden');
-                document.getElementById('page-title').innerHTML = isGuest ? 'مرحباً بك في دليل الشرقية' : `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">${userProfile ? userProfile.name : ''}</span>`;
+                document.getElementById('page-title').innerHTML = isGuest ? `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">دليل الشرقية</span>` : `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">${userProfile ? userProfile.name : ''}</span>`;
             } else {
                 backBtn.classList.remove('hidden');
-                document.getElementById('page-title').innerText = pageId === 'activity' ? 'النشاط' : 'رجوع';
+                if(pageId !== 'user-details' && pageId !== 'category-details') {
+                    document.getElementById('page-title').innerText = pageId === 'activity' ? 'النشاط' : 'رجوع';
+                }
             }
             window.updateBottomNav(pageId);
             window.scrollTo(0, 0);
@@ -879,7 +918,7 @@
                     document.getElementById('btn-profile-matching').classList.add('hidden');
                 }
             } else {
-                document.getElementById('page-title').innerHTML = 'مرحباً بك في دليل الشرقية';
+                document.getElementById('page-title').innerHTML = `مرحباً بك: <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px]">دليل الشرقية</span>`;
             }
         }
 
@@ -1099,7 +1138,7 @@
                 history.replaceState({ pageId: 'exit_trap' }, "", window.location.pathname);
                 history.pushState({ pageId: 'home' }, "", window.location.pathname);
 
-                document.getElementById('header-avatar').src = 'https://ui-avatars.com/api/?name=Guest&background=0D8ABC&color=fff';
+                document.getElementById('header-avatar').src = 'icons/icon-192x192.png';
                 
                 window.hideAuthView(); 
                 initApp(); startListeners();
@@ -1415,31 +1454,41 @@
         window.openProfileModal = async (userStr) => {
             const user = JSON.parse(decodeURIComponent(userStr));
             currentModalUserId = user.uid;
-            document.getElementById('modal-img').src = window.getCloudinaryUrl(user.photoURL, 'medium');
-            document.getElementById('modal-name').innerText = user.name;
-            document.getElementById('modal-role').innerText = user.role === 'provider' ? user.profession : 'عميل';
-            document.getElementById('modal-addr').innerText = `${user.area || ''} - ${user.city || ''}`;
-            document.getElementById('modal-addr-detail').innerText = user.addressDetail ? user.addressDetail + '،' : 'لا يوجد تفاصيل،';
-            document.getElementById('modal-phone-disp').innerText = (user.settings?.hidePhone) ? 'مخفي 🔒' : user.phone;
-            document.getElementById('modal-gender').innerText = user.gender === 'male' ? 'ذكر' : 'أنثى';
+            
+            // تعبئة البيانات في الصفحة الداخلية الجديدة
+            document.getElementById('user-details-img').src = window.getCloudinaryUrl(user.photoURL, 'medium');
+            document.getElementById('user-details-name').innerText = user.name;
+            document.getElementById('user-details-role').innerText = user.role === 'provider' ? user.profession : 'عميل';
+            document.getElementById('user-details-address').innerText = `${user.area || ''} - ${user.city || ''}`;
+            document.getElementById('user-details-addr-detail').innerText = user.addressDetail ? user.addressDetail : 'لا يوجد تفاصيل';
+            document.getElementById('user-details-phone-disp').innerText = (user.settings?.hidePhone) ? 'مخفي 🔒' : user.phone;
+            document.getElementById('user-details-gender').innerText = user.gender === 'male' ? 'ذكر' : 'أنثى';
 
-            const actionsDiv = document.getElementById('modal-actions'); actionsDiv.innerHTML = '';
+            const actionsDiv = document.getElementById('user-details-actions'); 
+            actionsDiv.innerHTML = '';
+            
             if (!user.settings?.hidePhone) {
                 const justPhone = user.phone.replace('+20', '');
-                actionsDiv.innerHTML = `<a href="https://wa.me/20${justPhone}" target="_blank" class="flex-1 py-2 md:py-3 bg-green-500 text-white rounded-lg font-bold text-xs md:text-sm text-center hover:bg-green-600 shadow flex items-center justify-center gap-1 active:scale-95 transition-transform">WhatsApp</a>`;
+                actionsDiv.innerHTML = `<a href="https://wa.me/20${justPhone}" target="_blank" class="flex-1 py-2.5 md:py-3 bg-green-500 text-white rounded-lg font-bold text-xs md:text-sm text-center hover:bg-green-600 shadow flex items-center justify-center gap-1 active:scale-95 transition-transform">تواصل WhatsApp</a>`;
             }
             const chatBtn = document.createElement('button');
-            chatBtn.className = "flex-1 py-2 md:py-3 bg-black text-white rounded-lg font-bold text-xs md:text-sm shadow hover:bg-gray-800 active:scale-95 transition-transform";
-            chatBtn.innerText = "محادثة";
-            chatBtn.onclick = () => { document.getElementById('profile-modal').classList.add('hidden'); window.openChat(user.uid); };
+            chatBtn.className = "flex-1 py-2.5 md:py-3 bg-black text-white rounded-lg font-bold text-xs md:text-sm shadow hover:bg-gray-800 active:scale-95 transition-transform";
+            chatBtn.innerText = "بدء محادثة";
+            chatBtn.onclick = () => { window.openChat(user.uid); };
             actionsDiv.appendChild(chatBtn);
            
-            loadReviews(user.uid);
-            document.getElementById('profile-modal').classList.remove('hidden');
+            // تحميل التقييمات وتوجيه المستخدم للصفحة الجديدة
+            loadReviews(user.uid, true);
+            document.getElementById('page-title').innerText = 'تفاصيل الحساب';
+            window.navTo('user-details');
         };
 
-        async function loadReviews(targetId) {
-             const list = document.getElementById('modal-reviews-list'); const starsDisplay = document.getElementById('modal-stars-display');
+        async function loadReviews(targetId, isPage = false) {
+             const list = document.getElementById(isPage ? 'user-details-reviews-list' : 'modal-reviews-list'); 
+             const starsDisplay = document.getElementById(isPage ? 'user-details-stars-display' : 'modal-stars-display');
+             
+             if(!list) return; // حماية إضافية
+             
              list.innerHTML = '<p class="text-[10px] md:text-xs text-gray-400 text-center p-2">جاري التحميل...</p>';
              const q = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'reviews'), where('toId', '==', targetId));
              const snap = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js").then(m => m.getDocs(q));
