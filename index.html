@@ -158,7 +158,6 @@
 
     <!-- AUTH VIEW -->
     <div id="auth-view" class="hidden min-h-screen flex flex-col justify-center p-4 md:max-w-lg md:mx-auto bg-gray-100 dark:bg-gray-900 relative z-[300]">
-        <!-- زر التخطي لو حب يرجع للرئيسية بدون تسجيل -->
         <button onclick="window.hideAuthView(); window.navTo('home', true);" class="absolute top-4 left-4 p-2 bg-gray-200 dark:bg-gray-700 rounded-full text-sm font-bold">✕ إغلاق</button>
 
         <div class="text-center mb-4 md:mb-6">
@@ -445,49 +444,49 @@
         <section id="page-chat" class="page-section hidden px-3 md:px-6 lg:px-10 pt-4 md:pt-6">
             <div id="chat-history-list" class="pb-20 max-w-md md:max-w-full lg:max-w-4xl mx-auto flex flex-col gap-2 md:gap-3 lg:grid lg:grid-cols-2 lg:gap-4"><p class="text-center text-gray-400 py-10 col-span-full">جاري تحميل المحادثات...</p></div>
         </section>
-    </div>
 
-    <!-- USER PROFILE PAGE -->
-    <section id="page-user-profile" class="page-section hidden px-3 md:px-6 lg:px-10 pb-24">
-        <div class="max-w-md md:max-w-2xl mx-auto">
-            <div class="bg-white dark:bg-gray-800 rounded-2xl border-2 border-black dark:border-gray-500 p-5 md:p-8 relative mt-4 md:mt-6 text-center shadow-sm">
-                <img id="user-profile-img" src="" class="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-black dark:border-gray-500 mx-auto object-cover cursor-pointer hover:opacity-90 transition-opacity">
-                <h2 id="user-profile-name" class="text-xl md:text-2xl font-extrabold mt-3 dark:text-white"></h2>
-                <p id="user-profile-role" class="text-sm md:text-base text-blue-600 font-bold mb-4"></p>
-                
-                <div class="w-full bg-gray-50 dark:bg-gray-700 p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 mb-5 text-right">
-                    <div class="grid grid-cols-2 gap-3 text-sm">
-                        <div>
-                            <span class="text-gray-400 block mb-1">العنوان</span>
-                            <span id="user-profile-addr-detail" class="font-bold text-xs text-gray-600 dark:text-gray-300 block"></span>
-                            <span id="user-profile-addr" class="font-bold"></span>
+        <!-- USER PROFILE PAGE -->
+        <section id="page-user-profile" class="page-section hidden px-3 md:px-6 lg:px-10 pb-20">
+            <div class="max-w-sm md:max-w-md mx-auto">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl border-2 border-black dark:border-gray-50 p-5 md:p-8 relative mt-4 md:mt-6 text-center shadow-sm">
+                    <img id="user-profile-img" src="" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-black dark:border-gray-500 mx-auto object-cover cursor-pointer hover:opacity-90 transition-opacity">
+                    <h2 id="user-profile-name" class="text-lg md:text-xl font-extrabold mt-2 md:mt-3 dark:text-white"></h2>
+                    <p id="user-profile-role" class="text-xs md:text-sm text-blue-600 font-bold mb-3 md:mb-4"></p>
+                    
+                    <div class="w-full bg-gray-50 dark:bg-gray-700 p-3 md:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-600 mb-4 md:mb-5 text-right">
+                        <div class="grid grid-cols-2 gap-2 text-xs md:text-sm">
+                            <div>
+                                <span class="text-gray-400 block">العنوان</span>
+                                <span id="user-profile-addr-detail" class="font-bold text-[10px] md:text-xs text-gray-600 dark:text-gray-300 block"></span>
+                                <span id="user-profile-addr" class="font-bold"></span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 block">الجنس</span>
+                                <span id="user-profile-gender" class="font-bold"></span>
+                            </div>
                         </div>
-                        <div>
-                            <span class="text-gray-400 block mb-1">الجنس</span>
-                            <span id="user-profile-gender" class="font-bold"></span>
+                        <div class="mt-2 md:mt-3 border-t border-gray-200 dark:border-gray-600 pt-2 md:pt-3 text-right">
+                            <span class="text-gray-400 block">الهاتف</span>
+                            <span id="user-profile-phone" class="font-bold text-sm md:text-base" dir="ltr"></span>
                         </div>
                     </div>
-                    <div class="mt-3 border-t border-gray-200 dark:border-gray-600 pt-3 text-right">
-                        <span class="text-gray-400 block mb-1">الهاتف</span>
-                        <span id="user-profile-phone" class="font-bold text-base md:text-lg" dir="ltr"></span>
-                    </div>
-                </div>
 
-                <div class="flex gap-3 w-full mb-5" id="user-profile-actions"></div>
+                    <div class="flex gap-2 md:gap-3 w-full mb-4 md:mb-5" id="user-profile-actions"></div>
 
-                <div class="w-full border-t-2 border-gray-100 dark:border-gray-700 pt-4 text-right">
-                    <h4 class="font-bold text-sm md:text-base mb-3 flex items-center justify-between">
-                        <span>التقييمات</span>
-                        <span id="user-profile-stars" class="text-yellow-500 font-bold text-lg"></span>
-                    </h4>
-                    <div class="border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 p-2 md:p-3">
-                        <div id="user-profile-reviews-list" class="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-1"></div>
+                    <div class="w-full border-t-2 border-gray-100 dark:border-gray-700 pt-3 md:pt-4 text-right">
+                        <h4 class="font-bold text-xs md:text-sm mb-2 flex items-center justify-between">
+                            <span>التقييمات</span>
+                            <span id="user-profile-stars" class="text-yellow-500 font-bold"></span>
+                        </h4>
+                        <div class="border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 p-1 md:p-2">
+                            <div id="user-profile-reviews-list" class="space-y-2 max-h-[150px] md:max-h-[200px] overflow-y-auto custom-scrollbar pr-1"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
+        </section>
+    </div>
+
     <!-- LIGHTBOX MODAL -->
     <div id="lightbox-modal" class="fixed inset-0 bg-black/95 z-[9999] hidden flex flex-col justify-center items-center p-4 backdrop-blur-md">
         <button onclick="document.getElementById('lightbox-modal').classList.add('hidden')" class="absolute top-6 right-6 text-white text-3xl md:text-4xl font-bold hover:text-red-500 z-10 transition-colors drop-shadow-lg">✕</button>
@@ -687,7 +686,7 @@
             return `https://images.pexels.com/photos/${photoId}/pexels-photo-${photoId}.jpeg?auto=compress&cs=tinysrgb&w=200`;
         }
 
-        let isGuest = true; // متغير جديد للزائر
+        let isGuest = true;
         let currentUser = null, userProfile = null, navStack =['home'], currentChatId = null, allUsersCache =[], myChatsCache =[], chatListener = null, currentModalUserId = null;
         let tempSelectedFile = null;
         let globalUnsubs =[];
@@ -923,14 +922,17 @@
             }
 
             if (!skipHistory) {
+                const bottomNavPages = ['home', 'directory', 'chat', 'profile', 'activity'];
                 const index = navStack.indexOf(pageId);
-                if (index !== -1 && index < navStack.length - 1) {
+                if (bottomNavPages.includes(pageId) && index !== -1 && index < navStack.length - 1) {
                     const steps = index - (navStack.length - 1);
                     history.go(steps);
                     return; 
                 } else {
-                    navStack.push(pageId);
-                    history.pushState({ pageId: pageId }, "", window.location.pathname);
+                    if (navStack[navStack.length - 1] !== pageId) {
+                        navStack.push(pageId);
+                        history.pushState({ pageId: pageId }, "", window.location.pathname);
+                    }
                 }
             }
 
@@ -943,7 +945,7 @@
            
             const backBtn = document.getElementById('btn-back');
             if (pageId === 'home') { 
-                document.getElementById('page-title').innerHTML = isGuest ? '<span class="bg-black text-white px-3 py-1 rounded-full dark:bg-gray-600 text-[10px] md:text-xs">دليل الشرقية</span>' : `<span class="bg-black text-white px-3 py-1 rounded-full dark:bg-gray-600 text-[10px] md:text-xs flex items-center gap-1">مرحباً ${userProfile ? userProfile.name : ''}</span>`; 
+                document.getElementById('page-title').innerHTML = isGuest ? `مرحباً بك في <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">دليل الشرقية</span>` : `مرحباً بك <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">${userProfile ? userProfile.name : ''}</span>`; 
                 backBtn.classList.add('hidden'); 
             } else { 
                 backBtn.classList.remove('hidden'); 
@@ -989,7 +991,7 @@
             const backBtn = document.getElementById('btn-back');
             if (pageId === 'home') {
                 backBtn.classList.add('hidden');
-                document.getElementById('page-title').innerHTML = isGuest ? '<span class="bg-black text-white px-3 py-1 rounded-full dark:bg-gray-600 text-[10px] md:text-xs">دليل الشرقية</span>' : `<span class="bg-black text-white px-3 py-1 rounded-full dark:bg-gray-600 text-[10px] md:text-xs flex items-center gap-1">مرحباً ${userProfile ? userProfile.name : ''}</span>`;
+                document.getElementById('page-title').innerHTML = isGuest ? `مرحباً بك في <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">دليل الشرقية</span>` : `مرحباً بك <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">${userProfile ? userProfile.name : ''}</span>`;
             } else {
                 backBtn.classList.remove('hidden');
                 document.getElementById('page-title').innerText = pageTitles[pageId] || 'رجوع';
@@ -1007,7 +1009,7 @@
             populateCenters('filter');
             
             if(!isGuest && userProfile) {
-                document.getElementById('page-title').innerHTML = `<span class="bg-black text-white px-3 py-1 rounded-full dark:bg-gray-600 text-[10px] md:text-xs flex items-center gap-1">مرحباً ${userProfile.name}</span>`;
+                document.getElementById('page-title').innerHTML = `مرحباً بك <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">${userProfile.name}</span>`;
                 if(userProfile.role === 'provider') {
                     document.getElementById('tab-act-matching').classList.remove('hidden');
                     document.getElementById('btn-profile-matching').classList.remove('hidden');
@@ -1016,7 +1018,7 @@
                     document.getElementById('btn-profile-matching').classList.add('hidden');
                 }
             } else {
-                document.getElementById('page-title').innerHTML = '<span class="bg-black text-white px-3 py-1 rounded-full dark:bg-gray-600 text-[10px] md:text-xs">دليل الشرقية</span>';
+                document.getElementById('page-title').innerHTML = `مرحباً بك في <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">دليل الشرقية</span>`;
             }
         }
 
@@ -1571,32 +1573,33 @@
             const actionsDiv = document.getElementById('user-profile-actions'); actionsDiv.innerHTML = '';
             if (!user.settings?.hidePhone) {
                 const justPhone = user.phone.replace('+20', '');
-                actionsDiv.innerHTML = `<a href="https://wa.me/20${justPhone}" target="_blank" class="flex-1 py-3 bg-green-500 text-white rounded-xl font-bold text-sm md:text-base text-center hover:bg-green-600 flex items-center justify-center gap-2 active:scale-95 transition-transform">WhatsApp</a>`;
+                actionsDiv.innerHTML = `<a href="https://wa.me/20${justPhone}" target="_blank" class="flex-1 py-2 md:py-3 bg-green-500 text-white rounded-lg font-bold text-xs md:text-sm text-center hover:bg-green-600 flex items-center justify-center gap-1 active:scale-95 transition-transform">WhatsApp</a>`;
             }
             const chatBtn = document.createElement('button');
-            chatBtn.className = "flex-1 py-3 bg-black text-white rounded-xl font-bold text-sm md:text-base hover:bg-gray-800 active:scale-95 transition-transform flex items-center justify-center gap-2";
+            chatBtn.className = "flex-1 py-2 md:py-3 bg-black text-white rounded-lg font-bold text-xs md:text-sm hover:bg-gray-800 active:scale-95 transition-transform flex items-center justify-center gap-1";
             chatBtn.innerText = "محادثة";
             chatBtn.onclick = () => { window.openChat(user.uid); };
             actionsDiv.appendChild(chatBtn);
            
             loadReviewsToPage(user.uid);
             window.navTo('user-profile');
+            setTimeout(() => window.scrollTo(0, 0), 10);
         };
 
         async function loadReviewsToPage(targetId) {
              const list = document.getElementById('user-profile-reviews-list'); const starsDisplay = document.getElementById('user-profile-stars');
-             list.innerHTML = '<p class="text-xs text-gray-400 text-center p-4">جاري التحميل...</p>';
+             list.innerHTML = '<p class="text-[10px] md:text-xs text-gray-400 text-center p-2">جاري التحميل...</p>';
              const q = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'reviews'), where('toId', '==', targetId));
              const snap = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js").then(m => m.getDocs(q));
              list.innerHTML = ''; let totalStars = 0;
-             if(snap.empty) { list.innerHTML = '<p class="text-xs text-gray-400 text-center p-4 font-bold">لا توجد تقييمات حتى الآن</p>'; starsDisplay.innerText = '0.0'; }
+             if(snap.empty) { list.innerHTML = '<p class="text-[10px] md:text-xs text-gray-400 text-center p-2 font-bold">لا توجد تقييمات حتى الآن</p>'; starsDisplay.innerText = '0.0'; }
              else {
                  const reviews =[]; snap.forEach(d => reviews.push(d.data()));
                  reviews.forEach((r) => {
                      totalStars += parseInt(r.stars);
                      const el = document.createElement('div');
-                     el.className = `bg-gray-50 dark:bg-gray-700/50 p-3 md:p-4 rounded-xl mb-2 border border-gray-200 dark:border-gray-600`;
-                     el.innerHTML = `<div class="flex justify-between items-start"><div class="flex items-center gap-2"><img src="${window.getCloudinaryUrl(r.fromPhoto, 'thumb')}" loading="lazy" class="w-6 h-6 md:w-8 md:h-8 rounded-full border border-black object-cover"><span class="text-xs md:text-sm font-bold dark:text-white">${r.fromName}</span></div><span class="text-yellow-500 text-xs md:text-sm tracking-widest">${'★'.repeat(r.stars)}</span></div><p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">${r.comment}</p>`;
+                     el.className = `bg-gray-50 dark:bg-gray-700/50 p-2 md:p-3 rounded mb-1 border border-gray-200 dark:border-gray-600`;
+                     el.innerHTML = `<div class="flex justify-between items-start"><div class="flex items-center gap-1"><img src="${window.getCloudinaryUrl(r.fromPhoto, 'thumb')}" loading="lazy" class="w-5 h-5 md:w-6 md:h-6 rounded-full border border-black object-cover"><span class="text-[10px] md:text-xs font-bold dark:text-white">${r.fromName}</span></div><span class="text-yellow-500 text-[10px] md:text-xs tracking-widest">${'★'.repeat(r.stars)}</span></div><p class="text-[10px] md:text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">${r.comment}</p>`;
                      list.appendChild(el);
                  });
                  starsDisplay.innerText = (totalStars / reviews.length).toFixed(1);
@@ -1736,16 +1739,21 @@
 
         window.clearFilter = () => {
             document.getElementById('filter-center').value = '';
+            makeCustomDropdown('filter-center', 'المركز...');
+            
             document.getElementById('filter-village').innerHTML = '<option value="">القرية...</option>';
+            makeCustomDropdown('filter-village', 'القرية...');
             
             const currentPage = navStack[navStack.length-1];
             if (currentPage === 'category-details') {
                 const currentProf = document.getElementById('page-title').innerText;
                 document.getElementById('filter-prof').value = currentProf;
+                makeCustomDropdown('filter-prof', 'اختر المهنة...');
                 document.getElementById('cat-search').value = '';
                 window.filterCategory();
             } else {
                 document.getElementById('filter-prof').value = '';
+                makeCustomDropdown('filter-prof', 'اختر المهنة...');
                 document.getElementById('dir-search').value = '';
                 window.filterDirectory();
             }
@@ -1850,6 +1858,7 @@
             document.getElementById('page-title').innerText = profName;
             document.getElementById('cat-search').value = '';
             document.getElementById('filter-prof').value = profName;
+            makeCustomDropdown('filter-prof', 'اختر المهنة...');
             window.filterCategory();
         };
 
