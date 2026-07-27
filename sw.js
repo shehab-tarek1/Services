@@ -54,11 +54,18 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 1. طلبات تصفح الصفحات (HTML) -> Network First ثم صفحة الأوفلاين
+  // 1. طلبات تصفح الصفحات (HTML) -> يحاول النت أولاً، لو فشل يفتح index.html المحفوظة، ولو مش موجودة يفتح offline.html
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
-        .catch(() => caches.match(OFFLINE_URL))
+        .catch(() => {
+          return caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) return cachedResponse;
+            return caches.match('/index.html').then((indexResponse) => {
+              return indexResponse || caches.match(OFFLINE_URL);
+            });
+          });
+        })
     );
     return;
   }
