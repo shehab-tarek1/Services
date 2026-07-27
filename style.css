@@ -1,3 +1,4 @@
+.hidden { display: none !important; }
 body { font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
 ::-webkit-scrollbar { width: 0px; background: transparent; }
 button { cursor: pointer; touch-action: manipulation; }
