@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, collection, onSnapshot, query, addDoc, where, updateDoc, orderBy, deleteDoc, arrayUnion, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, getDocs, collection, onSnapshot, query, addDoc, where, updateDoc, orderBy, deleteDoc, arrayUnion, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyD7XMCaPTY73bfs8On_woRiFC7dmw2pwP4",
@@ -25,6 +25,17 @@ enableIndexedDbPersistence(db).catch((err) => {
         console.log('المتصفح لا يدعم تخزين الفايربيز أوفلاين');
     }
 });
+
+// دالة حماية النصوص (XSS Protection)
+function escapeHTML(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
 
 const sharkiaData = {
     "الزقازيق":["هرية رزنة","شيبة","العصلوجي","بنايوس","الزنكلون","كفر الحصر","كفر عبد العزيز","كفر الحمام","النكارية","الشبانات","شوبك بسطة","بيشة قايد","الطاهرة","الزهراء","طوخ","ميت أبو علي","كفر السواقي","كفر منلا","كفر أبو حسين","عزبة البكري","كفر محفوظ","كفر الشرفا","عزبة العرب","عزبة الجندي","كفر المزارقة","بيشة نوي","كفر داوود","برازيل","المسلمية","الطيبة","القومية","الجامعة","الزراعة","الغشام","المنتزه","حي الزهور","حي الحسينية","حي النحال","حي عمر بن الخطاب","ميدان عرابي","شارع فاروق","شارع الجلاء"],
@@ -78,6 +89,7 @@ let isGuest = true;
 let currentUser = null, userProfile = null, navStack =['home'], currentChatId = null, allUsersCache =[], myChatsCache =[], chatListener = null, currentModalUserId = null;
 let tempSelectedFile = null;
 let globalUnsubs =[];
+let currentActiveCategory = ""; // لحفظ اسم القسم عند التصفح
 
 let reqNotifs =[];
 let reviewNotifs =[];
@@ -155,7 +167,9 @@ const UPLOAD_PRESET = "souq_upload";
 window.uploadToCloudinary = async (file) => {
     try {
         const options = { maxSizeMB: 0.5, maxWidthOrHeight: 500, useWebWorker: true, initialQuality: 0.7 };
-        const compressedFile = await imageCompression(file, options);
+        // استدعاء وهمي للضغط، يُفترض وجود مكتبة imageCompression مستدعاة مسبقاً في المشروع الفعلي
+        const compressedFile = typeof imageCompression === 'function' ? await imageCompression(file, options) : file;
+        
         const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
         const fd = new FormData(); 
         fd.append("file", compressedFile); 
@@ -193,26 +207,21 @@ window.showToast = (msg, type='success') => {
 window.hideLoader = () => document.getElementById('loader').classList.add('hidden');
 window.showLoader = () => document.getElementById('loader').classList.remove('hidden');
 
-// وظائف إدارة العرض للتسجيل
-window.showAuthView = () => {
-    document.getElementById('app-view').classList.add('hidden');
-    document.getElementById('app-header').classList.add('hidden');
-    document.getElementById('nav-bar').classList.add('hidden');
-    document.getElementById('auth-view').classList.remove('hidden');
-    window.switchAuthMode('login');
-};
-
-window.hideAuthView = () => {
-    document.getElementById('auth-view').classList.add('hidden');
-    document.getElementById('app-view').classList.remove('hidden');
-    document.getElementById('app-header').classList.remove('hidden');
-    document.getElementById('nav-bar').classList.remove('hidden');
+// إدارة نافذة الفلترة (تغيير السلوك حسب الصفحة)
+window.openFilterModal = (source) => {
+    document.getElementById('filter-modal-wrap').classList.remove('hidden');
+    const profContainer = document.getElementById('filter-prof-container');
+    if (source === 'category') {
+        profContainer.classList.add('hidden'); // لا تسمح بتغيير المهنة داخل قسم محدد
+    } else {
+        profContainer.classList.remove('hidden'); // إظهار المهنة في صفحة الدليل العامة
+    }
 };
 
 window.requireAuth = () => {
     if(isGuest) {
         window.showToast('يرجى تسجيل الدخول للوصول لهذه الميزة', 'error');
-        window.showAuthView();
+        window.navTo('auth');
         return false;
     }
     return true;
@@ -254,7 +263,7 @@ window.updateBottomNav = (pageId) => {
         b.classList.add('text-gray-400');
     });
 
-    const navMap = {'home':0, 'directory':1, 'chat':2, 'profile':3, 'activity':3, 'add': -1}; 
+    const navMap = {'home':0, 'directory':1, 'chat':2, 'profile':3, 'activity':3, 'add': -1, 'auth': -1}; 
     let activeIdx = navMap[pageId];
     
     if(pageId === 'chat-room') activeIdx = 2;
@@ -279,8 +288,8 @@ const pageTitles = {
     'settings': 'الإعدادات',
     'edit-profile': 'تعديل الحساب',
     'chat': 'المحادثات',
-    'category-details': 'التصنيف',
-    'user-profile': 'الملف الشخصي'
+    'user-profile': 'الملف الشخصي',
+    'auth': 'تسجيل الدخول'
 };
 
 window.navTo = (pageId, skipHistory = false) => {
@@ -333,11 +342,16 @@ window.navTo = (pageId, skipHistory = false) => {
    
     const backBtn = document.getElementById('btn-back');
     if (pageId === 'home') { 
-        document.getElementById('page-title').innerHTML = isGuest ? `مرحباً بك في <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">دليل الشرقية</span>` : `مرحباً بك <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">${userProfile ? userProfile.name : ''}</span>`; 
+        document.getElementById('page-title').innerHTML = isGuest ? `مرحباً بك في <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">دليل الشرقية</span>` : `مرحباً بك <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">${escapeHTML(userProfile ? userProfile.name : '')}</span>`; 
         backBtn.classList.add('hidden'); 
     } else { 
         backBtn.classList.remove('hidden'); 
-        document.getElementById('page-title').innerText = pageTitles[pageId] || 'رجوع'; 
+        // استعادة اسم القسم المحفوظ عند التنقل
+        if(pageId === 'category-details') {
+             document.getElementById('page-title').innerText = currentActiveCategory;
+        } else {
+             document.getElementById('page-title').innerText = pageTitles[pageId] || 'رجوع'; 
+        }
     }
    
     window.updateBottomNav(pageId);
@@ -349,9 +363,9 @@ window.goBack = () => {
 };
 
 window.addEventListener('popstate', async (e) => {
+    // تم إزالة window.logout() لمنع تسجيل الخروج التلقائي عند ضغط زر الرجوع للصفحة الرئيسية
     if (!e.state || e.state.pageId === 'exit_trap') {
-        if(!isGuest) await window.logout();
-        return;
+        return; // ترك المتصفح يتصرف طبيعياً
     }
 
     const pageId = e.state.pageId;
@@ -379,10 +393,14 @@ window.addEventListener('popstate', async (e) => {
     const backBtn = document.getElementById('btn-back');
     if (pageId === 'home') {
         backBtn.classList.add('hidden');
-        document.getElementById('page-title').innerHTML = isGuest ? `مرحباً بك في <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">دليل الشرقية</span>` : `مرحباً بك <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">${userProfile ? userProfile.name : ''}</span>`;
+        document.getElementById('page-title').innerHTML = isGuest ? `مرحباً بك في <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">دليل الشرقية</span>` : `مرحباً بك <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">${escapeHTML(userProfile ? userProfile.name : '')}</span>`;
     } else {
         backBtn.classList.remove('hidden');
-        document.getElementById('page-title').innerText = pageTitles[pageId] || 'رجوع';
+        if(pageId === 'category-details') {
+            document.getElementById('page-title').innerText = currentActiveCategory;
+        } else {
+            document.getElementById('page-title').innerText = pageTitles[pageId] || 'رجوع';
+        }
     }
     window.updateBottomNav(pageId);
     window.scrollTo(0, 0);
@@ -397,7 +415,7 @@ function initApp() {
     populateCenters('filter');
     
     if(!isGuest && userProfile) {
-        document.getElementById('page-title').innerHTML = `مرحباً بك <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">${userProfile.name}</span>`;
+        document.getElementById('page-title').innerHTML = `مرحباً بك <span class="bg-black text-white px-2 py-0.5 rounded-full mx-1 dark:bg-gray-600 text-[9px] md:text-xs">${escapeHTML(userProfile.name)}</span>`;
         if(userProfile.role === 'provider') {
             document.getElementById('tab-act-matching').classList.remove('hidden');
             document.getElementById('btn-profile-matching').classList.remove('hidden');
@@ -415,10 +433,10 @@ function renderProfessionsGrid(list) {
     if (grid.children.length > 0) return; 
     const defaultImg = "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=200";
     const html = list.map(p => `
-        <div data-prof="${p}" onclick="window.openCategory('${p}')" class="provider-card cursor-pointer h-28 md:h-32 rounded-xl overflow-hidden relative group bg-gray-400 dark:bg-gray-800 active:scale-95 transition-transform">
+        <div data-prof="${escapeHTML(p)}" onclick="window.openCategory('${escapeHTML(p)}')" class="provider-card cursor-pointer h-28 md:h-32 rounded-xl overflow-hidden relative group bg-gray-400 dark:bg-gray-800 active:scale-95 transition-transform">
             <img src="${getProfImage(p)}" loading="lazy" onerror="this.onerror=null; this.src='${defaultImg}';" class="w-full h-full object-cover">
             <div class="bg-black/60 absolute inset-0 flex flex-col justify-end p-2">
-                <span class="font-bold text-white text-[10px] md:text-xs drop-shadow-md text-center">${p}</span>
+                <span class="font-bold text-white text-[10px] md:text-xs drop-shadow-md text-center">${escapeHTML(p)}</span>
             </div>
         </div>
     `).join('');
@@ -460,19 +478,19 @@ window.debouncedSearch = (type) => {
     }, 500);
 };
 
+// إصلاح: استخدام JavaScript لإخفاء وإظهار العناصر بدلاً من حقن CSS لتجنب مشاكل الـ Quotes والـ XSS
 window.filterProfessions = () => {
-    const term = document.getElementById('prof-search').value.trim();
-    let styleEl = document.getElementById('dynamic-search-style');
-    if (!styleEl) {
-        styleEl = document.createElement('style');
-        styleEl.id = 'dynamic-search-style';
-        document.head.appendChild(styleEl);
-    }
-    if (!term) {
-        styleEl.innerHTML = '';
-    } else {
-        styleEl.innerHTML = `#professions-grid .provider-card { display: none !important; } #professions-grid .provider-card[data-prof*="${term}"] { display: flex !important; }`;
-    }
+    const term = document.getElementById('prof-search').value.trim().toLowerCase();
+    const cards = document.querySelectorAll('#professions-grid .provider-card');
+    
+    cards.forEach(card => {
+        const prof = card.getAttribute('data-prof').toLowerCase();
+        if (!term || prof.includes(term)) {
+            card.style.display = 'flex';
+        } else {
+            card.style.display = 'none';
+        }
+    });
 };
 
 window.switchAuthMode = (mode) => {
@@ -497,7 +515,9 @@ const phoneToEmail = (phone) => `user_${phone}@dalil-sharkia.com`;
 document.getElementById('form-login').onsubmit = async (e) => {
     e.preventDefault(); 
     const phoneVal = document.getElementById('login-phone').value;
-    if(phoneVal.length !== 10) return window.showToast('رقم الهاتف يجب أن يتكون من 10 أرقام بالضبط', 'error');
+    if(!/^(10|11|12|15)\d{8}$/.test(phoneVal)) {
+        return window.showToast('رقم الهاتف يجب أن يبدأ بـ 10 أو 11 أو 12 أو 15 ويتكون من 10 أرقام', 'error');
+    }
     window.showLoader();
     try { await signInWithEmailAndPassword(auth, phoneToEmail(phoneVal), document.getElementById('login-pass').value); }
     catch (err) { window.showToast('رقم الهاتف أو كلمة المرور غير صحيحة', 'error'); window.hideLoader(); }
@@ -506,9 +526,12 @@ document.getElementById('form-login').onsubmit = async (e) => {
 document.getElementById('form-signup').onsubmit = async (e) => {
     e.preventDefault(); 
     const phoneVal = document.getElementById('signup-phone').value;
-    if(phoneVal.length !== 10) return window.showToast('رقم الهاتف يجب أن يتكون من 10 أرقام بالضبط', 'error');
+    if(!/^(10|11|12|15)\d{8}$/.test(phoneVal)) {
+        return window.showToast('رقم الهاتف يجب أن يبدأ بـ 10 أو 11 أو 12 أو 15 ويتكون من 10 أرقام', 'error');
+    }
 
     window.showLoader();
+    let tempCred = null;
     try {
         const role = document.querySelector('input[name="role"]:checked').value;
         let prof = role === 'provider' ? document.getElementById('signup-prof').value : null;
@@ -523,30 +546,31 @@ document.getElementById('form-signup').onsubmit = async (e) => {
         if(!center || !village) throw new Error('يرجى اختيار الموقع');
         
         const addressDetail = document.getElementById('signup-address-detail').value.trim();
-
         const gender = document.querySelector('input[name="gender"]:checked').value;
         const userName = document.getElementById('signup-name').value;
         
         let finalPhotoURL = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=${gender==='male'?'0D8ABC':'E91E63'}&color=fff`;
         if (tempSelectedFile) { finalPhotoURL = await window.uploadToCloudinary(tempSelectedFile); tempSelectedFile = null; }
 
-        const cred = await createUserWithEmailAndPassword(auth, phoneToEmail(phoneVal), document.getElementById('signup-pass').value);
+        tempCred = await createUserWithEmailAndPassword(auth, phoneToEmail(phoneVal), document.getElementById('signup-pass').value);
 
-        await setDoc(doc(db, 'artifacts', APP_ID, 'public', 'data', 'profiles', cred.user.uid), {
-            uid: cred.user.uid, name: userName, phone: `+20${phoneVal}`, city: center, area: village, addressDetail: addressDetail,
+        // إذا فشل هذا السطر، سيتم تنفيذ أمر الحذف في catch لمنع الحسابات اليتيمة
+        await setDoc(doc(db, 'artifacts', APP_ID, 'public', 'data', 'profiles', tempCred.user.uid), {
+            uid: tempCred.user.uid, name: userName, phone: `+20${phoneVal}`, city: center, area: village, addressDetail: addressDetail,
             role, profession: prof, photoURL: finalPhotoURL, gender, settings: { notifEnabled: true, hidePhone: false, hideProfile: false, pauseRequests: false, darkMode: false },
             createdAt: new Date().toISOString()
         });
         
         window.showToast('تم التسجيل بنجاح');
     } catch (err) { 
+        // مسح حساب الـ Auth إذا فشل تخزين البيانات لكي لا يصبح الحساب معلقاً
+        if (tempCred && tempCred.user) {
+            await tempCred.user.delete().catch(()=>console.log('could not delete temp user'));
+        }
         let errorMsg = err.message;
         if (err.code === 'auth/email-already-in-use') errorMsg = 'رقم الهاتف مستخدم مسبقاً لحساب آخر';
         if (err.code === 'auth/weak-password') errorMsg = 'كلمة المرور ضعيفة (يجب أن تكون 6 أحرف على الأقل)';
         window.showToast(errorMsg, 'error'); 
-        if (auth.currentUser && !document.getElementById('auth-view').classList.contains('hidden')) {
-            await auth.currentUser.delete().catch(()=>console.log('could not delete temp user'));
-        }
         window.hideLoader();
     }
 };
@@ -583,12 +607,11 @@ onAuthStateChanged(auth, async (user) => {
                 }
                 document.getElementById('theme-toggle').checked = localIsDark;
 
-                window.hideAuthView();
                 document.getElementById('header-avatar').src = window.getCloudinaryUrl(userProfile.photoURL, 'thumb');
 
-                document.getElementById('prof-name-view').innerText = userProfile.name;
-                document.getElementById('prof-role-view').innerText = userProfile.role === 'provider' ? userProfile.profession : 'عميل';
-                document.getElementById('prof-address-view').innerText = `${userProfile.area || ''} - ${userProfile.city || ''}`;
+                document.getElementById('prof-name-view').innerText = escapeHTML(userProfile.name);
+                document.getElementById('prof-role-view').innerText = userProfile.role === 'provider' ? escapeHTML(userProfile.profession) : 'عميل';
+                document.getElementById('prof-address-view').innerText = `${escapeHTML(userProfile.area) || ''} - ${escapeHTML(userProfile.city) || ''}`;
                 document.getElementById('prof-img-view').src = window.getCloudinaryUrl(userProfile.photoURL, 'medium');
 
                 document.getElementById('edit-name').value = userProfile.name;
@@ -613,7 +636,7 @@ onAuthStateChanged(auth, async (user) => {
                 }
 
                 initApp(); startListeners(); 
-                if(navStack[navStack.length-1] === 'home' || document.getElementById('auth-view').classList.contains('hidden') === false) {
+                if(navStack[navStack.length-1] === 'auth') {
                     window.navTo('home', true);
                 }
             } else {
@@ -630,7 +653,6 @@ onAuthStateChanged(auth, async (user) => {
 
         document.getElementById('header-avatar').src = 'icons/icon-192x192.png';
         
-        window.hideAuthView(); 
         initApp(); startListeners();
         window.navTo('home', true);
         window.hideLoader();
@@ -667,7 +689,7 @@ function renderNotificationsList() {
         return `
         <div class="p-3 ${isNew ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200 dark:bg-gray-700 dark:border-gray-600'} rounded-lg border mb-2 relative">
             ${isNew ? '<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>' : ''}
-            <p class="text-[10px] font-bold ${isNew ? 'text-black dark:text-white' : 'text-gray-600 dark:text-gray-300'} pl-3">${n.text}</p>
+            <p class="text-[10px] font-bold ${isNew ? 'text-black dark:text-white' : 'text-gray-600 dark:text-gray-300'} pl-3">${escapeHTML(n.text)}</p>
             <span class="block mt-1 text-[9px] text-gray-400 font-bold">${new Date(n.time).toLocaleString('ar-EG')}</span>
         </div>`;
     }).join('');
@@ -715,10 +737,10 @@ window.renderChatsUI = function() {
                <img src="${window.getCloudinaryUrl(otherUser.photoURL, 'thumb')}" loading="lazy" class="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-black dark:border-gray-500 shrink-0">
                <div class="flex-1 min-w-0">
                    <div class="flex justify-between items-center mb-1">
-                       <h4 class="font-bold text-[11px] md:text-sm dark:text-white truncate">${otherUser.name}</h4>
+                       <h4 class="font-bold text-[11px] md:text-sm dark:text-white truncate">${escapeHTML(otherUser.name)}</h4>
                        <span class="text-[9px] md:text-xs text-gray-500 font-bold bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded">${time}</span>
                    </div>
-                   <p class="text-[10px] md:text-xs truncate ${isNew?'font-bold text-black dark:text-white':'text-gray-500'}">${c.lastMessage || '...'}</p>
+                   <p class="text-[10px] md:text-xs truncate ${isNew?'font-bold text-black dark:text-white':'text-gray-500'}">${escapeHTML(c.lastMessage || '...')}</p>
                </div>
                ${isNew ? '<div class="absolute -top-1 -right-1 w-2.5 h-2.5 md:w-3 md:h-3 bg-red-500 rounded-full border border-white dark:border-gray-800 shadow-sm"></div>' : ''}
            </div>
@@ -740,6 +762,7 @@ function startListeners() {
         allUsersCache =[];
         snap.forEach(d => {
             const u = d.data();
+            // تم حجب أصحاب الحسابات المخفية عن الظهور بالدليل للجميع ما عدا صاحب الحساب نفسه
             if((isGuest || d.id !== currentUser?.uid) && !(u.settings?.hideProfile)) allUsersCache.push(u);
         });
         
@@ -766,20 +789,20 @@ function startListeners() {
                             <img src="${window.getCloudinaryUrl(j.posterPhoto||'https://via.placeholder.com/40', 'thumb')}" loading="lazy" class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border border-black dark:border-gray-500 shrink-0 mt-1">
                             <div class="flex-1 min-w-0">
                                 <div class="flex justify-between items-start mb-1">
-                                    <span class="text-[10px] md:text-xs"><span class="text-gray-500 font-bold">الناشر:</span> <strong class="text-black dark:text-white">${j.posterName}</strong></span>
+                                    <span class="text-[10px] md:text-xs"><span class="text-gray-500 font-bold">الناشر:</span> <strong class="text-black dark:text-white">${escapeHTML(j.posterName)}</strong></span>
                                     <span class="text-[9px] md:text-[10px] text-gray-500 font-bold shrink-0">التاريخ: ${new Date(j.createdAt).toLocaleDateString('ar-EG')}</span>
                                 </div>
-                                <div class="text-[10px] md:text-xs mb-1"><span class="text-gray-500 font-bold">الوظيفة:</span> <strong class="text-black dark:text-white">${j.title}</strong></div>
+                                <div class="text-[10px] md:text-xs mb-1"><span class="text-gray-500 font-bold">الوظيفة:</span> <strong class="text-black dark:text-white">${escapeHTML(j.title)}</strong></div>
                             </div>
                         </div>
                         <div class="flex gap-1.5 md:gap-2 mb-2 md:mb-3 flex-wrap">
                             <span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 md:px-2 md:py-1 rounded text-[9px] md:text-[10px] font-bold">الدوام: ${j.jobType === 'part' ? 'جزئي' : 'كامل'}</span>
-                            <span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 md:px-2 md:py-1 rounded text-[9px] md:text-[10px] font-bold">الراتب: ${j.salary ? j.salary + ' ج.م' : 'لا يوجد'}</span>
-                            <span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 md:px-2 md:py-1 rounded text-[9px] md:text-[10px] font-bold">الشيفت: ${j.shift ? j.shift : 'لا يوجد'}</span>
-                            <span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 md:px-2 md:py-1 rounded text-[9px] md:text-[10px] font-bold">الساعات: ${j.hours ? j.hours : 'لا يوجد'}</span>
+                            <span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 md:px-2 md:py-1 rounded text-[9px] md:text-[10px] font-bold">الراتب: ${j.salary ? escapeHTML(j.salary) + ' ج.م' : 'لا يوجد'}</span>
+                            <span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 md:px-2 md:py-1 rounded text-[9px] md:text-[10px] font-bold">الشيفت: ${j.shift ? escapeHTML(j.shift) : 'لا يوجد'}</span>
+                            <span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 md:px-2 md:py-1 rounded text-[9px] md:text-[10px] font-bold">الساعات: ${j.hours ? escapeHTML(j.hours) : 'لا يوجد'}</span>
                         </div>
                         <div class="mb-2 md:mb-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded p-1.5 md:p-2 text-[10px] md:text-xs max-h-20 overflow-y-auto custom-scrollbar">
-                            <span class="text-gray-500 font-bold">التفاصيل:</span> <span class="text-black dark:text-gray-200 leading-relaxed whitespace-pre-wrap">${j.desc}</span>
+                            <span class="text-gray-500 font-bold">التفاصيل:</span> <span class="text-black dark:text-gray-200 leading-relaxed whitespace-pre-wrap">${escapeHTML(j.desc)}</span>
                         </div>
                         <div class="flex gap-2">
                             ${!isMyPost ? `<button onclick="window.openChat('${j.uid}')" class="flex-1 bg-black text-white py-1.5 md:py-2 rounded text-[10px] md:text-sm font-bold hover:bg-gray-800 flex items-center justify-center shadow-sm active:scale-95 transition-transform">محادثة</button>` : '<span class="flex-1 text-center text-[10px] md:text-sm font-bold text-gray-500 py-1.5 md:py-2 bg-gray-100 border border-gray-200 rounded">إعلانك الخاص</span>'}
@@ -870,12 +893,12 @@ function startListeners() {
                             <img src="${window.getCloudinaryUrl(reqPhoto, 'thumb')}" loading="lazy" class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border border-black dark:border-gray-500 shrink-0 mt-1">
                             <div class="flex-1 min-w-0">
                                 <div class="flex justify-between items-start mb-1">
-                                    <span class="text-[10px] md:text-xs"><span class="text-gray-500 font-bold">طالب الخدمة:</span> <strong class="text-black dark:text-white">${req.requesterName}</strong></span>
+                                    <span class="text-[10px] md:text-xs"><span class="text-gray-500 font-bold">طالب الخدمة:</span> <strong class="text-black dark:text-white">${escapeHTML(req.requesterName)}</strong></span>
                                     <span class="text-[9px] md:text-[10px] text-gray-500 font-bold shrink-0">التاريخ: ${new Date(req.createdAt).toLocaleDateString('ar-EG')}</span>
                                 </div>
-                                <div class="text-[10px] md:text-xs mb-1"><span class="text-gray-500 font-bold">الوظيفة المطلوبة:</span> <strong class="text-black dark:text-white">${req.profession}</strong></div>
+                                <div class="text-[10px] md:text-xs mb-1"><span class="text-gray-500 font-bold">الوظيفة المطلوبة:</span> <strong class="text-black dark:text-white">${escapeHTML(req.profession)}</strong></div>
                                 <div class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded p-1.5 md:p-2 text-[10px] md:text-xs max-h-20 overflow-y-auto custom-scrollbar">
-                                    <span class="text-gray-500 font-bold">الوصف:</span> <span class="text-black dark:text-gray-200 leading-relaxed whitespace-pre-wrap">${req.desc}</span>
+                                    <span class="text-gray-500 font-bold">الوصف:</span> <span class="text-black dark:text-gray-200 leading-relaxed whitespace-pre-wrap">${escapeHTML(req.desc)}</span>
                                 </div>
                             </div>
                         </div>
@@ -924,9 +947,9 @@ function startListeners() {
                         <span class="text-[10px] md:text-xs"><span class="text-gray-500 font-bold">النوع:</span> <strong class="text-black dark:text-white">${isJob ? 'طلب توظيف' : 'طلب خدمة'}</strong></span>
                         <span class="text-[9px] md:text-[10px] text-gray-500 font-bold shrink-0">التاريخ: ${new Date(act.createdAt).toLocaleDateString('ar-EG')}</span>
                     </div>
-                    <div class="text-[10px] md:text-xs mb-1"><span class="text-gray-500 font-bold">العنوان:</span> <strong class="text-black dark:text-white">${isJob ? act.title : act.profession}</strong></div>
+                    <div class="text-[10px] md:text-xs mb-1"><span class="text-gray-500 font-bold">العنوان:</span> <strong class="text-black dark:text-white">${isJob ? escapeHTML(act.title) : escapeHTML(act.profession)}</strong></div>
                     <div class="text-[9px] md:text-[10px] text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 p-1.5 rounded border border-gray-200 dark:border-gray-600 max-h-16 overflow-y-auto custom-scrollbar">
-                        <span class="text-gray-500 font-bold">الوصف:</span> ${act.desc || 'لا يوجد'}
+                        <span class="text-gray-500 font-bold">الوصف:</span> ${escapeHTML(act.desc) || 'لا يوجد'}
                     </div>
                 </div>
                 <button onclick="window.deleteRequest('${act.id}')" class="shrink-0 flex items-center justify-center text-red-500 bg-red-50 hover:bg-red-500 hover:text-white p-2 md:p-2.5 rounded-full w-10 h-10 md:w-12 md:h-12 shadow-sm mt-1 border border-red-200 hover:border-red-600 active:scale-90 transition-transform">
@@ -951,10 +974,10 @@ window.openUserProfilePage = async (userStr) => {
         document.getElementById('lightbox-modal').classList.remove('hidden');
     };
 
-    document.getElementById('user-profile-name').innerText = user.name;
-    document.getElementById('user-profile-role').innerText = user.role === 'provider' ? user.profession : 'عميل';
-    document.getElementById('user-profile-addr').innerText = `${user.area || ''} - ${user.city || ''}`;
-    document.getElementById('user-profile-addr-detail').innerText = user.addressDetail ? user.addressDetail + '،' : 'لا توجد تفاصيل إضافية،';
+    document.getElementById('user-profile-name').innerText = escapeHTML(user.name);
+    document.getElementById('user-profile-role').innerText = user.role === 'provider' ? escapeHTML(user.profession) : 'عميل';
+    document.getElementById('user-profile-addr').innerText = `${escapeHTML(user.area) || ''} - ${escapeHTML(user.city) || ''}`;
+    document.getElementById('user-profile-addr-detail').innerText = user.addressDetail ? escapeHTML(user.addressDetail) + '،' : 'لا توجد تفاصيل إضافية،';
     document.getElementById('user-profile-phone').innerText = (user.settings?.hidePhone) ? 'مخفي 🔒' : user.phone;
     document.getElementById('user-profile-gender').innerText = user.gender === 'male' ? 'ذكر' : 'أنثى';
 
@@ -978,7 +1001,7 @@ async function loadReviewsToPage(targetId) {
      const list = document.getElementById('user-profile-reviews-list'); const starsDisplay = document.getElementById('user-profile-stars');
      list.innerHTML = '<p class="text-[10px] md:text-xs text-gray-400 text-center p-2">جاري التحميل...</p>';
      const q = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'reviews'), where('toId', '==', targetId));
-     const snap = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js").then(m => m.getDocs(q));
+     const snap = await getDocs(q);
      list.innerHTML = ''; let totalStars = 0;
      if(snap.empty) { list.innerHTML = '<p class="text-[10px] md:text-xs text-gray-400 text-center p-2 font-bold">لا توجد تقييمات حتى الآن</p>'; starsDisplay.innerText = '0.0'; }
      else {
@@ -987,7 +1010,7 @@ async function loadReviewsToPage(targetId) {
              totalStars += parseInt(r.stars);
              const el = document.createElement('div');
              el.className = `bg-gray-50 dark:bg-gray-700/50 p-2 md:p-3 rounded mb-1 border border-gray-200 dark:border-gray-600`;
-             el.innerHTML = `<div class="flex justify-between items-start"><div class="flex items-center gap-1"><img src="${window.getCloudinaryUrl(r.fromPhoto, 'thumb')}" loading="lazy" class="w-5 h-5 md:w-6 md:h-6 rounded-full border border-black object-cover"><span class="text-[10px] md:text-xs font-bold dark:text-white">${r.fromName}</span></div><span class="text-yellow-500 text-[10px] md:text-xs tracking-widest">${'★'.repeat(r.stars)}</span></div><p class="text-[10px] md:text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">${r.comment}</p>`;
+             el.innerHTML = `<div class="flex justify-between items-start"><div class="flex items-center gap-1"><img src="${window.getCloudinaryUrl(r.fromPhoto, 'thumb')}" loading="lazy" class="w-5 h-5 md:w-6 md:h-6 rounded-full border border-black object-cover"><span class="text-[10px] md:text-xs font-bold dark:text-white">${escapeHTML(r.fromName)}</span></div><span class="text-yellow-500 text-[10px] md:text-xs tracking-widest">${'★'.repeat(r.stars)}</span></div><p class="text-[10px] md:text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">${escapeHTML(r.comment)}</p>`;
              list.appendChild(el);
          });
          starsDisplay.innerText = (totalStars / reviews.length).toFixed(1);
@@ -1041,7 +1064,7 @@ window.openChat = async (uid) => {
         const photoURL = u ? u.photoURL : 'https://via.placeholder.com/40';
         const encodedUserStr = u ? encodeURIComponent(JSON.stringify(u)) : null;
         
-        document.getElementById('chat-room-name').innerText = name;
+        document.getElementById('chat-room-name').innerText = escapeHTML(name);
         document.getElementById('chat-room-avatar').src = window.getCloudinaryUrl(photoURL, 'thumb');
         document.getElementById('chat-header-profile').onclick = () => {
             if(encodedUserStr) window.openUserProfilePage(encodedUserStr);
@@ -1087,7 +1110,7 @@ window.openChat = async (uid) => {
             html.push(`
                 <div class="flex ${isMe?'justify-end':'justify-start'} w-full">
                     <div class="max-w-[85%] p-2 md:p-3 rounded-lg text-xs md:text-sm shadow-[2px_2px_0px_#000] flex flex-col ${isMe?'bg-black text-white':'bg-white dark:bg-gray-800 text-gray-800 dark:text-white border-2 border-black'}">
-                        <span>${m.text}</span>
+                        <span>${escapeHTML(m.text)}</span>
                         <span class="text-[8px] md:text-[10px] mt-1 opacity-70 text-left" dir="ltr">${timeStr}</span>
                     </div>
                 </div>
@@ -1134,8 +1157,7 @@ window.clearFilter = () => {
     
     const currentPage = navStack[navStack.length-1];
     if (currentPage === 'category-details') {
-        const currentProf = document.getElementById('page-title').innerText;
-        document.getElementById('filter-prof').value = currentProf;
+        document.getElementById('filter-prof').value = currentActiveCategory;
         makeCustomDropdown('filter-prof', 'اختر المهنة...');
         document.getElementById('cat-search').value = '';
         window.filterCategory();
@@ -1190,8 +1212,7 @@ window.filterCategory = () => {
     const village = document.getElementById('filter-village')?.value || '';
     const prof = document.getElementById('filter-prof')?.value || '';
     
-    const currentProf = document.getElementById('page-title').innerText;
-    const targetProf = prof || currentProf;
+    const targetProf = prof || currentActiveCategory;
     
     let filtered = allUsersCache.filter(u => u.profession === targetProf);
     
@@ -1242,6 +1263,7 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 window.openCategory = (profName) => {
+    currentActiveCategory = profName;
     window.navTo('category-details');
     document.getElementById('page-title').innerText = profName;
     document.getElementById('cat-search').value = '';
@@ -1264,11 +1286,11 @@ function createUserCard(u) {
             <img src="${window.getCloudinaryUrl(u.photoURL, 'thumb')}" loading="lazy" class="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover border border-black dark:border-gray-400 shrink-0 bg-gray-100 mt-1">
             <div class="flex-1 min-w-0">
                 <div class="flex justify-between items-start mb-1">
-                    <span class="text-[10px] md:text-sm"><span class="text-gray-500 font-bold">${isClient ? 'اسم العميل:' : 'الاسم:'}</span> <strong class="text-black dark:text-white">${u.name}</strong></span>
+                    <span class="text-[10px] md:text-sm"><span class="text-gray-500 font-bold">${isClient ? 'اسم العميل:' : 'الاسم:'}</span> <strong class="text-black dark:text-white">${escapeHTML(u.name)}</strong></span>
                     <span class="text-[9px] md:text-xs text-gray-500 font-bold shrink-0">انضمام: ${joinDate}</span>
                 </div>
-                <div class="text-[10px] md:text-xs mb-1"><span class="text-gray-500 font-bold">الوظيفة:</span> <strong class="text-black dark:text-white">${profStr}</strong></div>
-                <div class="text-[10px] md:text-xs"><span class="text-gray-500 font-bold">العنوان:</span> <strong class="text-gray-800 dark:text-gray-200">${finalLocation}</strong></div>
+                <div class="text-[10px] md:text-xs mb-1"><span class="text-gray-500 font-bold">الوظيفة:</span> <strong class="text-black dark:text-white">${escapeHTML(profStr)}</strong></div>
+                <div class="text-[10px] md:text-xs"><span class="text-gray-500 font-bold">العنوان:</span> <strong class="text-gray-800 dark:text-gray-200">${escapeHTML(finalLocation)}</strong></div>
             </div>
         </div>
     </div>`;
@@ -1302,8 +1324,8 @@ window.saveProfileChanges = async () => {
         userProfile.addressDetail = newAddressDetail;
         userProfile.photoURL = finalPhotoURL;
 
-        document.getElementById('prof-name-view').innerText = newName;
-        document.getElementById('prof-address-view').innerText = `${newArea || ''} - ${newCity || ''}`;
+        document.getElementById('prof-name-view').innerText = escapeHTML(newName);
+        document.getElementById('prof-address-view').innerText = `${escapeHTML(newArea) || ''} - ${escapeHTML(newCity) || ''}`;
         document.getElementById('prof-img-view').src = window.getCloudinaryUrl(finalPhotoURL, 'medium');
         document.getElementById('header-avatar').src = window.getCloudinaryUrl(finalPhotoURL, 'thumb');
         
@@ -1424,6 +1446,7 @@ window.logout = async () => {
     userProfile = null; currentUser = null; allUsersCache = []; myChatsCache =[];
     reqNotifs =[]; reviewNotifs =[]; window.chatNotifsGlobal = []; navStack =['home'];
     isGuest = true;
+    currentActiveCategory = "";
     
     history.replaceState({ pageId: 'home' }, "", window.location.pathname);
     
@@ -1432,6 +1455,6 @@ window.logout = async () => {
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').then(reg => console.log('تم تفعيل الكاش للصور بنجاح!')).catch(err => console.log('فشل تفعيل الكاش:', err));
+        navigator.serviceWorker.register('sw.js').then(reg => console.log('تم تفعيل الكاش بنجاح')).catch(err => console.log('فشل تفعيل الكاش:', err));
     });
 }
