@@ -1,13 +1,18 @@
+/* الأهمية القصوى: إخفاء العناصر برمجياً (مهم جداً لمحرك البحث الجديد) */
 .hidden { display: none !important; }
+
+/* الإعدادات الأساسية */
 body { font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
 ::-webkit-scrollbar { width: 0px; background: transparent; }
 button { cursor: pointer; touch-action: manipulation; }
 
+/* شريط التمرير المخصص للقوائم والمحادثات */
 .custom-scrollbar::-webkit-scrollbar { width: 4px; display: block; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; }
 
+/* مكونات الواجهة */
 .glass-header { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); border-bottom: 2px solid #000; }
 .dark .glass-header { background: rgba(17, 24, 39, 0.98); border-bottom: 2px solid #4b5563; }
 
@@ -22,6 +27,7 @@ input:focus, select:focus, textarea:focus { border-color: #000000; outline: none
 .provider-card { border: 2px solid #000000; box-shadow: 2px 2px 0px #000000; }
 .dark .provider-card { border-color: #9ca3af; box-shadow: 2px 2px 0px #9ca3af; }
 
+/* تحسين الأداء للقوائم الطويلة */
 .fast-render-card { 
     content-visibility: auto; 
     contain-intrinsic-size: 120px; 
@@ -29,23 +35,30 @@ input:focus, select:focus, textarea:focus { border-color: #000000; outline: none
     will-change: transform;
 }
 
+/* النوافذ المنبثقة الشاملة */
 .full-screen-modal { position: fixed; inset: 0; z-index: 100; background: white; display: flex; flex-direction: column; }
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 150; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
 .dark .full-screen-modal { background: #111827; }
 
+/* إشعارات النظام (Toast) */
 #toast-box { position: fixed; top: 20px; left: 0; right: 0; display: flex; justify-content: center; z-index: 9999; pointer-events: none; }
 .toast-msg { background: #000; color: white; padding: 8px 20px; border: 2px solid #fff; border-radius: 30px; font-size: 12px; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3); opacity: 0; transform: translateY(-20px); transition: all 0.15s; }
 .toast-msg.show { opacity: 1; transform: translateY(0); }
 
+/* الشارات (Badges) */
 .badge { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; border: 1px solid #000; }
 .dark .badge { border-color: #fff; }
 
+/* نظام التقييم بالنجوم */
 .star-rating { direction: ltr; display: inline-flex; }
 .star-rating input { display: none; }
 .star-rating label { color: #ddd; font-size: 24px; padding: 0 2px; cursor: pointer; }
 .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #fbbf24; }
 
+/* شاشة التحميل */
 #loader.hidden { opacity: 0; pointer-events: none; transition: opacity 0.15s ease; }
+
+/* القوائم المنسدلة المخصصة (Custom Dropdown) */
 .custom-select-wrapper { position: relative; user-select: none; width: 100%; margin-bottom: 0.5rem; }
 .custom-select { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.75rem; border: 2px solid #d1d5db; border-radius: 0.5rem; background-color: #ffffff; cursor: pointer; font-size: 13px; height: 40px; }
 @media (min-width: 768px) { .custom-select { height: 48px; } }
