@@ -32,7 +32,6 @@
         }
     </script>
 
-    <!-- تم استدعاء ملف الـ CSS الخارجي هنا -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen pb-24 md:pb-28">
@@ -79,79 +78,79 @@
         </div>
     </div>
 
-    <!-- AUTH VIEW -->
-    <div id="auth-view" class="hidden min-h-screen flex flex-col justify-center p-4 md:max-w-lg md:mx-auto bg-gray-100 dark:bg-gray-900 relative z-[300]">
-        <button onclick="window.hideAuthView(); window.navTo('home', true);" class="absolute top-4 left-4 p-2 bg-gray-200 dark:bg-gray-700 rounded-full text-sm font-bold">✕ إغلاق</button>
-
-        <div class="text-center mb-4 md:mb-6">
-            <h1 class="text-2xl md:text-3xl font-extrabold border-b-4 border-black inline-block pb-1 dark:border-white">خدمات الشرقية</h1>
-            <p class="text-xs text-gray-500 mt-2">يرجى تسجيل الدخول للوصول لهذه الميزة</p>
-        </div>
-
-        <div class="bg-gray-200 dark:bg-gray-800 p-1 rounded-lg flex mb-4 border-2 border-black dark:border-gray-500 h-12 md:h-14">
-            <button onclick="window.switchAuthMode('login')" id="btn-mode-login" class="flex-1 rounded-md text-xs md:text-sm font-bold bg-black text-white shadow-sm">دخول</button>
-            <button onclick="window.switchAuthMode('signup')" id="btn-mode-signup" class="flex-1 rounded-md text-xs md:text-sm font-bold text-gray-500 bg-transparent hover:bg-gray-300 dark:hover:bg-gray-700">جديد</button>
-        </div>
-
-        <!-- Login Form -->
-        <form id="form-login" class="space-y-3 md:space-y-4">
-            <div class="space-y-3 md:space-y-4 bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl border-2 border-black dark:border-gray-500 shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#6b7280]">
-                <div class="flex rounded-lg border-2 border-gray-300 dark:border-gray-600 overflow-hidden focus-within:border-black dark:focus-within:border-white h-11 md:h-12 bg-white dark:bg-gray-800">
-                    <input type="tel" id="login-phone" placeholder="مثال: 1012345678" class="w-full p-2 md:p-3 text-sm md:text-base border-none outline-none bg-transparent text-left" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
-                    <span class="bg-gray-100 dark:bg-gray-700 px-3 md:px-4 flex items-center font-bold text-gray-600 dark:text-gray-300 border-l-2 border-gray-300 dark:border-gray-600" dir="ltr">+20</span>
-                </div>
-                <input type="password" id="login-pass" placeholder="كلمة المرور" class="w-full p-3 md:p-4 rounded-lg text-sm md:text-base h-11 md:h-12" required>
-                <button type="submit" class="w-full py-3 md:py-4 bg-black text-white rounded-lg font-bold text-sm md:text-base hover:bg-gray-900 active:scale-95 transition-transform">تسجيل الدخول</button>
-            </div>
-        </form>
-
-        <!-- Signup Form -->
-        <form id="form-signup" class="hidden bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl border-2 border-black dark:border-gray-500 shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#6b7280]">
-            <div class="flex justify-center mb-3 md:mb-5">
-                <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gray-100 dark:bg-gray-700 border-2 border-dashed border-gray-400 relative overflow-hidden cursor-pointer" onclick="document.getElementById('signup-file').click()">
-                    <img id="signup-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239ca3af'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" class="w-full h-full object-cover opacity-80 hover:opacity-100">
-                </div>
-                <input type="file" id="signup-file" class="hidden" accept="image/*" onchange="window.handleImageUpload(this, 'signup-preview')">
-            </div>
-           
-            <div class="space-y-2 md:space-y-3">
-                <input type="text" id="signup-name" placeholder="الاسم" class="w-full p-2 md:p-3 rounded-lg text-sm md:text-base h-10 md:h-12" required>
-                <div class="flex rounded-lg border-2 border-gray-300 dark:border-gray-600 overflow-hidden focus-within:border-black dark:focus-within:border-white h-10 md:h-12 bg-white dark:bg-gray-800">
-                    <input type="tel" id="signup-phone" placeholder="رقم الهاتف (10 أرقام)" class="w-full p-2 md:p-3 text-sm md:text-base border-none outline-none bg-transparent text-left" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
-                    <span class="bg-gray-100 dark:bg-gray-700 px-3 md:px-4 flex items-center font-bold text-gray-600 dark:text-gray-300 border-l-2 border-gray-300 dark:border-gray-600" dir="ltr">+20</span>
-                </div>
-                <input type="password" id="signup-pass" placeholder="كلمة المرور" class="w-full p-2 md:p-3 rounded-lg text-sm md:text-base h-10 md:h-12" required>
-               
-                <div class="grid grid-cols-2 gap-2 md:gap-3">
-                    <select id="signup-center" onchange="window.updateVillages()" class="w-full p-2 rounded-lg text-xs md:text-sm h-10 md:h-12 bg-white dark:bg-gray-700"><option value="">المركز</option></select>
-                    <select id="signup-village" class="w-full p-2 rounded-lg text-xs md:text-sm h-10 md:h-12 bg-white dark:bg-gray-700"><option value="">القرية</option></select>
-                </div>
-                <input type="text" id="signup-address-detail" placeholder="العنوان التفصيلي (الشارع، رقم العمارة... اختياري)" class="w-full p-2 md:p-3 rounded-lg text-xs md:text-sm h-10 md:h-12 bg-white dark:bg-gray-700">
-
-                <div class="grid grid-cols-2 gap-2 md:gap-3">
-                    <div class="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg border border-gray-300 h-9 md:h-11 items-center">
-                        <label class="flex-1 text-center cursor-pointer text-[10px] md:text-xs"><input type="radio" name="gender" value="male" checked> ذكر</label>
-                        <label class="flex-1 text-center cursor-pointer text-[10px] md:text-xs"><input type="radio" name="gender" value="female"> أنثى</label>
-                    </div>
-                    <div class="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg border border-gray-300 h-9 md:h-11 items-center">
-                        <label class="flex-1 text-center cursor-pointer text-[10px] md:text-xs font-bold"><input type="radio" name="role" value="client" checked onchange="window.toggleProfVisibility(false)"> عميل</label>
-                        <label class="flex-1 text-center cursor-pointer text-[10px] md:text-xs font-bold"><input type="radio" name="role" value="provider" onchange="window.toggleProfVisibility(true)"> مقدم خدمة</label>
-                    </div>
-                </div>
-
-                <div id="prof-container" class="hidden mt-2 md:mt-3">
-                    <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="w-full p-2 rounded-lg text-xs md:text-sm h-10 md:h-12"><option value="">اختر المهنة...</option></select>
-                    <input type="text" id="signup-custom-prof" placeholder="اكتب اسم الخدمة..." class="hidden w-full p-2 md:p-3 rounded-lg text-xs md:text-sm h-10 md:h-12 mt-2 md:mt-3 border-2 border-blue-300 bg-blue-50 dark:bg-gray-700 dark:border-gray-500">
-                </div>
-            </div>
-
-            <button type="submit" class="w-full py-2.5 md:py-3 bg-green-600 text-white rounded-lg font-bold text-sm md:text-base mt-3 md:mt-4 shadow hover:bg-green-700 active:scale-95 transition-transform">إنشاء حساب</button>
-        </form>
-    </div>
-
     <!-- APP VIEW -->
     <div id="app-view" class="hidden w-full xl:max-w-7xl xl:mx-auto pt-14 md:pt-16 min-h-screen relative">
        
+        <!-- AUTH SECTION (بدلاً من النافذة المنبثقة) -->
+        <section id="page-auth" class="page-section hidden px-4 md:px-6 flex flex-col justify-center min-h-[80vh]">
+            <div class="max-w-lg mx-auto w-full">
+                <div class="text-center mb-4 md:mb-6">
+                    <h1 class="text-2xl md:text-3xl font-extrabold border-b-4 border-black inline-block pb-1 dark:border-white">خدمات الشرقية</h1>
+                    <p class="text-xs text-gray-500 mt-2">يرجى تسجيل الدخول للوصول لهذه الميزة</p>
+                </div>
+
+                <div class="bg-gray-200 dark:bg-gray-800 p-1 rounded-lg flex mb-4 border-2 border-black dark:border-gray-500 h-12 md:h-14">
+                    <button onclick="window.switchAuthMode('login')" id="btn-mode-login" class="flex-1 rounded-md text-xs md:text-sm font-bold bg-black text-white shadow-sm">دخول</button>
+                    <button onclick="window.switchAuthMode('signup')" id="btn-mode-signup" class="flex-1 rounded-md text-xs md:text-sm font-bold text-gray-500 bg-transparent hover:bg-gray-300 dark:hover:bg-gray-700">جديد</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="form-login" class="space-y-3 md:space-y-4">
+                    <div class="space-y-3 md:space-y-4 bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl border-2 border-black dark:border-gray-500 shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#6b7280]">
+                        <div class="flex rounded-lg border-2 border-gray-300 dark:border-gray-600 overflow-hidden focus-within:border-black dark:focus-within:border-white h-11 md:h-12 bg-white dark:bg-gray-800">
+                            <input type="tel" id="login-phone" placeholder="مثال: 1012345678" class="w-full p-2 md:p-3 text-sm md:text-base border-none outline-none bg-transparent text-left" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
+                            <span class="bg-gray-100 dark:bg-gray-700 px-3 md:px-4 flex items-center font-bold text-gray-600 dark:text-gray-300 border-l-2 border-gray-300 dark:border-gray-600" dir="ltr">+20</span>
+                        </div>
+                        <input type="password" id="login-pass" placeholder="كلمة المرور" class="w-full p-3 md:p-4 rounded-lg text-sm md:text-base h-11 md:h-12" required>
+                        <button type="submit" class="w-full py-3 md:py-4 bg-black text-white rounded-lg font-bold text-sm md:text-base hover:bg-gray-900 active:scale-95 transition-transform">تسجيل الدخول</button>
+                    </div>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="form-signup" class="hidden bg-white dark:bg-gray-800 p-4 md:p-6 rounded-xl border-2 border-black dark:border-gray-500 shadow-[4px_4px_0px_#000] dark:shadow-[4px_4px_0px_#6b7280]">
+                    <div class="flex justify-center mb-3 md:mb-5">
+                        <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gray-100 dark:bg-gray-700 border-2 border-dashed border-gray-400 relative overflow-hidden cursor-pointer" onclick="document.getElementById('signup-file').click()">
+                            <img id="signup-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239ca3af'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" class="w-full h-full object-cover opacity-80 hover:opacity-100">
+                        </div>
+                        <input type="file" id="signup-file" class="hidden" accept="image/*" onchange="window.handleImageUpload(this, 'signup-preview')">
+                    </div>
+                   
+                    <div class="space-y-2 md:space-y-3">
+                        <input type="text" id="signup-name" placeholder="الاسم" class="w-full p-2 md:p-3 rounded-lg text-sm md:text-base h-10 md:h-12" required>
+                        <div class="flex rounded-lg border-2 border-gray-300 dark:border-gray-600 overflow-hidden focus-within:border-black dark:focus-within:border-white h-10 md:h-12 bg-white dark:bg-gray-800">
+                            <input type="tel" id="signup-phone" placeholder="رقم الهاتف (10 أرقام)" class="w-full p-2 md:p-3 text-sm md:text-base border-none outline-none bg-transparent text-left" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
+                            <span class="bg-gray-100 dark:bg-gray-700 px-3 md:px-4 flex items-center font-bold text-gray-600 dark:text-gray-300 border-l-2 border-gray-300 dark:border-gray-600" dir="ltr">+20</span>
+                        </div>
+                        <input type="password" id="signup-pass" placeholder="كلمة المرور" class="w-full p-2 md:p-3 rounded-lg text-sm md:text-base h-10 md:h-12" required>
+                       
+                        <div class="grid grid-cols-2 gap-2 md:gap-3">
+                            <select id="signup-center" onchange="window.updateVillages()" class="w-full p-2 rounded-lg text-xs md:text-sm h-10 md:h-12 bg-white dark:bg-gray-700"><option value="">المركز</option></select>
+                            <select id="signup-village" class="w-full p-2 rounded-lg text-xs md:text-sm h-10 md:h-12 bg-white dark:bg-gray-700"><option value="">القرية</option></select>
+                        </div>
+                        <input type="text" id="signup-address-detail" placeholder="العنوان التفصيلي (الشارع، رقم العمارة... اختياري)" class="w-full p-2 md:p-3 rounded-lg text-xs md:text-sm h-10 md:h-12 bg-white dark:bg-gray-700">
+
+                        <div class="grid grid-cols-2 gap-2 md:gap-3">
+                            <div class="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg border border-gray-300 h-9 md:h-11 items-center">
+                                <label class="flex-1 text-center cursor-pointer text-[10px] md:text-xs"><input type="radio" name="gender" value="male" checked> ذكر</label>
+                                <label class="flex-1 text-center cursor-pointer text-[10px] md:text-xs"><input type="radio" name="gender" value="female"> أنثى</label>
+                            </div>
+                            <div class="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg border border-gray-300 h-9 md:h-11 items-center">
+                                <label class="flex-1 text-center cursor-pointer text-[10px] md:text-xs font-bold"><input type="radio" name="role" value="client" checked onchange="window.toggleProfVisibility(false)"> عميل</label>
+                                <label class="flex-1 text-center cursor-pointer text-[10px] md:text-xs font-bold"><input type="radio" name="role" value="provider" onchange="window.toggleProfVisibility(true)"> مقدم خدمة</label>
+                            </div>
+                        </div>
+
+                        <div id="prof-container" class="hidden mt-2 md:mt-3">
+                            <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="w-full p-2 rounded-lg text-xs md:text-sm h-10 md:h-12"><option value="">اختر المهنة...</option></select>
+                            <input type="text" id="signup-custom-prof" placeholder="اكتب اسم الخدمة..." class="hidden w-full p-2 md:p-3 rounded-lg text-xs md:text-sm h-10 md:h-12 mt-2 md:mt-3 border-2 border-blue-300 bg-blue-50 dark:bg-gray-700 dark:border-gray-500">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-2.5 md:py-3 bg-green-600 text-white rounded-lg font-bold text-sm md:text-base mt-3 md:mt-4 shadow hover:bg-green-700 active:scale-95 transition-transform">إنشاء حساب</button>
+                </form>
+            </div>
+        </section>
+
         <!-- HOME -->
         <section id="page-home" class="page-section px-3 md:px-6 lg:px-10">
             <div class="sticky top-14 md:top-16 z-30 bg-gray-100 dark:bg-gray-900 py-2 mb-2 md:mb-4 space-y-2 md:space-y-3">
@@ -181,7 +180,7 @@
             <div class="w-full">
                 <div class="flex gap-2 md:gap-3 mb-3 md:mb-5 sticky top-14 md:top-16 z-30 bg-gray-100 dark:bg-gray-900 py-2 w-full">
                     <input type="text" id="cat-search" onkeyup="window.debouncedSearch('cat')" placeholder="ابحث بالاسم أو المكان..." class="flex-1 p-2 md:p-3 rounded-lg border-2 border-black dark:border-gray-500 text-xs md:text-sm h-10 md:h-12 bg-white dark:bg-gray-800">
-                    <button onclick="document.getElementById('filter-modal-wrap').classList.remove('hidden')" class="w-10 h-10 md:w-12 md:h-12 bg-black text-white rounded-lg flex items-center justify-center border-2 border-black dark:border-gray-500 hover:bg-gray-800 shrink-0 shadow-sm active:scale-95 transition-transform">
+                    <button onclick="window.openFilterModal('category')" class="w-10 h-10 md:w-12 md:h-12 bg-black text-white rounded-lg flex items-center justify-center border-2 border-black dark:border-gray-500 hover:bg-gray-800 shrink-0 shadow-sm active:scale-95 transition-transform">
                         <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                     </button>
                 </div>
@@ -194,7 +193,7 @@
             <div class="w-full">
                 <div class="flex gap-2 md:gap-3 mb-3 md:mb-5 sticky top-14 md:top-16 z-30 bg-gray-100 dark:bg-gray-900 py-2 w-full">
                     <input type="text" id="dir-search" onkeyup="window.debouncedSearch('dir')" placeholder="ابحث عن شخص أو خدمة..." class="flex-1 p-2 md:p-3 rounded-lg border-2 border-black text-xs md:text-sm h-10 md:h-12">
-                    <button onclick="document.getElementById('filter-modal-wrap').classList.remove('hidden')" class="w-10 h-10 md:w-12 md:h-12 bg-black text-white rounded-lg flex items-center justify-center border-2 border-black dark:border-gray-500 hover:bg-gray-800 shrink-0 shadow-sm active:scale-95 transition-transform">
+                    <button onclick="window.openFilterModal('directory')" class="w-10 h-10 md:w-12 md:h-12 bg-black text-white rounded-lg flex items-center justify-center border-2 border-black dark:border-gray-500 hover:bg-gray-800 shrink-0 shadow-sm active:scale-95 transition-transform">
                         <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                     </button>
                 </div>
@@ -416,44 +415,6 @@
         <img id="lightbox-img" src="" class="max-w-full max-h-full rounded-lg shadow-2xl animate-pop object-contain">
     </div>
 
-    <!-- PROFILE POPUP -->
-    <div id="profile-modal" class="modal-overlay hidden overflow-y-auto">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-sm md:max-w-md rounded-xl border-black-custom p-5 md:p-8 relative shadow-2xl my-10 animate-pop">
-            <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="absolute top-3 left-3 md:top-4 md:left-4 font-bold text-gray-400 hover:text-red-500 text-xl md:text-2xl">✕</button>
-            <div class="flex flex-col items-center">
-                <img id="modal-img" src="" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-black dark:border-gray-500 mb-2 object-cover">
-                <h2 id="modal-name" class="text-lg md:text-xl font-extrabold dark:text-white"></h2>
-                <p id="modal-role" class="text-xs md:text-sm text-blue-600 font-bold mb-3 md:mb-4"></p>
-               
-                <div class="w-full bg-gray-50 dark:bg-gray-700 p-3 md:p-4 rounded-lg border-2 border-gray-200 dark:border-gray-600 text-center mb-4 md:mb-5">
-                    <div class="grid grid-cols-2 gap-2 text-xs md:text-sm">
-                        <div>
-                            <span class="text-gray-400 block">العنوان</span>
-                            <span id="modal-addr-detail" class="font-bold block text-[10px] md:text-xs text-gray-600 dark:text-gray-300"></span>
-                            <span id="modal-addr" class="font-bold"></span>
-                        </div>
-                        <div><span class="text-gray-400 block">الجنس</span><span id="modal-gender" class="font-bold"></span></div>
-                    </div>
-                    <div class="mt-2 md:mt-3 border-t border-gray-200 pt-2 md:pt-3">
-                        <span class="text-gray-400 block">الهاتف</span><span id="modal-phone-disp" class="font-bold text-sm md:text-base" dir="ltr"></span>
-                    </div>
-                </div>
-
-                <div class="flex gap-2 md:gap-3 w-full mb-4 md:mb-5" id="modal-actions"></div>
-
-                <div class="w-full border-t-2 border-gray-100 pt-3 md:pt-4 dark:border-gray-700">
-                    <h4 class="font-bold text-xs md:text-sm mb-2 flex items-center justify-between">
-                        <span>التقييمات</span>
-                        <span id="modal-stars-display" class="text-yellow-500 font-bold"></span>
-                    </h4>
-                    <div class="border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 p-1 md:p-2">
-                        <div id="modal-reviews-list" class="space-y-2 max-h-[150px] md:max-h-[200px] overflow-y-auto custom-scrollbar pr-1"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- RATE MODAL -->
     <div id="rate-modal" class="modal-overlay hidden">
         <div class="bg-white dark:bg-gray-800 w-full max-w-xs md:max-w-sm rounded-xl border-black-custom p-5 md:p-6 shadow-xl animate-pop">
@@ -483,8 +444,11 @@
             <h3 class="text-center font-bold mb-3 text-sm md:text-base border-b-2 border-gray-100 dark:border-gray-700 pb-2">تصفية البحث</h3>
             <select id="filter-center" onchange="window.updateVillages('filter')" class="w-full p-2 md:p-3 mb-2 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"></select>
             <select id="filter-village" class="w-full p-2 md:p-3 mb-2 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"><option value="">القرية...</option></select>
-            <select id="filter-prof" class="w-full p-2 md:p-3 mb-4 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"></select>
-            <div class="flex gap-2">
+            <!-- وضعنا الفلتر هنا داخل حاوية لنتمكن من إخفائها لاحقاً -->
+            <div id="filter-prof-container">
+                <select id="filter-prof" class="w-full p-2 md:p-3 mb-4 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"></select>
+            </div>
+            <div class="flex gap-2 mt-4">
                 <button onclick="window.applyFilter()" class="flex-1 bg-black text-white py-2 rounded-lg font-bold text-xs md:text-sm active:scale-95 transition-transform">تطبيق</button>
                 <button onclick="window.clearFilter()" class="flex-1 bg-red-500 text-white py-2 rounded-lg font-bold text-xs md:text-sm active:scale-95 transition-transform">إلغاء</button>
             </div>
@@ -528,7 +492,7 @@
     </div>
 
     <!-- NAV -->
-    <nav id="nav-bar" class="hidden fixed bottom-0 left-0 right-0 h-16 md:h-20 bg-white dark:bg-gray-800 border-t-2 border-black dark:border-gray-600 flex justify-around items-center xl:max-w-7xl xl:mx-auto z-40">
+    <nav id="nav-bar" class="fixed bottom-0 left-0 right-0 h-16 md:h-20 bg-white dark:bg-gray-800 border-t-2 border-black dark:border-gray-600 flex justify-around items-center xl:max-w-7xl xl:mx-auto z-40">
         <button onclick="window.navTo('home')" class="nav-btn active flex flex-col items-center text-blue-600 w-14 md:w-20 transition-colors"><svg class="w-6 h-6 md:w-8 md:h-8 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-[9px] md:text-[11px] font-bold">الرئيسية</span></button>
         <button onclick="window.navTo('directory')" class="nav-btn flex flex-col items-center text-gray-400 w-14 md:w-20 hover:text-blue-500 transition-colors"><svg class="w-6 h-6 md:w-8 md:h-8 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-[9px] md:text-[11px] font-bold">الدليل</span></button>
         <div class="relative -top-5 md:-top-6"><button onclick="window.navTo('add')" class="w-12 h-12 md:w-16 md:h-16 bg-black rounded-full flex items-center justify-center border-4 border-white dark:border-gray-800 text-white shadow-lg active:scale-95 transition-transform"><svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></button></div>
