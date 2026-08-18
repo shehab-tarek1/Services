@@ -50,7 +50,7 @@
         <p class="mt-1 text-[10px] font-bold text-gray-600 dark:text-gray-400">جاري التجهيز...</p>
     </div>
 
-    <!-- Header (تم إزالة hidden من هنا لكي يظهر الشريط العلوي) -->
+    <!-- Header -->
     <header id="app-header" class="fixed top-0 left-0 right-0 h-14 md:h-16 glass-header z-50 px-4 flex items-center justify-between xl:max-w-7xl xl:mx-auto lg:px-10">
         <div class="flex items-center gap-2 md:gap-4">
             <button id="btn-back" onclick="window.goBack()" class="p-1.5 md:p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 hidden border-2 border-black dark:border-gray-500">
@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    <!-- APP VIEW (تم إزالة hidden من هنا لكي يظهر التطبيق) -->
+    <!-- APP VIEW -->
     <div id="app-view" class="w-full xl:max-w-7xl xl:mx-auto pt-14 md:pt-16 min-h-screen relative">
        
         <!-- AUTH SECTION -->
@@ -140,9 +140,10 @@
                             </div>
                         </div>
 
+                        <!-- الحاوية المسؤولة عن إظهار/إخفاء قائمة المهن -->
                         <div id="prof-container" class="hidden mt-2 md:mt-3">
-                            <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="w-full p-2 rounded-lg text-xs md:text-sm h-10 md:h-12"><option value="">اختر المهنة...</option></select>
-                            <input type="text" id="signup-custom-prof" placeholder="اكتب اسم الخدمة..." class="hidden w-full p-2 md:p-3 rounded-lg text-xs md:text-sm h-10 md:h-12 mt-2 md:mt-3 border-2 border-blue-300 bg-blue-50 dark:bg-gray-700 dark:border-gray-500">
+                            <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="w-full p-2 rounded-lg text-xs md:text-sm h-10 md:h-12 bg-white dark:bg-gray-700"><option value="">اختر المهنة...</option></select>
+                            <input type="text" id="signup-custom-prof" placeholder="اكتب اسم الخدمة..." class="hidden w-full p-2 md:p-3 rounded-lg text-xs md:text-sm h-10 md:h-12 mt-2 md:mt-3 border-2 border-blue-300 bg-blue-50 dark:bg-gray-700 dark:border-gray-500 text-black dark:text-white">
                         </div>
                     </div>
 
@@ -158,10 +159,18 @@
                     <button onclick="window.switchHomeTab('services')" id="tab-home-serv" class="flex-1 h-full rounded text-xs md:text-sm font-bold bg-black text-white">خدمات</button>
                     <button onclick="window.switchHomeTab('jobs')" id="tab-home-jobs" class="flex-1 h-full rounded text-xs md:text-sm font-bold text-gray-500">وظائف</button>
                 </div>
+                
+                <!-- تحديث شريط البحث (أيقونة العدسة وزر الإلغاء) -->
                 <div id="prof-search-box" class="relative w-full lg:max-w-4xl mx-auto flex gap-2">
-                    <div class="relative flex-1">
-                        <input type="text" id="prof-search" onkeyup="window.debouncedSearch('prof')" placeholder="ابحث عن مهنة..." class="w-full p-2 md:p-3 pr-8 md:pr-10 rounded-lg border-2 border-black dark:border-gray-500 text-xs md:text-sm h-10 md:h-12">
-                        <button onclick="document.getElementById('prof-search').value=''; window.filterProfessions()" class="absolute left-2 top-2.5 md:top-3 text-gray-400 hover:text-black md:text-lg">✕</button>
+                    <div class="relative flex-1 flex items-center text-gray-400 focus-within:text-black dark:focus-within:text-white">
+                        <!-- أيقونة البحث -->
+                        <svg class="absolute right-3 w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        
+                        <!-- حقل الإدخال -->
+                        <input type="text" id="prof-search" oninput="window.toggleSearchClearBtn(); window.debouncedSearch('prof')" placeholder="ابحث عن مهنة..." class="w-full p-2 md:p-3 pr-10 pl-10 rounded-lg border-2 border-black dark:border-gray-500 text-xs md:text-sm h-10 md:h-12 bg-white dark:bg-gray-800 text-black dark:text-white">
+                        
+                        <!-- زر الإلغاء (مخفي افتراضياً) -->
+                        <button id="btn-clear-search" onclick="document.getElementById('prof-search').value=''; window.toggleSearchClearBtn(); window.filterProfessions()" class="hidden absolute left-2 text-gray-400 hover:text-red-500 md:text-lg p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">✕</button>
                     </div>
                 </div>
             </div>
@@ -444,7 +453,6 @@
             <h3 class="text-center font-bold mb-3 text-sm md:text-base border-b-2 border-gray-100 dark:border-gray-700 pb-2">تصفية البحث</h3>
             <select id="filter-center" onchange="window.updateVillages('filter')" class="w-full p-2 md:p-3 mb-2 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"></select>
             <select id="filter-village" class="w-full p-2 md:p-3 mb-2 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"><option value="">القرية...</option></select>
-            <!-- وضعنا الفلتر هنا داخل حاوية لنتمكن من إخفائها لاحقاً -->
             <div id="filter-prof-container">
                 <select id="filter-prof" class="w-full p-2 md:p-3 mb-4 rounded-lg text-xs md:text-sm border-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 outline-none focus:border-black dark:focus:border-white"></select>
             </div>
