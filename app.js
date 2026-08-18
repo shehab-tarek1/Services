@@ -54,7 +54,8 @@ const sharkiaData = {
     "العاشر من رمضان":["المجاورة 1-10", "المجاورة 11-30", "المجاورة 31-50", "المنطقة الصناعية", "الأردنية"]
 };
 
-const professions =["محاسب","مهندس مدني","مهندس معماري","طبيب بشري","طبيب أسنان","صيدلي","ممرض","محامي","مدرس","جرافيك ديزاينر","مبرمج","كاتب محتوى","مسوق إلكتروني","مترجم","مدخل بيانات","موظف استقبال","سكرتير","شيف","ويتر","باريستا","سباك","كهربائي","نجار","نقاش","حداد","لحام","ميكانيكي سيارات","عفشجي","سمكري","كهربائي سيارات","سروجي سيارات","فني تكييف","فني دش","فني غسالات","فني ثلاجات","فني فلاتر","مبلط سيراميك","مبيض محارة","عامل بناء","مقاول","فني الوميتال","استورجي","منجد","ترزي","صنيعي احذية","مكوجي","حلاق","كوافير","ميكب ارتيست","فوتوغرافي","فني طباعة","فني كمبيوتر","فني موبايل","سائق خاص","سائق تاكسي","سائق نقل","دليفري","عامل نظافة","عامل بوفيه","عامل زراعي","جنايني","حارس عقار","فني كاميرات","فني شبكات","فني مصاعد","فني زجاج","فني رخام","فني جبس بورد","فني باركيه","خطاط","رسام","نحات","صائغ","ساعاتي","فني مفاتيح","فني اليكترونيات","فني تحاليل","فني أشعة","أخصائي علاج طبيعي","أخصائي تخاطب","محفظ قرآن","مأذون","طباخ منزلي","بيبي سيتر","جليس مسنين","مدرب جيم","مدرب سباحة","مدرب سواقة","سمسار عقارات","تاجر ملابس","تاجر أغذية","مندوب مبيعات","كاشير","مدير محل","فني بصريات","فني أسنان","مدرب كرة قدم","حكم","يوتيوبر","صانع محتوى","خدمات أخرى"];
+// تمت إضافة "طالب" هنا لكي تظهر للجميع
+const professions =["محاسب","مهندس مدني","مهندس معماري","طبيب بشري","طبيب أسنان","صيدلي","ممرض","محامي","مدرس","جرافيك ديزاينر","مبرمج","كاتب محتوى","مسوق إلكتروني","مترجم","مدخل بيانات","موظف استقبال","سكرتير","شيف","ويتر","باريستا","سباك","كهربائي","نجار","نقاش","حداد","لحام","ميكانيكي سيارات","عفشجي","سمكري","كهربائي سيارات","سروجي سيارات","فني تكييف","فني دش","فني غسالات","فني ثلاجات","فني فلاتر","مبلط سيراميك","مبيض محارة","عامل بناء","مقاول","فني الوميتال","استورجي","منجد","ترزي","صنيعي احذية","مكوجي","حلاق","كوافير","ميكب ارتيست","فوتوغرافي","فني طباعة","فني كمبيوتر","فني موبايل","سائق خاص","سائق تاكسي","سائق نقل","دليفري","عامل نظافة","عامل بوفيه","عامل زراعي","جنايني","حارس عقار","فني كاميرات","فني شبكات","فني مصاعد","فني زجاج","فني رخام","فني جبس بورد","فني باركيه","خطاط","رسام","نحات","صائغ","ساعاتي","فني مفاتيح","فني اليكترونيات","فني تحاليل","فني أشعة","أخصائي علاج طبيعي","أخصائي تخاطب","محفظ قرآن","مأذون","طباخ منزلي","بيبي سيتر","جليس مسنين","مدرب جيم","مدرب سباحة","مدرب سواقة","سمسار عقارات","تاجر ملابس","تاجر أغذية","مندوب مبيعات","كاشير","مدير محل","فني بصريات","فني أسنان","مدرب كرة قدم","حكم","يوتيوبر","صانع محتوى","طالب","خدمات أخرى"];
 
 const validImages =[
 "7654426/pexels-photo-16695382.jpeg", "15063590/pexels-photo-15063590.jpeg", "23496713/pexels-photo-23496713.jpeg", "32213424/pexels-photo-32213424.jpeg", "18524124/pexels-photo-18524124.jpeg", "19471013/pexels-photo-19471013.jpeg", "7468920/pexels-photo-7469477.jpeg", "5669619/pexels-photo-5669619.jpeg", "35745620/pexels-photo-35745620.jpeg", "17078688/pexels-photo-17078688.jpeg", "9553909/pexels-photo-9553909.jpeg", "261662/pexels-photo-261662.jpeg", "7621355/pexels-photo-7621355.jpeg", "7681135/pexels-photo-7681135.jpeg", "34639577/pexels-photo-34639577.jpeg", "3184465/pexels-photo-3184465.jpeg", "3760072/pexels-photo-3760072.jpeg", "3338537/pexels-photo-3338537.jpeg", "11566309/pexels-photo-11566309.jpeg", "302899/pexels-photo-302899.jpeg", "20065002/pexels-photo-20065002.jpeg", "257736/pexels-photo-257736.jpeg", "5974296/pexels-photo-5974296.jpeg", "5691639/pexels-photo-5691639.jpeg", "17702198/pexels-photo-17702198.jpeg", "19926190/pexels-photo-19926190.jpeg", "8478268/pexels-photo-8478268.jpeg", "5933476/pexels-photo-5933476.jpeg", "8985963/pexels-photo-8985963.jpeg", "32391502/pexels-photo-32391502.jpeg", "8985461/pexels-photo-8985461.jpeg", "33671149/pexels-photo-33671149.jpeg", "15483316/pexels-photo-15483316.jpeg", "34734504/pexels-photo-34734504.jpeg", "17842832/pexels-photo-17842832.jpeg", "31287022/pexels-photo-31287022.jpeg", "569154/pexels-photo-569154.jpeg", "5691613/pexels-photo-5691613.jpeg", "11429199/pexels-photo-11429199.jpeg", "19386931/pexels-photo-19386931.jpeg", "7533923/pexels-photo-7533923.jpeg", "5691612/pexels-photo-5691612.jpeg", "15016524/pexels-photo-15016524.jpeg", "6461159/pexels-photo-6461159.jpeg", "34510831/pexels-photo-34510831.jpeg", "28576623/pexels-photo-28576623.jpeg", "5970246/pexels-photo-5970246.jpeg", "3993304/pexels-photo-3993304.jpeg", "33271603/pexels-photo-33271603.jpeg", "17057198/pexels-photo-17057198.jpeg", "9574453/pexels-photo-9574453.jpeg", "36861987/pexels-photo-36861987.jpeg", "6755050/pexels-photo-6755050.jpeg", "10358853/pexels-photo-10358853.jpeg", "5721492/pexels-photo-5721492.jpeg", "10963705/pexels-photo-10963705.jpeg", "36764333/pexels-photo-36764333.jpeg", "14642832/pexels-photo-14642832.jpeg", "11508780/pexels-photo-11508780.jpeg", "32415692/pexels-photo-32415692.jpeg", "18774870/pexels-photo-18774870.jpeg", "31282369/pexels-photo-31282369.jpeg", "27765780/pexels-photo-27765780.jpeg", "7918920/pexels-photo-7918920.jpeg", "8453052/pexels-photo-8453052.jpeg", "11626073/pexels-photo-11626073.jpeg", "30112371/pexels-photo-30112371.jpeg", "5538715/pexels-photo-5538715.jpeg", "4263067/pexels-photo-4263067.jpeg", "11135525/pexels-photo-11135525.jpeg", "16037006/pexels-photo-16037006.jpeg", "35549798/pexels-photo-35549798.jpeg", "8442326/pexels-photo-8442326.jpeg", "8327590/pexels-photo-8327590.jpeg", "114741/pexels-photo-114741.jpeg", "10699352/pexels-photo-10699352.jpeg", "8460346/pexels-photo-8460346.jpeg", "6501854/pexels-photo-6501854.jpeg", "20860582/pexels-photo-20860582.jpeg", "8560049/pexels-photo-8560049.jpeg", "20597768/pexels-photo-20597768.jpeg", "35253989/pexels-photo-35253989.jpeg", "6248797/pexels-photo-6248797.jpeg", "8770586/pexels-photo-8770586.jpeg", "18459193/pexels-photo-18459193.jpeg", "13451897/pexels-photo-13451897.jpeg", "30468227/pexels-photo-30468227.jpeg", "17108182/pexels-photo-17108182.jpeg", "34365475/pexels-photo-34365475.jpeg", "14235412/pexels-photo-14235412.jpeg", "35770688/pexels-photo-35770688.jpeg", "36123358/pexels-photo-36123358.jpeg", "26904218/pexels-photo-26904218.jpeg", "5874519/pexels-photo-5874519.jpeg", "6749753/pexels-photo-6749753.jpeg", "18662954/pexels-photo-18662954.jpeg", "32101180/pexels-photo-32101180.jpeg", "32108803/pexels-photo-32108803.jpeg", "24286930/pexels-photo-24286930.jpeg", "15846543/pexels-photo-15846543.jpeg", "5123456/pexels-photo-5123456.jpeg"
@@ -75,7 +76,7 @@ populateProfessionsGlobally();
 
 function getProfImage(profName) {
     const defaultImg = "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=200";
-    if(profName === "خدمات أخرى") return defaultImg;
+    if(profName === "خدمات أخرى" || profName === "طالب") return defaultImg; // يمكن لاحقاً وضع صورة مخصصة للطالب
     const index = professions.indexOf(profName);
     if (index === -1 || index >= validImages.length) return defaultImg;
     const rawPath = validImages[index];
@@ -89,7 +90,7 @@ let isGuest = true;
 let currentUser = null, userProfile = null, navStack =['home'], currentChatId = null, allUsersCache =[], myChatsCache =[], chatListener = null, currentModalUserId = null;
 let tempSelectedFile = null;
 let globalUnsubs =[];
-let currentActiveCategory = ""; // لحفظ اسم القسم عند التصفح
+let currentActiveCategory = ""; 
 
 let reqNotifs =[];
 let reviewNotifs =[];
@@ -167,7 +168,6 @@ const UPLOAD_PRESET = "souq_upload";
 window.uploadToCloudinary = async (file) => {
     try {
         const options = { maxSizeMB: 0.5, maxWidthOrHeight: 500, useWebWorker: true, initialQuality: 0.7 };
-        // استدعاء وهمي للضغط، يُفترض وجود مكتبة imageCompression مستدعاة مسبقاً في المشروع الفعلي
         const compressedFile = typeof imageCompression === 'function' ? await imageCompression(file, options) : file;
         
         const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
@@ -207,14 +207,13 @@ window.showToast = (msg, type='success') => {
 window.hideLoader = () => document.getElementById('loader').classList.add('hidden');
 window.showLoader = () => document.getElementById('loader').classList.remove('hidden');
 
-// إدارة نافذة الفلترة (تغيير السلوك حسب الصفحة)
 window.openFilterModal = (source) => {
     document.getElementById('filter-modal-wrap').classList.remove('hidden');
     const profContainer = document.getElementById('filter-prof-container');
     if (source === 'category') {
-        profContainer.classList.add('hidden'); // لا تسمح بتغيير المهنة داخل قسم محدد
+        profContainer.classList.add('hidden'); 
     } else {
-        profContainer.classList.remove('hidden'); // إظهار المهنة في صفحة الدليل العامة
+        profContainer.classList.remove('hidden'); 
     }
 };
 
@@ -346,7 +345,6 @@ window.navTo = (pageId, skipHistory = false) => {
         backBtn.classList.add('hidden'); 
     } else { 
         backBtn.classList.remove('hidden'); 
-        // استعادة اسم القسم المحفوظ عند التنقل
         if(pageId === 'category-details') {
              document.getElementById('page-title').innerText = currentActiveCategory;
         } else {
@@ -363,9 +361,8 @@ window.goBack = () => {
 };
 
 window.addEventListener('popstate', async (e) => {
-    // تم إزالة window.logout() لمنع تسجيل الخروج التلقائي عند ضغط زر الرجوع للصفحة الرئيسية
     if (!e.state || e.state.pageId === 'exit_trap') {
-        return; // ترك المتصفح يتصرف طبيعياً
+        return; 
     }
 
     const pageId = e.state.pageId;
@@ -478,7 +475,16 @@ window.debouncedSearch = (type) => {
     }, 500);
 };
 
-// إصلاح: استخدام JavaScript لإخفاء وإظهار العناصر بدلاً من حقن CSS لتجنب مشاكل الـ Quotes والـ XSS
+window.toggleSearchClearBtn = () => {
+    const input = document.getElementById('prof-search');
+    const btn = document.getElementById('btn-clear-search');
+    if(input.value.length > 0) {
+        btn.classList.remove('hidden');
+    } else {
+        btn.classList.add('hidden');
+    }
+};
+
 window.filterProfessions = () => {
     const term = document.getElementById('prof-search').value.trim().toLowerCase();
     const cards = document.querySelectorAll('#professions-grid .provider-card');
@@ -508,7 +514,15 @@ window.switchAuthMode = (mode) => {
     }
 };
 
-window.toggleProfVisibility = (show) => document.getElementById('prof-container').style.display = show ? 'block' : 'none';
+// حل مشكلة اختفاء المهن في التسجيل (تغيير من display إلى إزالة/إضافة كلاس hidden)
+window.toggleProfVisibility = (show) => {
+    const container = document.getElementById('prof-container');
+    if (show) {
+        container.classList.remove('hidden');
+    } else {
+        container.classList.add('hidden');
+    }
+};
 
 const phoneToEmail = (phone) => `user_${phone}@dalil-sharkia.com`;
 
@@ -554,7 +568,6 @@ document.getElementById('form-signup').onsubmit = async (e) => {
 
         tempCred = await createUserWithEmailAndPassword(auth, phoneToEmail(phoneVal), document.getElementById('signup-pass').value);
 
-        // إذا فشل هذا السطر، سيتم تنفيذ أمر الحذف في catch لمنع الحسابات اليتيمة
         await setDoc(doc(db, 'artifacts', APP_ID, 'public', 'data', 'profiles', tempCred.user.uid), {
             uid: tempCred.user.uid, name: userName, phone: `+20${phoneVal}`, city: center, area: village, addressDetail: addressDetail,
             role, profession: prof, photoURL: finalPhotoURL, gender, settings: { notifEnabled: true, hidePhone: false, hideProfile: false, pauseRequests: false, darkMode: false },
@@ -563,7 +576,6 @@ document.getElementById('form-signup').onsubmit = async (e) => {
         
         window.showToast('تم التسجيل بنجاح');
     } catch (err) { 
-        // مسح حساب الـ Auth إذا فشل تخزين البيانات لكي لا يصبح الحساب معلقاً
         if (tempCred && tempCred.user) {
             await tempCred.user.delete().catch(()=>console.log('could not delete temp user'));
         }
@@ -757,12 +769,10 @@ function startListeners() {
     globalUnsubs.forEach(u => u());
     globalUnsubs =[];
 
-    // --- Public Listeners (For Guests & Users) ---
     const unsubProfiles = onSnapshot(collection(db, 'artifacts', APP_ID, 'public', 'data', 'profiles'), (snap) => {
         allUsersCache =[];
         snap.forEach(d => {
             const u = d.data();
-            // تم حجب أصحاب الحسابات المخفية عن الظهور بالدليل للجميع ما عدا صاحب الحساب نفسه
             if((isGuest || d.id !== currentUser?.uid) && !(u.settings?.hideProfile)) allUsersCache.push(u);
         });
         
@@ -782,6 +792,17 @@ function startListeners() {
             const j = d.data();
             const hasPhone = j.contactPhone && j.contactPhone.length > 5;
             const isMyPost = !isGuest && j.uid === currentUser?.uid;
+            
+            // إضافة الإشعارات الخاصة بالوظائف لمقدمي الخدمات المطابقين (متضمنة الطالب)
+            if (!isGuest && userProfile?.role === 'provider' && j.title === userProfile.profession && !isMyPost) {
+                const notifKey = `notifSeen_${currentUser.uid}`;
+                const isNew = new Date(j.createdAt).getTime() > parseInt(localStorage.getItem(notifKey) || '0');
+                // نتأكد أن الإشعار غير موجود مسبقاً لمنع التكرار المفرط في الواجهة
+                if (!reqNotifs.find(n => n.id === d.id)) {
+                    reqNotifs.push({ id: d.id, time: new Date(j.createdAt).getTime(), text: `📢 وظيفة متاحة لمهنتك (${j.title}) من ${j.posterName}` });
+                }
+            }
+
             html.push(`
                 <div class="bg-white dark:bg-gray-800 rounded-2xl border-2 border-black dark:border-gray-500 overflow-hidden relative">
                     <div class="p-2.5 md:p-4">
@@ -812,6 +833,8 @@ function startListeners() {
                 </div>`);
         });
         list.innerHTML = html.join('');
+        // تحديث الإشعارات إن وجدت وظائف جديدة
+        if(!isGuest && userProfile?.role === 'provider') renderNotificationsList();
     });
     globalUnsubs.push(unsubJobs);
 
@@ -864,7 +887,9 @@ function startListeners() {
         const unsubReqs = onSnapshot(q, (snap) => {
             const container = document.getElementById('matching-reqs-list'); 
             container.innerHTML = '';
-            reqNotifs =[]; 
+            // تصفية الإشعارات الخاصة بالخدمات فقط لتجنب مسح إشعارات الوظائف (Jobs) التي أضفناها بالأعلى
+            reqNotifs = reqNotifs.filter(n => !n.text.includes('وظيفة متاحة')); 
+            
             const html =[]; 
             let hasNewMatching = false;
            
