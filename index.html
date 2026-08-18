@@ -50,8 +50,8 @@
         <p class="mt-1 text-[10px] font-bold text-gray-600 dark:text-gray-400">جاري التجهيز...</p>
     </div>
 
-    <!-- Header -->
-    <header id="app-header" class="fixed top-0 left-0 right-0 h-14 md:h-16 glass-header z-50 px-4 flex items-center justify-between hidden xl:max-w-7xl xl:mx-auto lg:px-10">
+    <!-- Header (تم إزالة hidden من هنا لكي يظهر الشريط العلوي) -->
+    <header id="app-header" class="fixed top-0 left-0 right-0 h-14 md:h-16 glass-header z-50 px-4 flex items-center justify-between xl:max-w-7xl xl:mx-auto lg:px-10">
         <div class="flex items-center gap-2 md:gap-4">
             <button id="btn-back" onclick="window.goBack()" class="p-1.5 md:p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 hidden border-2 border-black dark:border-gray-500">
                 <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
@@ -78,10 +78,10 @@
         </div>
     </div>
 
-    <!-- APP VIEW -->
-    <div id="app-view" class="hidden w-full xl:max-w-7xl xl:mx-auto pt-14 md:pt-16 min-h-screen relative">
+    <!-- APP VIEW (تم إزالة hidden من هنا لكي يظهر التطبيق) -->
+    <div id="app-view" class="w-full xl:max-w-7xl xl:mx-auto pt-14 md:pt-16 min-h-screen relative">
        
-        <!-- AUTH SECTION (بدلاً من النافذة المنبثقة) -->
+        <!-- AUTH SECTION -->
         <section id="page-auth" class="page-section hidden px-4 md:px-6 flex flex-col justify-center min-h-[80vh]">
             <div class="max-w-lg mx-auto w-full">
                 <div class="text-center mb-4 md:mb-6">
