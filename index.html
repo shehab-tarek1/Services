@@ -24,9 +24,9 @@
     <link rel="stylesheet" href="tailwind.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- محرك التنسيقات الماسي المتكامل الشامل -->
+    <!-- محرك التنسيقات الماسي المتكامل والمصحح 100% -->
     <style>
-        /* 1. القوة القصوى للإخفاء والأساسيات */
+        /* 1. الإخفاء والأساسيات */
         .hidden { display: none !important; }
 
         *, *::before, *::after {
@@ -46,7 +46,6 @@
             font-size: 12px;
         }
 
-        /* الوضع الداكن */
         .dark html, .dark body {
             background-color: #1e3347 !important;
             color: #f8fafc !important;
@@ -108,7 +107,7 @@
             box-shadow: 0 0 12px rgba(242, 165, 26, 0.35);
         }
 
-        /* 3. الهيدر العلوي المنظم (اللوجو منضبط ومحكوم داخل الحدود) */
+        /* 3. الهيدر العلوي المنظم (اللوجو منضبط 32px داخل الحدود) */
         #app-header {
             position: fixed;
             top: 0;
@@ -136,7 +135,7 @@
             color: #ffffff;
         }
 
-        /* تثبيت قياس اللوجو والصورة لعدم الخروج عن الهيدر إطلاقاً */
+        /* قفل أبعاد اللوجو والصورة لعدم الخروج عن الهيدر */
         #header-avatar {
             width: 32px !important;
             height: 32px !important;
@@ -201,11 +200,27 @@
             background-color: #EBF2F7 !important;
             border-radius: 9999px;
             padding: 0 10px;
-            height: 34px;
+            height: 35px;
         }
 
         .dark .search-inner-soft {
             background-color: #243d54 !important;
+        }
+
+        /* تثبيت أبعاد أيقونة عدسة البحث بدقة متناهية لمنع كبرها */
+        .search-inner-soft svg {
+            width: 16px !important;
+            height: 16px !important;
+            min-width: 16px !important;
+            min-height: 16px !important;
+            max-width: 16px !important;
+            max-height: 16px !important;
+            flex-shrink: 0 !important;
+            color: #64748b !important;
+        }
+
+        .dark .search-inner-soft svg {
+            color: #94a3b8 !important;
         }
 
         .search-inner-soft input {
@@ -216,8 +231,9 @@
             font-size: 11px;
             font-weight: 600;
             color: #1e293b !important;
-            padding: 0 4px;
+            padding: 0 6px !important;
             box-shadow: none !important;
+            margin-bottom: 0 !important;
         }
 
         .dark .search-inner-soft input {
@@ -228,29 +244,41 @@
             color: #64748b;
         }
 
-        .btn-filter-compact {
-            height: 32px;
-            padding: 0 11px;
+        /* زر قمع الفلترة الكبسولي الدائري الملموم بدون نص */
+        .btn-filter-funnel-icon {
+            width: 35px !important;
+            height: 35px !important;
+            min-width: 35px !important;
+            min-height: 35px !important;
             background-color: #EBF2F7 !important;
             color: #1e3a5f !important;
-            border: none;
-            border-radius: 9999px;
-            font-size: 10.5px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            flex-shrink: 0;
+            border: none !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            flex-shrink: 0 !important;
+            padding: 0 !important;
             transition: transform 0.15s ease;
         }
 
-        .dark .btn-filter-compact {
+        .dark .btn-filter-funnel-icon {
             background-color: #243d54 !important;
             color: #F2A51A !important;
         }
 
-        /* 5. كروت الأقسام والمهن (أداء عالي وسريع) */
+        .btn-filter-funnel-icon svg {
+            width: 15px !important;
+            height: 15px !important;
+            stroke-width: 2.2 !important;
+        }
+
+        .btn-filter-funnel-icon:active {
+            transform: scale(0.92);
+        }
+
+        /* 5. كروت الأقسام والمهن (أداء عالي سريع بدون لاج) */
         .provider-card {
             border: 0.75px solid #cbd5e1 !important;
             border-radius: 14px !important;
@@ -266,6 +294,10 @@
         .dark .provider-card {
             border-color: #334155 !important;
             background-color: #243d54 !important;
+        }
+
+        .provider-card:hover {
+            transform: translateY(-2px);
         }
 
         .provider-card img {
@@ -327,19 +359,27 @@
             box-shadow: 0 2px 7px rgba(0, 0, 0, 0.25) !important;
         }
 
-        /* 7. الحقول المنظمة ذات الظل الخفيف والمسافات المحسوبة */
+        /* 7. الحقول المنظمة: توحيد المقاس ومحاذاة النص في الوسط */
         input, select, textarea {
             border: 0.75px solid #cbd5e1 !important;
             background-color: #ffffff !important;
-            border-radius: 11px !important;
+            border-radius: 10px !important;
             font-size: 11px !important;
-            padding: 6px 10px !important;
+            padding: 0 10px !important;
             width: 100%;
+            height: 38px !important; /* توحيد الارتفاع */
+            display: flex !important;
+            align-items: center !important;
             outline: none;
             color: #1e293b;
             box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04) !important;
             transition: border-color 0.15s ease, box-shadow 0.15s ease;
-            margin-bottom: 8px;
+            margin-bottom: 9px !important; /* مسافة منتظمة */
+        }
+
+        textarea {
+            height: auto !important;
+            padding: 8px 10px !important;
         }
 
         input:focus, select:focus, textarea:focus {
@@ -354,22 +394,22 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
         }
 
-        /* كود الدولة +20 في سطر واحد دائماً */
+        /* تثبيت كود الدولة +20 ومحاذاة الحقل في المنتصف */
         .phone-input-wrap {
-            display: flex;
-            align-items: center;
-            border: 0.75px solid #cbd5e1;
-            border-radius: 11px;
-            overflow: hidden;
-            background-color: #ffffff;
-            height: 36px;
-            box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04);
-            margin-bottom: 8px;
+            display: flex !important;
+            align-items: center !important;
+            border: 0.75px solid #cbd5e1 !important;
+            border-radius: 10px !important;
+            overflow: hidden !important;
+            background-color: #ffffff !important;
+            height: 38px !important;
+            box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04) !important;
+            margin-bottom: 9px !important;
         }
 
         .dark .phone-input-wrap {
-            border-color: #334155;
-            background-color: #243d54;
+            border-color: #334155 !important;
+            background-color: #243d54 !important;
         }
 
         .phone-input-wrap input {
@@ -377,7 +417,7 @@
             box-shadow: none !important;
             margin-bottom: 0 !important;
             padding: 0 10px !important;
-            height: 100%;
+            height: 100% !important;
         }
 
         .phone-code-badge {
@@ -474,7 +514,7 @@
         /* 10. كبسولة زر تسجيل الخروج الحمراء الفخمة */
         .btn-logout-capsule {
             width: 100%;
-            padding: 9px 18px !important;
+            padding: 10px 18px !important;
             background: linear-gradient(135deg, #ef4444, #dc2626) !important;
             color: #ffffff !important;
             border: none !important;
@@ -590,24 +630,24 @@
         }
 
         /* 13. القوائم المنسدلة الملمومة والأنماط التكميلية */
-        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 8px; }
+        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 9px !important; }
         .custom-select {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 3px 9px !important; border: 0.75px solid #cbd5e1 !important;
+            padding: 0 10px !important; border: 0.75px solid #cbd5e1 !important;
             border-radius: 10px !important; background-color: #ffffff !important;
-            height: 34px !important; font-size: 11px !important; cursor: pointer;
+            height: 38px !important; font-size: 11px !important; cursor: pointer;
             box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04);
         }
         .dark .custom-select { background-color: #243d54 !important; border-color: #334155 !important; color: #ffffff !important; }
         .custom-options {
             position: absolute; top: calc(100% + 3px); left: 0; right: 0;
             border: 0.75px solid #cbd5e1 !important; border-radius: 12px !important;
-            background-color: #ffffff !important; z-index: 9999; max-height: 135px !important;
+            background-color: #ffffff !important; z-index: 9999; max-height: 140px !important;
             overflow-y: auto; display: none; box-shadow: 0 6px 16px rgba(30, 58, 95, 0.12) !important;
         }
         .dark .custom-options { background-color: #243d54 !important; border-color: #334155 !important; }
         .custom-options.open { display: block !important; }
-        .custom-option { padding: 5px 9px; font-size: 10.5px; cursor: pointer; }
+        .custom-option { padding: 6px 10px; font-size: 11px; cursor: pointer; }
         .custom-option:hover { background-color: #EEF3F8; color: #1e3a5f; }
         .dark .custom-option:hover { background-color: #1e3347; color: #F2A51A; }
 
@@ -641,7 +681,7 @@
         .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #F2A51A; }
     </style>
 
-    <link rel="stylesheet" href="style.css?v=7.0">
+    <link rel="stylesheet" href="style.css?v=8.0">
 
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -678,7 +718,7 @@
             <h1 id="page-title" class="text-xs font-black text-white flex items-center gap-1 tracking-wide truncate max-w-[170px]">الرئيسية</h1>
         </div>
         
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2.5">
             <!-- زر الإضافة المنقول للهيدر العلوي بدون إطار أو خلفية -->
             <button id="header-add-btn" onclick="window.navTo('add')" class="hidden" title="إضافة جديد">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -690,7 +730,7 @@
                 <span id="notif-dot" class="hidden"></span>
             </button>
 
-            <!-- الصورة الشخصية المثبتة بحجم منضبط يمنع خروجها عن الهيدر -->
+            <!-- الصورة الشخصية المثبتة بدقة 32px تمنع الخروج عن الهيدر -->
             <img id="header-avatar" src="icons/icon-192x192.png" onclick="window.navTo('profile')">
         </div>
     </header>
@@ -709,7 +749,7 @@
     <!-- APP VIEW WRAPPER -->
     <main id="app-view" class="px-3 md:px-5">
 
-        <!-- AUTH SECTION (تصميم بطاقة حديثة بخلفية مطابقة لشاشة التحميل) -->
+        <!-- AUTH SECTION (بطاقة عائمة حديثة) -->
         <section id="page-auth" class="page-section hidden py-2">
             <div class="auth-container-modern">
                 <div class="text-center mb-3">
@@ -726,54 +766,57 @@
                 </div>
 
                 <!-- Login Form Card -->
-                <form id="form-login" class="auth-card-inner space-y-2">
+                <form id="form-login" class="auth-card-inner">
                     <div class="phone-input-wrap">
                         <input type="tel" id="login-phone" placeholder="رقم الهاتف (10 أرقام)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
                         <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <input type="password" id="login-pass" placeholder="كلمة المرور" class="h-8 font-semibold" required>
-                    <button type="submit" class="w-full py-2 rounded-xl font-bold text-xs text-white shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تسجيل الدخول</button>
+                    <input type="password" id="login-pass" placeholder="كلمة المرور" class="font-semibold" required>
+                    <button type="submit" class="w-full py-2 rounded-xl font-bold text-xs text-white shadow mt-1" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تسجيل الدخول</button>
                 </form>
 
                 <!-- Signup Form Card -->
-                <form id="form-signup" class="hidden auth-card-inner space-y-2">
-                    <div class="flex justify-center mb-1">
+                <form id="form-signup" class="hidden auth-card-inner">
+                    <div class="flex justify-center mb-2">
                         <div class="w-12 h-12 rounded-full bg-white dark:bg-slate-800 border border-dashed border-slate-400 relative overflow-hidden cursor-pointer" onclick="document.getElementById('signup-file').click()">
                             <img id="signup-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239ca3af'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" class="w-full h-full object-cover">
                         </div>
                         <input type="file" id="signup-file" class="hidden" accept="image/*" onchange="window.handleImageUpload(this, 'signup-preview')">
                     </div>
 
-                    <input type="text" id="signup-name" placeholder="الاسم الكامل" class="h-8 font-semibold" required>
+                    <input type="text" id="signup-name" placeholder="الاسم الكامل" class="font-semibold" required>
+                    
                     <div class="phone-input-wrap">
                         <input type="tel" id="signup-phone" placeholder="رقم الهاتف (10 أرقام)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
                         <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <input type="password" id="signup-pass" placeholder="كلمة المرور" class="h-8 font-semibold" required>
+
+                    <input type="password" id="signup-pass" placeholder="كلمة المرور" class="font-semibold" required>
 
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="signup-center" onchange="window.updateVillages()" class="h-8"><option value="">المركز</option></select>
-                        <select id="signup-village" class="h-8"><option value="">القرية</option></select>
+                        <select id="signup-center" onchange="window.updateVillages()"><option value="">المركز</option></select>
+                        <select id="signup-village"><option value="">القرية</option></select>
                     </div>
-                    <input type="text" id="signup-address-detail" placeholder="العنوان التفصيلي (اختياري)" class="h-8">
 
-                    <div class="grid grid-cols-2 gap-2">
-                        <div class="flex bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl h-7 items-center">
+                    <input type="text" id="signup-address-detail" placeholder="العنوان التفصيلي (اختياري)">
+
+                    <div class="grid grid-cols-2 gap-2 mb-2">
+                        <div class="flex bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl h-8 items-center">
                             <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="gender" value="male" checked> ذكر</label>
                             <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="gender" value="female"> أنثى</label>
                         </div>
-                        <div class="flex bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl h-7 items-center">
+                        <div class="flex bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl h-8 items-center">
                             <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="role" value="client" checked onchange="window.toggleProfVisibility(false)"> عميل</label>
                             <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="role" value="provider" onchange="window.toggleProfVisibility(true)"> صنايعي</label>
                         </div>
                     </div>
 
-                    <div id="prof-container" class="hidden">
-                        <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="h-8"><option value="">اختر المهنة...</option></select>
-                        <input type="text" id="signup-custom-prof" placeholder="اكتب الخدمة المخصصة..." class="hidden h-8 mt-1 border border-blue-400">
+                    <div id="prof-container" class="hidden mb-2">
+                        <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');"><option value="">اختر المهنة...</option></select>
+                        <input type="text" id="signup-custom-prof" placeholder="اكتب الخدمة المخصصة..." class="hidden border border-blue-400">
                     </div>
 
-                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">إنشاء الحساب</button>
+                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow mt-1" style="background: #20B486;">إنشاء الحساب</button>
                 </form>
             </div>
         </section>
@@ -785,11 +828,11 @@
                 <button id="tab-home-jobs"></button>
             </div>
 
-            <!-- حاوية البحث في الخدمات (بدون زر فلترة - معتمة تحجب البطاقات خلفها) -->
+            <!-- حاوية البحث في الخدمات (بدون زر فلترة - عدسة منضبطة - معتمة تحجب البطاقات خلفها) -->
             <div id="prof-search-box" class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
-                        <svg class="w-3.5 h-3.5 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="prof-search" oninput="window.toggleSearchClearBtn(); window.debouncedSearch('prof')" placeholder="ابحث عن المهنة أو التخصص المطلوب...">
                         <button id="btn-clear-search" onclick="document.getElementById('prof-search').value=''; window.toggleSearchClearBtn(); window.filterProfessions()" class="hidden text-slate-400 hover:text-rose-500 text-xs px-1">✕</button>
                     </div>
@@ -804,16 +847,16 @@
 
         <!-- PAGE JOBS: DEDICATED JOBS SECTION -->
         <section id="page-jobs" class="page-section hidden">
-            <!-- حاوية شريط البحث في صفحة الوظائف مع زر الفلترة المصغر -->
+            <!-- حاوية شريط البحث في صفحة الوظائف مع زر قمع الفلترة الكبسولي بدون نص -->
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
-                        <svg class="w-3.5 h-3.5 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="jobs-search-input" onkeyup="window.filterJobsList && window.filterJobsList()" placeholder="ابحث في الوظائف (المسمى، الراتب، التفاصيل)...">
                     </div>
-                    <button onclick="window.toggleJobsFilterModal()" class="btn-filter-compact">
-                        <svg class="w-3 h-3 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                        <span>فلترة</span>
+                    <!-- زر قمع الفلترة الكبسولي الدائري فقط بدون نص -->
+                    <button onclick="window.toggleJobsFilterModal()" class="btn-filter-funnel-icon" title="فلترة نتائج الوظائف">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                     </button>
                 </div>
             </div>
@@ -821,22 +864,22 @@
             <!-- مودال فلترة الوظائف الملموم -->
             <div id="jobs-filter-modal" class="hidden mb-2.5 p-3 rounded-2xl bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 shadow-md max-w-md mx-auto">
                 <div class="flex justify-between items-center mb-2 pb-1 border-b border-slate-200 dark:border-slate-700">
-                    <span class="text-xs font-bold text-slate-800 dark:text-slate-100">تصفية الوظائف</span>
+                    <span class="text-xs font-bold text-slate-800 dark:text-slate-100">تصفية نتائج الوظائف</span>
                     <button onclick="window.toggleJobsFilterModal()" class="text-xs text-slate-400 hover:text-rose-500 font-bold">✕</button>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <select id="filter-job-type" onchange="window.filterJobsList && window.filterJobsList()" class="h-8 text-xs">
+                    <select id="filter-job-type" onchange="window.filterJobsList && window.filterJobsList()">
                         <option value="">نوع الدوام (الكل)</option>
                         <option value="full">دوام كامل</option>
                         <option value="part">دوام جزئي</option>
                     </select>
-                    <select id="filter-job-shift" onchange="window.filterJobsList && window.filterJobsList()" class="h-8 text-xs">
+                    <select id="filter-job-shift" onchange="window.filterJobsList && window.filterJobsList()">
                         <option value="">الشيفت (الكل)</option>
                         <option value="صباحي">صباحي</option>
                         <option value="مسائي">مسائي</option>
                         <option value="متغير">متغير</option>
                     </select>
-                    <button onclick="document.getElementById('filter-job-type').value=''; document.getElementById('filter-job-shift').value=''; document.getElementById('jobs-search-input').value=''; window.filterJobsList && window.filterJobsList();" class="h-8 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200">إعادة ضبط</button>
+                    <button onclick="document.getElementById('filter-job-type').value=''; document.getElementById('filter-job-shift').value=''; document.getElementById('jobs-search-input').value=''; window.filterJobsList && window.filterJobsList();" class="rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 h-[38px]">إعادة ضبط</button>
                 </div>
             </div>
 
@@ -851,12 +894,12 @@
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
-                        <svg class="w-3.5 h-3.5 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="cat-search" onkeyup="window.debouncedSearch('cat')" placeholder="ابحث بالاسم أو المكان أو القرية...">
                     </div>
-                    <button onclick="window.openFilterModal('category')" class="btn-filter-compact">
-                        <svg class="w-3 h-3 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                        <span>فلترة</span>
+                    <!-- زر القمع بدون نص -->
+                    <button onclick="window.openFilterModal('category')" class="btn-filter-funnel-icon" title="فلترة">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                     </button>
                 </div>
             </div>
@@ -868,32 +911,32 @@
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
-                        <svg class="w-3.5 h-3.5 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="dir-search" onkeyup="window.debouncedSearch('dir')" placeholder="ابحث في الدليل بالاسم، المهنة، القرية...">
                     </div>
-                    <button onclick="window.openFilterModal('directory')" class="btn-filter-compact">
-                        <svg class="w-3 h-3 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                        <span>فلترة</span>
+                    <!-- زر القمع بدون نص -->
+                    <button onclick="window.openFilterModal('directory')" class="btn-filter-funnel-icon" title="فلترة">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                     </button>
                 </div>
             </div>
             <div id="dir-list" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
         </section>
 
-        <!-- ADD SECTION (تم ضبط المسافات بين الحقول رأسياً وأفقياً) -->
+        <!-- ADD SECTION (مسافات متناسقة وحقول موحدة المقاس) -->
         <section id="page-add" class="page-section hidden max-w-md mx-auto py-1">
-            <div class="custom-card-box p-3.5">
-                <h2 class="text-xs font-black mb-2.5 text-center border-b border-slate-200 dark:border-slate-700 pb-1.5 text-slate-800 dark:text-white">إضافة إعلان أو طلب جديد</h2>
+            <div class="custom-card-box p-4">
+                <h2 class="text-xs font-black mb-3 text-center border-b border-slate-200 dark:border-slate-700 pb-2 text-slate-800 dark:text-white">إضافة إعلان أو طلب جديد</h2>
                 
                 <div class="flex gap-2 mb-3">
-                    <button onclick="window.switchAddMode('req')" id="btn-add-req" class="flex-1 py-1.5 rounded-xl text-xs font-bold transition-all" style="background: #1e3a5f; color: white;">طلب خدمة</button>
-                    <button onclick="window.switchAddMode('job')" id="btn-add-job" class="flex-1 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all">إعلان توظيف</button>
+                    <button onclick="window.switchAddMode('req')" id="btn-add-req" class="flex-1 py-2 rounded-xl text-xs font-bold transition-all" style="background: #1e3a5f; color: white;">طلب خدمة</button>
+                    <button onclick="window.switchAddMode('job')" id="btn-add-job" class="flex-1 py-2 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all">إعلان توظيف</button>
                 </div>
 
                 <!-- Form Service Request -->
-                <form id="form-req" class="space-y-2">
-                    <select id="req-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('req-custom-prof').classList.remove('hidden'); else document.getElementById('req-custom-prof').classList.add('hidden');" class="h-8"></select>
-                    <input type="text" id="req-custom-prof" placeholder="اكتب الخدمة المطلوبة بدقة..." class="hidden h-8 border border-blue-400">
+                <form id="form-req">
+                    <select id="req-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('req-custom-prof').classList.remove('hidden'); else document.getElementById('req-custom-prof').classList.add('hidden');"></select>
+                    <input type="text" id="req-custom-prof" placeholder="اكتب الخدمة المطلوبة بدقة..." class="hidden border border-blue-400">
 
                     <textarea id="req-desc" rows="3" placeholder="اشرح تفاصيل طلبك والمشكلة..." required></textarea>
 
@@ -901,27 +944,27 @@
                         <input type="tel" id="req-phone" placeholder="رقم الواتساب (اختياري)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
                         <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">نشر الطلب الآن</button>
+                    <button type="submit" class="w-full py-2.5 text-white rounded-xl font-bold text-xs shadow mt-1" style="background: linear-gradient(135deg, #365570, #1e3a5f);">نشر الطلب الآن</button>
                 </form>
 
                 <!-- Form Job Post -->
-                <form id="form-job" class="hidden space-y-2">
-                    <select id="job-title-select" onchange="if(this.value==='أخرى') document.getElementById('job-custom-title').classList.remove('hidden'); else document.getElementById('job-custom-title').classList.add('hidden');" class="h-8"></select>
-                    <input type="text" id="job-custom-title" placeholder="اكتب المسمى المخصص..." class="hidden h-8 border border-blue-400">
+                <form id="form-job" class="hidden">
+                    <select id="job-title-select" onchange="if(this.value==='أخرى') document.getElementById('job-custom-title').classList.remove('hidden'); else document.getElementById('job-custom-title').classList.add('hidden');"></select>
+                    <input type="text" id="job-custom-title" placeholder="اكتب المسمى المخصص..." class="hidden border border-blue-400">
 
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="number" id="job-salary" placeholder="الراتب (ج.م)" class="h-8">
-                        <input type="text" id="job-hours" placeholder="ساعات العمل" class="h-8">
+                        <input type="number" id="job-salary" placeholder="الراتب (ج.م)">
+                        <input type="text" id="job-hours" placeholder="ساعات العمل">
                     </div>
 
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="job-shift" class="h-8">
+                        <select id="job-shift">
                             <option value="">الشيفت (اختياري)</option>
                             <option value="صباحي">صباحي</option>
                             <option value="مسائي">مسائي</option>
                             <option value="متغير">متغير</option>
                         </select>
-                        <select id="job-type" class="h-8">
+                        <select id="job-type">
                             <option value="full">دوام كامل</option>
                             <option value="part">دوام جزئي</option>
                         </select>
@@ -933,38 +976,49 @@
                     </div>
 
                     <textarea id="job-desc" rows="3" placeholder="اكتب شروط وتفاصيل الوظيفة..." required></textarea>
-                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">نشر الوظيفة</button>
+                    <button type="submit" class="w-full py-2.5 text-white rounded-xl font-bold text-xs shadow mt-1" style="background: #20B486;">نشر الوظيفة</button>
                 </form>
             </div>
         </section>
 
-        <!-- PROFILE SECTION (مع كبسولة تسجيل الخروج الحمراء الفخمة) -->
-        <section id="page-profile" class="page-section hidden max-w-sm mx-auto space-y-2 py-1">
-            <div class="custom-card-box p-3 text-center">
-                <img id="prof-img-view" src="" class="w-16 h-16 rounded-full border border-slate-300 dark:border-slate-600 object-cover mx-auto shadow">
-                <h2 id="prof-name-view" class="text-xs font-black mt-1.5 text-slate-900 dark:text-white"></h2>
-                <div class="flex items-center gap-1 mt-0.5 justify-center flex-wrap">
-                    <span id="prof-role-view" class="bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 text-[9.5px] px-2 py-0.5 rounded-full font-bold"></span>
-                    <span id="prof-address-view" class="text-[10.5px] text-slate-500 dark:text-slate-400 font-semibold"></span>
+        <!-- PROFILE SECTION (واجهة حسابي المعاد هيكلتها بدقة وفخامة ومقاس واضح) -->
+        <section id="page-profile" class="page-section hidden max-w-md mx-auto space-y-3 py-2">
+            <!-- كارت الحساب الرئيسي الواسع والأنيق -->
+            <div class="custom-card-box p-5 text-center">
+                <!-- صورة بروفايل واضحة ومقروءة بحجم 76px -->
+                <div class="relative w-20 h-20 mx-auto mb-2">
+                    <img id="prof-img-view" src="" class="w-20 h-20 rounded-full border-2 border-slate-300 dark:border-slate-600 object-cover shadow-md mx-auto">
                 </div>
-                <div class="flex gap-2 mt-2.5 max-w-xs mx-auto">
-                    <button onclick="window.navTo('edit-profile')" class="flex-1 py-1 rounded-xl text-[11px] font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">تعديل الحساب</button>
-                    <button onclick="window.navTo('settings')" class="flex-1 py-1 rounded-xl text-[11px] font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">الإعدادات</button>
+
+                <!-- اسم المستخدم بخط عريض وبارز 15px -->
+                <h2 id="prof-name-view" class="text-sm md:text-base font-black text-slate-900 dark:text-white mt-1"></h2>
+                
+                <!-- شارة المهنة والموقع واضحة ومنسقة -->
+                <div class="flex items-center gap-2 mt-1.5 justify-center flex-wrap">
+                    <span id="prof-role-view" class="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 text-xs px-3 py-0.5 rounded-full font-bold border border-blue-200 dark:border-blue-700 shadow-sm"></span>
+                    <span id="prof-address-view" class="text-xs text-slate-500 dark:text-slate-400 font-bold flex items-center gap-1"></span>
+                </div>
+
+                <!-- أزرار التعديل والإعدادات متناسقة ومتجاورة -->
+                <div class="grid grid-cols-2 gap-2 mt-4 max-w-xs mx-auto">
+                    <button onclick="window.navTo('edit-profile')" class="h-9 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 shadow-sm transition-all active:scale-95">تعديل الحساب</button>
+                    <button onclick="window.navTo('settings')" class="h-9 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 shadow-sm transition-all active:scale-95">الإعدادات</button>
                 </div>
             </div>
 
-            <div class="space-y-1.5">
-                <button onclick="window.openActivityTab('my-activity')" class="w-full py-2.5 bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-3 shadow-sm">
-                    <span>📊 سجل نشاطي وإعلاناتي</span>
-                    <span class="text-slate-400">←</span>
+            <!-- قائمة النشاطات وكبسولة الخروج الحمراء الفخمة -->
+            <div class="space-y-2">
+                <button onclick="window.openActivityTab('my-activity')" class="w-full h-11 bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 rounded-2xl font-bold text-xs flex justify-between items-center px-4 shadow-sm transition-all active:scale-98">
+                    <span class="flex items-center gap-2">📊 سجل نشاطي وإعلاناتي</span>
+                    <span class="text-slate-400 font-black">←</span>
                 </button>
 
-                <button id="btn-profile-matching" onclick="window.openActivityTab('matching')" class="hidden w-full py-2.5 bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-3 shadow-sm">
-                    <span>🎯 طلبات جديدة تناسب مهنتي</span>
+                <button id="btn-profile-matching" onclick="window.openActivityTab('matching')" class="hidden w-full h-11 bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 rounded-2xl font-bold text-xs flex justify-between items-center px-4 shadow-sm transition-all active:scale-98">
+                    <span class="flex items-center gap-2">🎯 طلبات جديدة تناسب مهنتي</span>
                     <span id="act-notif-badge" class="hidden bg-rose-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold">!</span>
                 </button>
 
-                <!-- زر تسجيل الخروج في كبسولة حمراء بارزة وفخمة -->
+                <!-- زر تسجيل الخروج في كبسولة حمراء واضحة وفخمة -->
                 <button onclick="window.logout()" class="btn-logout-capsule">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                     <span>تسجيل الخروج</span>
@@ -990,16 +1044,16 @@
             </div>
         </section>
 
-        <!-- EDIT PROFILE -->
-        <section id="page-edit-profile" class="page-section hidden max-w-sm mx-auto py-1">
-            <div class="custom-card-box p-3 space-y-2">
-                <div class="flex flex-col items-center mb-1">
-                    <img id="edit-img-preview" src="" class="w-16 h-16 rounded-full object-cover border border-slate-300 dark:border-slate-600 shadow">
-                    <button onclick="document.getElementById('edit-file').click()" class="text-[11px] font-bold text-[#1e3a5f] dark:text-[#F2A51A] underline mt-0.5">تغيير الصورة</button>
+        <!-- EDIT PROFILE (حقول موحدة ومحاذاة في الوسط) -->
+        <section id="page-edit-profile" class="page-section hidden max-w-md mx-auto py-1">
+            <div class="custom-card-box p-4">
+                <div class="flex flex-col items-center mb-3">
+                    <img id="edit-img-preview" src="" class="w-18 h-18 rounded-full object-cover border-2 border-slate-300 dark:border-slate-600 shadow">
+                    <button onclick="document.getElementById('edit-file').click()" class="text-xs font-bold text-[#1e3a5f] dark:text-[#F2A51A] underline mt-1.5">تغيير الصورة الشخصية</button>
                     <input type="file" id="edit-file" class="hidden" accept="image/*" onchange="window.handleImageUpload(this, 'edit-img-preview', true)">
                 </div>
                 
-                <input type="text" id="edit-name" class="h-8 font-semibold" placeholder="الاسم الكامل">
+                <input type="text" id="edit-name" class="font-semibold" placeholder="الاسم الكامل">
 
                 <div class="phone-input-wrap">
                     <input type="tel" id="edit-phone" placeholder="الهاتف" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
@@ -1007,44 +1061,44 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
-                     <select id="edit-center" onchange="window.updateVillages('edit')" class="h-8"></select>
-                     <select id="edit-village" class="h-8"></select>
+                     <select id="edit-center" onchange="window.updateVillages('edit')"></select>
+                     <select id="edit-village"></select>
                 </div>
 
-                <input type="text" id="edit-address-detail" class="h-8" placeholder="العنوان التفصيلي (اختياري)">
+                <input type="text" id="edit-address-detail" placeholder="العنوان التفصيلي (الشارع، رقم العقار... اختياري)">
 
                 <div class="flex gap-2 pt-1">
-                    <button onclick="window.saveProfileChanges()" class="flex-1 py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">حفظ</button>
-                    <button onclick="window.goBack()" class="flex-1 py-1.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs">إلغاء</button>
+                    <button onclick="window.saveProfileChanges()" class="flex-1 py-2 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">حفظ التعديلات</button>
+                    <button onclick="window.goBack()" class="flex-1 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs">إلغاء</button>
                 </div>
             </div>
         </section>
 
         <!-- SETTINGS -->
         <section id="page-settings" class="page-section hidden max-w-sm mx-auto py-1">
-            <div class="custom-card-box p-3 space-y-1.5">
-                <h3 class="font-black text-xs mb-1.5 border-b border-slate-200 dark:border-slate-700 pb-1 text-slate-800 dark:text-white">إعدادات الحساب</h3>
-                <label class="flex justify-between items-center p-1.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
-                    <span class="font-bold text-[11px]">تفعيل الإشعارات</span>
-                    <input type="checkbox" id="toggle-notif" class="w-3.5 h-3.5" checked>
+            <div class="custom-card-box p-4 space-y-2">
+                <h3 class="font-black text-xs mb-2 border-b border-slate-200 dark:border-slate-700 pb-1.5 text-slate-800 dark:text-white">إعدادات الحساب</h3>
+                <label class="flex justify-between items-center p-2.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                    <span class="font-bold text-xs">تفعيل الإشعارات</span>
+                    <input type="checkbox" id="toggle-notif" class="w-4 h-4" checked>
                 </label>
-                <label class="flex justify-between items-center p-1.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
-                    <span class="font-bold text-[11px]">إخفاء رقم هاتفي</span>
-                    <input type="checkbox" id="toggle-hide-phone" class="w-3.5 h-3.5">
+                <label class="flex justify-between items-center p-2.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                    <span class="font-bold text-xs">إخفاء رقم هاتفي</span>
+                    <input type="checkbox" id="toggle-hide-phone" class="w-4 h-4">
                 </label>
-                <label class="flex justify-between items-center p-1.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
-                    <span class="font-bold text-[11px]">إخفاء الملف الشخصي</span>
-                    <input type="checkbox" id="toggle-hide-profile" class="w-3.5 h-3.5">
+                <label class="flex justify-between items-center p-2.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                    <span class="font-bold text-xs">إخفاء الملف الشخصي</span>
+                    <input type="checkbox" id="toggle-hide-profile" class="w-4 h-4">
                 </label>
-                <label id="setting-pause-reqs" class="hidden flex justify-between items-center p-1.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
-                    <span class="font-bold text-[11px] text-rose-500">إيقاف استلام الطلبات</span>
-                    <input type="checkbox" id="toggle-pause-reqs" class="w-3.5 h-3.5">
+                <label id="setting-pause-reqs" class="hidden flex justify-between items-center p-2.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                    <span class="font-bold text-xs text-rose-500">إيقاف استلام الطلبات</span>
+                    <input type="checkbox" id="toggle-pause-reqs" class="w-4 h-4">
                 </label>
-                <label class="flex justify-between items-center p-1.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
-                    <span class="font-bold text-[11px]">الوضع الليلي (Dark Mode)</span>
-                    <input type="checkbox" id="theme-toggle" class="w-3.5 h-3.5" onchange="window.toggleTheme()">
+                <label class="flex justify-between items-center p-2.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                    <span class="font-bold text-xs">الوضع الليلي (Dark Mode)</span>
+                    <input type="checkbox" id="theme-toggle" class="w-4 h-4" onchange="window.toggleTheme()">
                 </label>
-                <button onclick="window.saveSettings()" class="w-full py-1.5 text-white rounded-xl font-bold mt-1 text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">حفظ التغييرات</button>
+                <button onclick="window.saveSettings()" class="w-full py-2.5 text-white rounded-xl font-bold mt-2 text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">حفظ التغييرات</button>
             </div>
         </section>
 
@@ -1057,38 +1111,38 @@
 
         <!-- USER PROFILE PAGE -->
         <section id="page-user-profile" class="page-section hidden max-w-sm mx-auto">
-            <div class="custom-card-box p-3 text-center">
-                <img id="user-profile-img" src="" class="w-16 h-16 rounded-full border border-slate-300 dark:border-slate-600 mx-auto object-cover cursor-pointer shadow">
-                <h2 id="user-profile-name" class="text-xs font-black mt-1.5 text-slate-900 dark:text-white"></h2>
-                <p id="user-profile-role" class="text-[11px] font-bold text-[#1e3a5f] dark:text-[#F2A51A] mb-2"></p>
+            <div class="custom-card-box p-4 text-center">
+                <img id="user-profile-img" src="" class="w-18 h-18 rounded-full border-2 border-slate-300 dark:border-slate-600 mx-auto object-cover cursor-pointer shadow">
+                <h2 id="user-profile-name" class="text-sm font-black mt-2 text-slate-900 dark:text-white"></h2>
+                <p id="user-profile-role" class="text-xs font-bold text-[#1e3a5f] dark:text-[#F2A51A] mb-2.5"></p>
 
-                <div class="w-full bg-slate-200/40 dark:bg-slate-800/60 p-2 rounded-xl border border-slate-200 dark:border-slate-700 mb-2 text-right">
+                <div class="w-full bg-slate-200/40 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 mb-2.5 text-right">
                     <div class="grid grid-cols-2 gap-2 text-xs">
                         <div>
                             <span class="text-slate-400 block text-[9.5px]">العنوان والمركز</span>
-                            <span id="user-profile-addr-detail" class="font-bold text-[9.5px] text-slate-500 block"></span>
-                            <span id="user-profile-addr" class="font-bold text-[10.5px] text-slate-800 dark:text-slate-200"></span>
+                            <span id="user-profile-addr-detail" class="font-bold text-[10px] text-slate-500 block"></span>
+                            <span id="user-profile-addr" class="font-bold text-xs text-slate-800 dark:text-slate-200"></span>
                         </div>
                         <div>
                             <span class="text-slate-400 block text-[9.5px]">النوع</span>
-                            <span id="user-profile-gender" class="font-bold text-[10.5px] text-slate-800 dark:text-slate-200"></span>
+                            <span id="user-profile-gender" class="font-bold text-xs text-slate-800 dark:text-slate-200"></span>
                         </div>
                     </div>
-                    <div class="mt-1.5 border-t border-slate-200 dark:border-slate-700 pt-1 text-right">
+                    <div class="mt-2 border-t border-slate-200 dark:border-slate-700 pt-1.5 text-right">
                         <span class="text-slate-400 block text-[9.5px]">رقم الهاتف</span>
-                        <span id="user-profile-phone" class="font-bold text-[11px] text-slate-900 dark:text-white" dir="ltr"></span>
+                        <span id="user-profile-phone" class="font-bold text-xs text-slate-900 dark:text-white" dir="ltr"></span>
                     </div>
                 </div>
 
-                <div class="flex gap-2 w-full mb-2" id="user-profile-actions"></div>
+                <div class="flex gap-2 w-full mb-2.5" id="user-profile-actions"></div>
 
-                <div class="w-full border-t border-slate-200 dark:border-slate-700 pt-1.5 text-right">
-                    <h4 class="font-bold text-[11px] mb-1 flex items-center justify-between">
+                <div class="w-full border-t border-slate-200 dark:border-slate-700 pt-2 text-right">
+                    <h4 class="font-bold text-xs mb-1.5 flex items-center justify-between">
                         <span>التقييمات</span>
                         <span id="user-profile-stars" class="text-[#F2A51A] font-bold"></span>
                     </h4>
-                    <div class="border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-200/30 dark:bg-slate-800/40 p-1.5">
-                        <div id="user-profile-reviews-list" class="space-y-1 max-h-28 overflow-y-auto custom-scrollbar pr-0.5"></div>
+                    <div class="border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-200/30 dark:bg-slate-800/40 p-2">
+                        <div id="user-profile-reviews-list" class="space-y-1 max-h-32 overflow-y-auto custom-scrollbar pr-0.5"></div>
                     </div>
                 </div>
             </div>
@@ -1103,10 +1157,10 @@
 
     <!-- RATE MODAL -->
     <div id="rate-modal" class="modal-overlay hidden">
-        <div class="custom-card-box w-full max-w-xs p-3.5 shadow-2xl">
-            <h3 class="text-center font-bold mb-1.5 text-xs text-slate-900 dark:text-white">تقييم تجربة الخدمة</h3>
+        <div class="custom-card-box w-full max-w-xs p-4 shadow-2xl">
+            <h3 class="text-center font-bold mb-2 text-xs text-slate-900 dark:text-white">تقييم تجربة الخدمة</h3>
             <form id="form-review">
-                <div class="star-rating mb-1.5 flex flex-row-reverse justify-center gap-1">
+                <div class="star-rating mb-2 flex flex-row-reverse justify-center gap-1">
                     <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
                     <input type="radio" name="stars" id="s4" value="4"><label for="s4">★</label>
                     <input type="radio" name="stars" id="s3" value="3"><label for="s3">★</label>
@@ -1128,10 +1182,10 @@
 
         <div id="filter-modal" class="fixed top-16 left-4 right-4 max-w-xs mx-auto z-[140] custom-card-box shadow-2xl p-3 flex flex-col">
             <h3 class="text-center font-bold mb-2 text-xs text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-1">فلترة نتائج البحث</h3>
-            <select id="filter-center" onchange="window.updateVillages('filter')" class="mb-1.5 h-8 text-xs"></select>
-            <select id="filter-village" class="mb-1.5 h-8 text-xs"><option value="">القرية...</option></select>
+            <select id="filter-center" onchange="window.updateVillages('filter')"></select>
+            <select id="filter-village"><option value="">القرية...</option></select>
             <div id="filter-prof-container">
-                <select id="filter-prof" class="mb-2 h-8 text-xs"></select>
+                <select id="filter-prof"></select>
             </div>
             <div class="flex gap-2">
                 <button onclick="window.applyFilter()" class="flex-1 py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تطبيق</button>
@@ -1142,12 +1196,12 @@
 
     <!-- DELETE CHAT MODAL -->
     <div id="delete-chat-modal" class="modal-overlay hidden z-[200]">
-        <div class="custom-card-box w-full max-w-xs p-3.5 shadow-2xl text-center">
+        <div class="custom-card-box w-full max-w-xs p-4 shadow-2xl text-center">
             <h3 class="font-bold mb-1 text-xs text-rose-600">حذف المحادثة</h3>
-            <p class="text-[10.5px] text-slate-500 mb-2.5">هل ترغب في مسح هذه المحادثة نهائياً؟</p>
+            <p class="text-xs text-slate-500 mb-3">هل ترغب في مسح هذه المحادثة نهائياً؟</p>
             <div class="flex gap-2">
-                <button onclick="window.confirmDeleteChat()" class="flex-1 bg-rose-600 text-white py-1 rounded-xl font-bold text-xs shadow">حذف</button>
-                <button onclick="document.getElementById('delete-chat-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
+                <button onclick="window.confirmDeleteChat()" class="flex-1 bg-rose-600 text-white py-1.5 rounded-xl font-bold text-xs shadow">حذف</button>
+                <button onclick="document.getElementById('delete-chat-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
             </div>
         </div>
     </div>
