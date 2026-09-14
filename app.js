@@ -477,7 +477,7 @@ function initApp() {
     }
 }
 
-// توليد كروت المهن مع الكبسولة الممركزة خفيفة الظل وبدون أي لاج على المعالج
+// توليد كروت المهن مع الكبسولة الممركزة خفيفة الظل وبدون أي لاج
 function renderProfessionsGrid(list) {
     const grid = document.getElementById('professions-grid');
     if (grid.children.length > 0) return; 
@@ -564,18 +564,18 @@ window.switchAuthMode = (mode) => {
     if (mode === 'login') {
         formLogin.classList.remove('hidden'); 
         formSignup.classList.add('hidden');
-        btnLogin.style.background = '#1e3a5f'; 
-        btnLogin.style.color = '#ffffff';
+        btnLogin.style.background = '#ffffff'; 
+        btnLogin.style.color = '#1e3a5f';
         btnSignup.style.background = 'transparent'; 
-        btnSignup.style.color = '';
+        btnSignup.style.color = 'rgba(255,255,255,0.7)';
     } else {
         formLogin.classList.add('hidden'); 
         formSignup.classList.remove('hidden');
         populateCenters();
-        btnSignup.style.background = '#1e3a5f'; 
-        btnSignup.style.color = '#ffffff';
+        btnSignup.style.background = '#ffffff'; 
+        btnSignup.style.color = '#1e3a5f';
         btnLogin.style.background = 'transparent'; 
-        btnLogin.style.color = '';
+        btnLogin.style.color = 'rgba(255,255,255,0.7)';
     }
 };
 
@@ -797,9 +797,9 @@ function renderNotificationsList() {
         const isNew = n.time > lastSeenN;
         if (isNew) unreadCount++;
         return `
-        <div class="p-2 ${isNew ? 'bg-blue-50/80 border-blue-200 dark:bg-slate-800 dark:border-blue-500/30' : 'bg-[#F3F6F9] border-slate-200 dark:bg-slate-800/50 dark:border-slate-700'} rounded-xl border mb-1.5 relative">
+        <div class="p-2 ${isNew ? 'bg-blue-50/80 border-blue-200 dark:bg-slate-800 dark:border-blue-500/30' : 'bg-slate-100 border-slate-200 dark:bg-slate-800/50 dark:border-slate-700'} rounded-xl border mb-1.5 relative">
             ${isNew ? '<span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-rose-500 rounded-full"></span>' : ''}
-            <p class="text-[11px] font-bold ${isNew ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-300'} pl-2 leading-relaxed">${escapeHTML(n.text)}</p>
+            <p class="text-[10.5px] font-bold ${isNew ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-300'} pl-2 leading-relaxed">${escapeHTML(n.text)}</p>
             <span class="block mt-0.5 text-[8.5px] text-slate-400 font-semibold">${new Date(n.time).toLocaleString('ar-EG')}</span>
         </div>`;
     }).join('');
@@ -823,7 +823,7 @@ window.toggleNotifPanel = () => {
     }
 };
 
-// تصميم احترافي وملموم لبطاقات المحادثات الواردة
+// تصميم احترافي متناسق لبطاقات المحادثات الواردة
 window.renderChatsUI = function() {
     if (isGuest) return;
     const list = document.getElementById('chat-history-list');
@@ -851,13 +851,13 @@ window.renderChatsUI = function() {
 
         return `
            <div onclick="window.openChat('${otherId}')" class="p-2 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm cursor-pointer bg-[#F3F6F9] dark:bg-[#243d54] flex items-center gap-2.5 relative hover:border-[#1e3a5f] active:scale-[0.98] transition-all overflow-hidden mb-1.5">
-               <img src="${window.getCloudinaryUrl(otherUser.photoURL, 'thumb')}" loading="lazy" class="w-9 h-9 rounded-full object-cover border border-slate-300 dark:border-slate-600 shrink-0">
+               <img src="${window.getCloudinaryUrl(otherUser.photoURL, 'thumb')}" loading="lazy" class="w-8 h-8 rounded-full object-cover border border-slate-300 dark:border-slate-600 shrink-0">
                <div class="flex-1 min-w-0">
                    <div class="flex justify-between items-center mb-0.5">
                        <h4 class="font-bold text-xs text-slate-800 dark:text-white truncate">${escapeHTML(otherUser.name)}</h4>
-                       <span class="text-[9px] text-slate-400 font-bold bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded">${time}</span>
+                       <span class="text-[9px] text-slate-400 font-bold bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded">${time}</span>
                    </div>
-                   <p class="text-[11px] truncate ${isNew ? 'font-bold text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400'}">${escapeHTML(c.lastMessage || '...')}</p>
+                   <p class="text-[10.5px] truncate ${isNew ? 'font-bold text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400'}">${escapeHTML(c.lastMessage || '...')}</p>
                </div>
                ${isNew ? '<div class="absolute top-2 left-2 w-1.5 h-1.5 bg-rose-500 rounded-full"></div>' : ''}
            </div>
@@ -910,7 +910,7 @@ function createJobCard(id, j) {
 
             <div class="bg-slate-200/50 dark:bg-slate-800/70 border border-slate-300 dark:border-slate-700 rounded-xl p-1.5 mb-2 text-xs max-h-20 overflow-y-auto custom-scrollbar">
                 <span class="text-slate-400 text-[9.5px] font-bold block mb-0.5">التفاصيل والشروط:</span>
-                <span class="text-slate-700 dark:text-slate-200 text-[11px] leading-relaxed whitespace-pre-wrap">${escapeHTML(j.desc)}</span>
+                <span class="text-slate-700 dark:text-slate-200 text-[10.5px] leading-relaxed whitespace-pre-wrap">${escapeHTML(j.desc)}</span>
             </div>
 
             <div class="flex gap-1.5">
@@ -1085,7 +1085,7 @@ function startListeners() {
                                 <div class="text-xs mb-0.5"><span class="text-slate-400 font-medium">الوظيفة المطلوبة:</span> <strong class="text-[#1e3a5f] dark:text-[#F2A51A] font-bold">${escapeHTML(req.profession)}</strong></div>
                                 <div class="bg-slate-200/50 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-xl p-1.5 text-xs max-h-16 overflow-y-auto custom-scrollbar">
                                     <span class="text-slate-400 font-medium text-[9.5px] block mb-0.5">الوصف:</span>
-                                    <span class="text-slate-700 dark:text-slate-200 text-[11px] leading-relaxed whitespace-pre-wrap">${escapeHTML(req.desc)}</span>
+                                    <span class="text-slate-700 dark:text-slate-200 text-[10.5px] leading-relaxed whitespace-pre-wrap">${escapeHTML(req.desc)}</span>
                                 </div>
                             </div>
                         </div>
@@ -1232,11 +1232,11 @@ async function loadReviewsToPage(targetId) {
                 <div class="flex justify-between items-start">
                     <div class="flex items-center gap-1">
                         <img src="${window.getCloudinaryUrl(r.fromPhoto, 'thumb')}" loading="lazy" class="w-4 h-4 rounded-full border border-slate-300 object-cover">
-                        <span class="text-[11px] font-bold dark:text-white">${escapeHTML(r.fromName)}</span>
+                        <span class="text-[10.5px] font-bold dark:text-white">${escapeHTML(r.fromName)}</span>
                     </div>
-                    <span class="text-[#F2A51A] text-[11px] tracking-widest">${'★'.repeat(r.stars)}</span>
+                    <span class="text-[#F2A51A] text-[10.5px] tracking-widest">${'★'.repeat(r.stars)}</span>
                 </div>
-                <p class="text-[10.5px] text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">${escapeHTML(r.comment)}</p>
+                <p class="text-[10px] text-slate-600 dark:text-slate-300 mt-0.5 leading-relaxed">${escapeHTML(r.comment)}</p>
             `;
             list.appendChild(el);
         });
@@ -1532,14 +1532,14 @@ function createUserCard(u) {
     return `
     <div class="fast-render-card">
         <div onclick="window.openUserProfilePage('${userStr}')" class="custom-card-box p-2.5 cursor-pointer flex items-center gap-2.5 active:scale-[0.98] transition-all hover:border-[#1e3a5f] mb-1.5">
-            <img src="${window.getCloudinaryUrl(u.photoURL, 'thumb')}" loading="lazy" class="w-9 h-9 rounded-full object-cover border border-slate-300 dark:border-slate-600 shrink-0 bg-slate-200">
+            <img src="${window.getCloudinaryUrl(u.photoURL, 'thumb')}" loading="lazy" class="w-8 h-8 rounded-full object-cover border border-slate-300 dark:border-slate-600 shrink-0 bg-slate-200">
             <div class="flex-1 min-w-0">
                 <div class="flex justify-between items-center mb-0.5">
                     <span class="text-xs font-bold text-slate-900 dark:text-white truncate"><span class="text-slate-400 font-normal text-[9.5px]">${isClient ? 'العميل:' : 'الاسم:'}</span> ${escapeHTML(u.name)}</span>
                     <span class="text-[9.5px] text-slate-400 font-medium shrink-0">${joinDate}</span>
                 </div>
-                <div class="text-[11px] mb-0.5"><span class="text-slate-400 font-medium text-[9.5px]">الوظيفة:</span> <strong class="text-[#1e3a5f] dark:text-[#F2A51A] font-bold">${escapeHTML(profStr)}</strong></div>
-                <div class="text-[10.5px] truncate"><span class="text-slate-400 font-medium text-[9.5px]">العنوان:</span> <strong class="text-slate-600 dark:text-slate-300">${escapeHTML(finalLocation)}</strong></div>
+                <div class="text-[10.5px] mb-0.5"><span class="text-slate-400 font-medium text-[9.5px]">الوظيفة:</span> <strong class="text-[#1e3a5f] dark:text-[#F2A51A] font-bold">${escapeHTML(profStr)}</strong></div>
+                <div class="text-[10px] truncate"><span class="text-slate-400 font-medium text-[9.5px]">العنوان:</span> <strong class="text-slate-600 dark:text-slate-300">${escapeHTML(finalLocation)}</strong></div>
             </div>
         </div>
     </div>`;
@@ -1713,7 +1713,7 @@ window.logout = async () => {
     document.getElementById('chat-nav-dot').classList.add('hidden');
     document.getElementById('act-notif-badge').classList.add('hidden');
     
-    // إخفاء زر الإضافة العلوي فوراً عند تسجيل الخروج
+    // إخفاء زر الإضافة العلوي فوراً عند الخروج
     const headerAddBtn = document.getElementById('header-add-btn');
     if (headerAddBtn) headerAddBtn.classList.add('hidden');
 
