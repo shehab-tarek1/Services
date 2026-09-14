@@ -1,26 +1,32 @@
 /* ==========================================================================
-   دليل الشرقية الماسي - التصميم الهندسي الموحد المتكامل (Master Stylesheet)
+   دليل الشرقية الماسي - الأنماط الماسية الموحدة (Master UI/UX Engine)
    ========================================================================== */
 
-/* 1. القوة القصوى للإخفاء البرمجي */
+/* 1. القوة القصوى للإخفاء البرمجي والأساسيات */
 .hidden { 
     display: none !important; 
 }
 
-/* 2. الإعدادات الأساسية والخلفية العامة السحابية الهادئة */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 html, body {
     margin: 0;
     padding: 0;
-    min-height: 100dvh !important;
+    min-height: 100vh;
+    min-height: 100dvh;
     font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif !important;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-y: none;
-    background-color: #EEF3F8 !important;
+    background-color: #EEF3F8 !important; /* خلفية سحابية مريحة للعين */
     color: #1e293b !important;
+    word-break: break-word;
 }
 
+/* في الوضع الداكن: خلفية الصفحات أفتح من درجة الهيدر بوضوح */
 .dark html, .dark body, body.dark {
-    background-color: #0f172a !important;
+    background-color: #1e3347 !important; /* أفتح من لون الهيدر الداكن */
     color: #f8fafc !important;
 }
 
@@ -35,9 +41,9 @@ button {
     font-family: inherit;
 }
 
-/* 3. شريط التمرير المخصص الناعم للقوائم والمحادثات */
+/* 2. شريط التمرير المخصص الناعم للقوائم والمحادثات */
 .custom-scrollbar::-webkit-scrollbar {
-    width: 4px !important;
+    width: 3px !important;
     display: block !important;
 }
 
@@ -54,279 +60,426 @@ button {
     background: #475569 !important;
 }
 
-/* 4. الهيدر العلوي الماسي بحواف دائرية أنيقة من الأسفل ومنظم هندسياً */
-#app-header, .glass-header {
+/* 3. شاشة التحميل الماسية (تغطي الموقع بالكامل وتمنع ظهور الهيدر السفلي) */
+#loader {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 999999 !important; /* أعلى من كل عناصر التطبيق */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
     background: linear-gradient(135deg, #365570, #1e3a5f) !important;
-    border-bottom: 0.75px solid rgba(255, 255, 255, 0.25) !important;
-    border-radius: 0 0 20px 20px !important;
-    box-shadow: 0 4px 18px rgba(30, 58, 95, 0.2) !important;
+    transition: opacity 0.25s ease !important;
+}
+
+.dark #loader {
+    background: linear-gradient(135deg, #1e3347, #152636) !important;
+}
+
+#loader.hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* تصميم الماسة المتلألئة */
+.diamond-icon-wrap {
+    position: relative;
+    width: 76px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.diamond-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2.5px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #F2A51A;
+    animation: spinRing 1s linear infinite;
+}
+
+@keyframes spinRing {
+    to { transform: rotate(360deg); }
+}
+
+.diamond-center-box {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(242, 165, 26, 0.6);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(242, 165, 26, 0.35);
+}
+
+/* 4. الهيدر العلوي المنظم بحواف دائرية أنيقة من الأسفل */
+#app-header, .glass-header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 54px !important;
+    background: linear-gradient(135deg, #365570, #1e3a5f) !important;
+    border-radius: 0 0 18px 18px !important;
+    border-bottom: 0.75px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 16px rgba(30, 58, 95, 0.18) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 14px !important;
+    z-index: 100 !important;
     color: #ffffff !important;
-    overflow: hidden !important;
+}
+
+.dark #app-header, .dark .glass-header {
+    background: linear-gradient(135deg, #162638, #122334) !important; /* أغمق درجة في التطبيق */
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 #app-header * {
     color: #ffffff !important;
 }
 
-/* 5. شاشة التحميل الماسية الفخمة */
-#loader {
+/* 5. شريط البحث الكبسولي الماسي (المسافة فوقه مطابقة لتحته مع حجب تام للبطاقات خلفه) */
+.search-sticky-wrapper {
+    position: sticky !important;
+    top: 54px !important;
+    z-index: 45 !important;
+    background-color: #EEF3F8 !important; /* معتم تماماً لمنع ظهور البطاقات خلفه */
+    padding: 5px 0 6px 0 !important;
+    margin-bottom: 6px !important;
+}
+
+.dark .search-sticky-wrapper {
+    background-color: #1e3347 !important;
+}
+
+/* المستطيل الخارجي بلون الهيدر الماسي */
+.search-outer-pill {
     background: linear-gradient(135deg, #365570, #1e3a5f) !important;
-}
-
-#loader.hidden {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transition: opacity 0.25s ease !important;
-}
-
-/* 6. تحويل كافة الإطارات القديمة إلى سيلفر لامع 0.75px وإلغاء الظلال السوداء الحادة */
-.border-black,
-.border-2,
-.border-black-custom,
-.border-gray-200,
-.border-gray-300,
-.border-gray-500,
-.border-gray-600 {
     border: 0.75px solid #cbd5e1 !important;
-    box-shadow: 0 2px 8px rgba(30, 58, 95, 0.05) !important;
+    border-radius: 9999px !important;
+    padding: 4px 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    box-shadow: 0 3px 10px rgba(30, 58, 95, 0.12) !important;
+    max-width: 620px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
 }
 
-.dark .border-black,
-.dark .border-2,
-.dark .border-black-custom,
-.dark .border-gray-500,
-.dark .border-gray-600 {
-    border: 0.75px solid #334155 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+.dark .search-outer-pill {
+    background: linear-gradient(135deg, #162638, #122334) !important;
+    border-color: #334155 !important;
 }
 
-/* 7. بطاقات المهن والخدمات (كروت أقسام الصفحة الرئيسية) */
+/* المستطيل الداخلي: أفتح درجة هادئة مريحة للعين مشتقة من الهيدر */
+.search-inner-soft {
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    background-color: #EBF2F7 !important; /* لون هادئ مريح مشتق من الهيدر */
+    border-radius: 9999px !important;
+    padding: 0 10px !important;
+    height: 35px !important;
+}
+
+.dark .search-inner-soft {
+    background-color: #243d54 !important;
+}
+
+.search-inner-soft input {
+    width: 100% !important;
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    padding: 0 4px !important;
+}
+
+.dark .search-inner-soft input {
+    color: #ffffff !important;
+}
+
+.search-inner-soft input::placeholder {
+    color: #64748b !important;
+}
+
+.dark .search-inner-soft input::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* زر قمع الفلترة المصغر بكلمة فلترة */
+.btn-filter-compact {
+    height: 32px !important;
+    padding: 0 11px !important;
+    background-color: #EBF2F7 !important;
+    color: #1e3a5f !important;
+    border: none !important;
+    border-radius: 9999px !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    transition: transform 0.15s ease !important;
+}
+
+.dark .btn-filter-compact {
+    background-color: #243d54 !important;
+    color: #F2A51A !important;
+}
+
+.btn-filter-compact:active {
+    transform: scale(0.95);
+}
+
+/* 6. كروت الأقسام والمهن (عزل الضباب والزجاج الثقيل لمنع أي لاج على المعالج) */
 .provider-card {
     border: 0.75px solid #cbd5e1 !important;
-    border-radius: 16px !important;
-    box-shadow: 0 2px 10px rgba(30, 58, 95, 0.06) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 6px rgba(30, 58, 95, 0.05) !important;
     overflow: hidden !important;
-    background-color: #ffffff !important;
+    background-color: #F3F6F9 !important;
     position: relative !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    height: 100px !important;
+    cursor: pointer !important;
+    transition: transform 0.15s ease !important;
 }
 
 .dark .provider-card {
-    border: 0.75px solid #334155 !important;
-    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    background-color: #243d54 !important;
 }
 
 .provider-card:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 16px rgba(30, 58, 95, 0.12) !important;
+    transform: translateY(-2px);
 }
 
-/* 8. بطاقات الوظائف والمستخدمين والنشاط والمحادثات المولدة برمجياً */
+.provider-card img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+/* كبسولة العنوان الممركزة خفيفة الظل وبدون أي لاج */
+.prof-badge-center {
+    position: absolute !important;
+    inset: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 4px !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.prof-badge-center span {
+    background: rgba(15, 23, 42, 0.75) !important; /* خلفية داكنة خفيفة عادية بدون لاج */
+    color: #ffffff !important;
+    font-size: 10.5px !important;
+    font-weight: 800 !important;
+    padding: 3px 10px !important;
+    border-radius: 9999px !important;
+    border: 0.5px solid rgba(255, 255, 255, 0.2) !important;
+    text-align: center !important;
+    max-width: 90% !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* 7. استبدال الأبيض الساطع برصاصي سيلفر هادئ مريح للعين على كافة البطاقات */
 .fast-render-card > div,
 #view-jobs > div,
 #my-activity > div,
 #matching-reqs-list > div,
-#chat-history-list > div {
+#chat-history-list > div,
+.custom-card-box {
     border: 0.75px solid #cbd5e1 !important;
-    border-radius: 18px !important;
-    box-shadow: 0 2px 10px rgba(30, 58, 95, 0.05) !important;
-    background-color: #ffffff !important;
-    transition: border-color 0.2s ease, transform 0.15s ease !important;
+    border-radius: 15px !important;
+    background-color: #F3F6F9 !important; /* رصاصي سيلفر هادئ مريح للعين */
+    box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
+    overflow: hidden !important;
+    word-break: break-word !important;
+    padding: 10px 12px !important;
+    margin-bottom: 7px !important;
 }
 
 .dark .fast-render-card > div,
 .dark #view-jobs > div,
 .dark #my-activity > div,
 .dark #matching-reqs-list > div,
-.dark #chat-history-list > div {
-    border: 0.75px solid #334155 !important;
-    background-color: #1e293b !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+.dark #chat-history-list > div,
+.dark .custom-card-box {
+    border-color: #334155 !important;
+    background-color: #243d54 !important; /* أفتح من خلفية الصفحة الداكنة */
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.25) !important;
 }
 
-/* تحسين الأداء للقوائم الطويلة */
-.fast-render-card { 
-    content-visibility: auto; 
-    contain-intrinsic-size: 110px; 
-    transform: translateZ(0); 
-    will-change: transform;
+/* 8. كود الدولة +20 في سطر واحد دائماً ومنع التفافه */
+.phone-input-wrap {
+    display: flex !important;
+    align-items: center !important;
+    border: 0.75px solid #cbd5e1 !important;
+    border-radius: 11px !important;
+    overflow: hidden !important;
+    background-color: #F3F6F9 !important;
+    height: 36px !important;
 }
 
-/* 9. حقول الإدخال، النصوص، والاختيارات الملمومة */
+.dark .phone-input-wrap {
+    border-color: #334155 !important;
+    background-color: #243d54 !important;
+}
+
+.phone-code-badge {
+    background-color: #e2e8f0 !important;
+    color: #334155 !important;
+    font-weight: 800 !important;
+    font-size: 11px !important;
+    padding: 0 8px !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-left: 0.75px solid #cbd5e1 !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    min-width: 42px !important;
+}
+
+.dark .phone-code-badge {
+    background-color: #1e3347 !important;
+    color: #cbd5e1 !important;
+    border-color: #334155 !important;
+}
+
+/* حقول الإدخال الهادئة الملمومة */
 input, select, textarea {
     border: 0.75px solid #cbd5e1 !important;
-    background-color: #ffffff !important;
-    font-size: 12px !important;
-    border-radius: 12px !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    background-color: #F3F6F9 !important;
+    border-radius: 11px !important;
+    font-size: 11px !important;
+    padding: 5px 9px !important;
+    width: 100% !important;
+    outline: none !important;
     color: #1e293b !important;
 }
 
-input:focus, select:focus, textarea:focus {
-    border-color: #1e3a5f !important;
-    outline: none !important;
-    box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.1) !important;
-}
-
 .dark input, .dark select, .dark textarea {
-    background-color: #1e293b !important;
-    border: 0.75px solid #334155 !important;
-    color: #ffffff !important;
-}
-
-.dark input:focus, .dark select:focus, .dark textarea:focus {
-    border-color: #F2A51A !important;
-    box-shadow: 0 0 0 2px rgba(242, 165, 26, 0.15) !important;
-}
-
-/* 10. شريط وحاوية البحث الكبسولية الفخمة (Pill Architecture) */
-#prof-search-box > div,
-#page-jobs .sticky > div,
-#page-directory .sticky > div,
-#page-category-details .sticky > div {
-    background: rgba(255, 255, 255, 0.96) !important;
-    backdrop-filter: blur(12px) !important;
-    border: 0.75px solid #cbd5e1 !important;
-    border-radius: 9999px !important;
-    box-shadow: 0 3px 12px rgba(30, 58, 95, 0.06) !important;
-}
-
-.dark #prof-search-box > div,
-.dark #page-jobs .sticky > div,
-.dark #page-directory .sticky > div,
-.dark #page-category-details .sticky > div {
-    background: rgba(30, 41, 59, 0.96) !important;
+    background-color: #243d54 !important;
     border-color: #334155 !important;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3) !important;
-}
-
-/* الحاوية الداخلية لشريط البحث */
-#prof-search-box input,
-#jobs-search-input,
-#dir-search,
-#cat-search {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    font-size: 12px !important;
-}
-
-/* 11. القوائم المنسدلة المخصصة الملمومة (Compact Custom Dropdowns) */
-.custom-select-wrapper {
-    position: relative;
-    user-select: none;
-    width: 100%;
-    margin-bottom: 0.35rem;
-}
-
-.custom-select {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.35rem 0.75rem !important;
-    border: 0.75px solid #cbd5e1 !important;
-    border-radius: 12px !important;
-    background-color: #ffffff !important;
-    cursor: pointer;
-    font-size: 11.5px !important;
-    font-weight: 600 !important;
-    height: 38px !important;
-    transition: all 0.2s ease;
-}
-
-.dark .custom-select {
-    border: 0.75px solid #334155 !important;
-    background-color: #1e293b !important;
     color: #ffffff !important;
 }
 
-.custom-options {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
+/* 9. زر الإضافة العلوي الحر (+) وجرس الإشعارات الدقيق */
+#header-add-btn {
+    background: transparent !important;
+    border: none !important;
+    padding: 2px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #ffffff !important;
+}
+
+#header-add-btn svg {
+    width: 24px !important;
+    height: 24px !important;
+    stroke-width: 2.8 !important;
+    color: #F2A51A !important; /* ذهبي ملكي ساطع */
+}
+
+.header-bell-btn {
+    background: transparent !important;
+    border: none !important;
+    padding: 3px !important;
+    position: relative !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.header-bell-btn svg {
+    width: 21px !important;
+    height: 21px !important;
+    color: #ffffff !important;
+}
+
+#notif-dot {
+    position: absolute !important;
+    top: 2px !important;
+    right: 2px !important;
+    width: 7.5px !important;
+    height: 7.5px !important;
+    background-color: #ef4444 !important;
+    border: 1.5px solid #1e3a5f !important;
+    border-radius: 50% !important;
+}
+
+/* 10. لوحة الإشعارات المنسدلة المنظمة بروفيشينال */
+#notif-panel {
+    position: fixed !important;
+    top: 58px !important;
+    left: 12px !important;
+    right: 12px !important;
+    max-width: 360px !important;
+    margin: 0 auto !important;
+    background-color: #F3F6F9 !important;
+    border-radius: 16px !important;
     border: 0.75px solid #cbd5e1 !important;
-    border-radius: 14px !important;
-    background-color: #ffffff !important;
-    z-index: 99999 !important;
-    overflow-y: auto;
-    max-height: 155px !important; /* طول ملموم وأنيق جداً */
-    display: none;
-    box-shadow: 0 8px 24px -4px rgba(30, 58, 95, 0.15) !important;
+    box-shadow: 0 10px 28px rgba(30, 58, 95, 0.2) !important;
+    z-index: 110 !important;
+    padding: 12px !important;
 }
 
-.dark .custom-options {
-    border: 0.75px solid #334155 !important;
-    background-color: #1e293b !important;
-    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4) !important;
+.dark #notif-panel {
+    background-color: #243d54 !important;
+    border-color: #334155 !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5) !important;
 }
 
-.custom-options.open {
-    display: block !important;
-    animation: dropDownFade 0.15s ease-out;
-}
-
-.custom-option {
-    padding: 0.45rem 0.75rem !important;
-    cursor: pointer;
-    font-size: 11.5px !important;
-    font-weight: 600;
-    transition: background-color 0.15s ease;
-}
-
-.custom-option:hover {
-    background-color: #EEF3F8 !important;
-    color: #1e3a5f !important;
-}
-
-.dark .custom-option:hover {
-    background-color: #334155 !important;
-    color: #F2A51A !important;
-}
-
-.custom-option.selected {
-    font-weight: 700;
-    background-color: #e2e8f0 !important;
-    color: #1e3a5f !important;
-}
-
-.dark .custom-option.selected {
-    background-color: #334155 !important;
-    color: #F2A51A !important;
-}
-
-/* 12. الهيدر السفلي الكبسولي العائم (Floating Capsule Navbar) - محمي ومسنتر 100% */
+/* 11. الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية */
 #nav-bar {
     position: fixed !important;
-    bottom: 12px !important;
+    bottom: 10px !important;
     left: 0 !important;
     right: 0 !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin: 0 auto !important;
     width: 92% !important;
-    max-width: 480px !important;
-    height: 56px !important;
-    border-radius: 22px !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
+    max-width: 440px !important;
+    height: 52px !important;
+    border-radius: 18px !important;
+    background: rgba(243, 246, 249, 0.96) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
     border: 0.75px solid #cbd5e1 !important;
-    box-shadow: 0 10px 30px -5px rgba(30, 58, 95, 0.2) !important;
-    z-index: 1000 !important;
+    box-shadow: 0 8px 24px -4px rgba(30, 58, 95, 0.16) !important;
+    z-index: 90 !important;
     display: flex !important;
     justify-content: space-around !important;
     align-items: center !important;
-    padding: 0 6px !important;
+    padding: 0 2px !important;
 }
 
 .dark #nav-bar {
-    background: rgba(30, 41, 59, 0.95) !important;
-    border: 0.75px solid #334155 !important;
-    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5) !important;
+    background: rgba(36, 61, 84, 0.96) !important;
+    border-color: #334155 !important;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* أزرار الهيدر السفلي */
 .nav-btn {
     display: flex !important;
     flex-direction: column !important;
@@ -337,183 +490,72 @@ input:focus, select:focus, textarea:focus {
     background: transparent !important;
     border: none !important;
     color: #94a3b8 !important;
-    transition: all 0.2s ease !important;
+    transition: all 0.15s ease !important;
     padding: 0 !important;
 }
 
 .nav-btn svg {
-    width: 20px !important;
-    height: 20px !important;
+    width: 18px !important;
+    height: 18px !important;
     margin-bottom: 2px !important;
 }
 
 .nav-btn span {
-    font-size: 9.5px !important;
+    font-size: 8.5px !important;
     font-weight: 700 !important;
-    line-height: 1 !important;
 }
 
 .nav-btn.active {
     color: #1e3a5f !important;
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
 .dark .nav-btn.active {
     color: #F2A51A !important;
 }
 
-/* حاوية زر الإضافة (+) العائم والبارز في المنتصف */
-#nav-add-btn-wrapper {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: relative !important;
-    top: -14px !important;
-    padding: 0 4px !important;
-    z-index: 1001 !important;
+/* 12. القوائم المنسدلة الملمومة والأنماط التكميلية */
+.custom-select-wrapper { position: relative; width: 100%; margin-bottom: 0.25rem; }
+.custom-select {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 3px 9px !important; border: 0.75px solid #cbd5e1 !important;
+    border-radius: 10px !important; background-color: #F3F6F9 !important;
+    height: 34px !important; font-size: 11px !important; cursor: pointer;
 }
+.dark .custom-select { background-color: #243d54 !important; border-color: #334155 !important; color: #ffffff !important; }
+.custom-options {
+    position: absolute; top: calc(100% + 3px); left: 0; right: 0;
+    border: 0.75px solid #cbd5e1 !important; border-radius: 12px !important;
+    background-color: #F3F6F9 !important; z-index: 9999; max-height: 135px !important;
+    overflow-y: auto; display: none; box-shadow: 0 6px 16px rgba(30, 58, 95, 0.12) !important;
+}
+.dark .custom-options { background-color: #243d54 !important; border-color: #334155 !important; }
+.custom-options.open { display: block !important; }
+.custom-option { padding: 5px 9px; font-size: 10.5px; cursor: pointer; }
+.custom-option:hover { background-color: #EEF3F8; color: #1e3a5f; }
+.dark .custom-option:hover { background-color: #1e3347; color: #F2A51A; }
 
-#nav-add-btn-wrapper.hidden {
-    display: none !important;
-}
-
-#nav-add-btn-wrapper button {
-    width: 46px !important;
-    height: 46px !important;
-    border-radius: 50% !important;
-    background: linear-gradient(135deg, #F2A51A, #d98207) !important;
-    color: #ffffff !important;
-    border: 2.5px solid #ffffff !important;
-    box-shadow: 0 6px 16px rgba(242, 165, 26, 0.45) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    transition: transform 0.15s ease !important;
-}
-
-.dark #nav-add-btn-wrapper button {
-    border-color: #1e293b !important;
-}
-
-#nav-add-btn-wrapper button:active {
-    transform: scale(0.9) !important;
-}
-
-/* 13. النوافذ المنبثقة الكاملة والشاملة */
-.full-screen-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 150;
-    background-color: #EEF3F8;
-    display: flex;
-    flex-direction: column;
-}
-
-.dark .full-screen-modal {
-    background-color: #0f172a;
-}
+.full-screen-modal { position: fixed; inset: 0; z-index: 150; background-color: #EEF3F8; display: flex; flex-direction: column; }
+.dark .full-screen-modal { background-color: #1e3347; }
 
 .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.7);
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    backdrop-filter: blur(6px);
+    position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
+    z-index: 200; display: flex; align-items: center; justify-content: center;
+    padding: 14px; backdrop-filter: blur(4px);
 }
 
-/* 14. إشعارات النظام الماسية (Toast Messages) */
-#toast-box {
-    position: fixed;
-    top: 20px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    z-index: 99999;
-    pointer-events: none;
-}
-
+#toast-box { position: fixed; top: 14px; left: 0; right: 0; display: flex; justify-content: center; z-index: 99999; pointer-events: none; }
 .toast-msg {
     background: linear-gradient(135deg, #365570, #1e3a5f);
-    color: #ffffff;
-    padding: 7px 18px;
-    border: 0.75px solid rgba(255, 255, 255, 0.35);
-    border-radius: 9999px;
-    font-size: 11px;
-    font-weight: 700;
-    box-shadow: 0 6px 20px rgba(30, 58, 95, 0.25);
-    opacity: 0;
-    transform: translateY(-16px);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    color: #ffffff; padding: 6px 15px; border: 0.75px solid rgba(255, 255, 255, 0.3);
+    border-radius: 9999px; font-size: 10.5px; font-weight: 700;
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2); opacity: 0;
+    transform: translateY(-10px); transition: all 0.15s ease;
 }
+.toast-msg.show { opacity: 1; transform: translateY(0); }
+.toast-msg.error { background: linear-gradient(135deg, #e11d48, #9f1239); }
 
-.toast-msg.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.toast-msg.error {
-    background: linear-gradient(135deg, #e11d48, #9f1239);
-}
-
-/* 15. الشارات (Badges) */
-.badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 8px;
-    border-radius: 9999px;
-    font-size: 10px;
-    font-weight: 700;
-    border: 0.75px solid #cbd5e1;
-}
-
-.dark .badge {
-    border: 0.75px solid #334155;
-}
-
-/* 16. نظام التقييم بالنجوم الذهبية */
-.star-rating {
-    direction: ltr;
-    display: inline-flex;
-}
-
-.star-rating input {
-    display: none;
-}
-
-.star-rating label {
-    color: #cbd5e1;
-    font-size: 22px;
-    padding: 0 2px;
-    cursor: pointer;
-    transition: color 0.15s ease;
-}
-
-.star-rating input:checked ~ label, 
-.star-rating label:hover, 
-.star-rating label:hover ~ label {
-    color: #F2A51A;
-}
-
-/* 17. تأثيرات الحركة الانتقالية الناعمة */
-@keyframes dropDownFade {
-    from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes popIn {
-    0% { opacity: 0; transform: scale(0.94); }
-    100% { opacity: 1; transform: scale(1); }
-}
-
-.animate-pop {
-    animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-fade {
-    animation: dropDownFade 0.2s ease-out forwards;
-}
+.star-rating { direction: ltr; display: inline-flex; }
+.star-rating input { display: none; }
+.star-rating label { color: #cbd5e1; font-size: 18px; padding: 0 1px; cursor: pointer; }
+.star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #F2A51A; }
