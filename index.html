@@ -24,9 +24,9 @@
     <link rel="stylesheet" href="tailwind.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- محرك التنسيقات المتكامل المستقل تماماً عن أي توليد خارجي -->
+    <!-- محرك التنسيقات الماسي الشامل المتوافق مع الوضعين الفاتح والداكن بدقة -->
     <style>
-        /* 1. ضبط الأساسيات والإخفاء البرمجي */
+        /* 1. الإخفاء والأساسيات */
         .hidden { display: none !important; }
 
         *, *::before, *::after {
@@ -47,7 +47,7 @@
 
         .dark html, .dark body {
             background-color: #0f172a !important;
-            color: #f8fafc;
+            color: #f8fafc !important;
         }
 
         /* 2. الهيدر العلوي الماسي المنظم بحواف سفلية دائرية */
@@ -56,11 +56,11 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 60px;
+            height: 56px;
             background: linear-gradient(135deg, #365570, #1e3a5f) !important;
             border-radius: 0 0 20px 20px !important;
             border-bottom: 0.75px solid rgba(255, 255, 255, 0.25) !important;
-            box-shadow: 0 4px 20px rgba(30, 58, 95, 0.2) !important;
+            box-shadow: 0 4px 18px rgba(30, 58, 95, 0.2) !important;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -72,46 +72,51 @@
             color: #ffffff;
         }
 
-        /* الحاوية الأم لجميع الصفحات - دفع المحتوى لأسفل لمنع اختفائه خلف الهيدر */
+        /* الحاوية الأم لكافة الصفحات */
         #app-view {
-            padding-top: 76px !important;
-            padding-bottom: 90px !important;
+            padding-top: 68px !important;
+            padding-bottom: 80px !important;
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             min-height: 100vh;
         }
 
-        /* 3. حاويات البحث الكبسولية الفخمة */
+        /* 3. حاوية شريط البحث الكبسولية (معتمة تماماً لحجب البطاقات خلفها) */
         .search-sticky-wrapper {
             position: sticky;
-            top: 64px;
+            top: 56px;
             z-index: 40;
-            background-color: #EEF3F8 !important; /* يحجب البطاقات تحتها تماماً */
-            padding: 8px 0 12px 0;
-            margin-bottom: 8px;
+            background-color: #EEF3F8 !important; /* معتمة بنسبة 100% لتمنع ظهور البطاقات خلفها أثناء التمرير */
+            padding: 8px 0;
+            margin-bottom: 6px;
         }
 
         .dark .search-sticky-wrapper {
             background-color: #0f172a !important;
         }
 
-        /* المستطيل الخارجي بنفس لون الهيدر الماسي */
+        /* المستطيل الخارجي بنفس تدرج الهيدر */
         .search-outer-pill {
             background: linear-gradient(135deg, #365570, #1e3a5f) !important;
             border: 0.75px solid #cbd5e1;
             border-radius: 9999px;
-            padding: 6px 8px;
+            padding: 5px 8px;
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 14px rgba(30, 58, 95, 0.15);
-            max-width: 680px;
+            box-shadow: 0 3px 12px rgba(30, 58, 95, 0.15);
+            max-width: 640px;
             margin: 0 auto;
             width: 100%;
         }
 
-        /* المستطيل الداخلي أبيض ناصع بحواف جانبية دائرية */
+        .dark .search-outer-pill {
+            border-color: #334155;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* المستطيل الداخلي أبيض ناصع تماماً */
         .search-inner-white {
             flex: 1;
             display: flex;
@@ -120,7 +125,10 @@
             border-radius: 9999px;
             padding: 0 12px;
             height: 38px;
-            border: 0.75px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .search-inner-white {
+            background-color: #1e293b !important;
         }
 
         .search-inner-white input {
@@ -131,7 +139,11 @@
             font-size: 12px;
             font-weight: 600;
             color: #1e293b !important;
-            padding: 0 6px;
+            padding: 0 4px;
+        }
+
+        .dark .search-inner-white input {
+            color: #ffffff !important;
         }
 
         .search-inner-white input::placeholder {
@@ -152,26 +164,87 @@
             align-items: center;
             gap: 6px;
             cursor: pointer;
+            flex-shrink: 0;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             transition: transform 0.15s ease;
-            flex-shrink: 0;
+        }
+
+        .dark .btn-filter-funnel {
+            background-color: #1e293b !important;
+            color: #F2A51A !important;
         }
 
         .btn-filter-funnel:active {
             transform: scale(0.95);
         }
 
-        /* 4. زر الإضافة في الهيدر العلوي */
+        /* 4. كروت الأقسام والمهن (العناوين ممركزة في قلب البطاقة بخلفية كبسولية مظللة) */
+        .provider-card {
+            border: 0.75px solid #cbd5e1 !important;
+            border-radius: 16px !important;
+            box-shadow: 0 2px 8px rgba(30, 58, 95, 0.06) !important;
+            overflow: hidden !important;
+            background-color: #ffffff !important;
+            position: relative !important;
+            height: 105px !important;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .dark .provider-card {
+            border-color: #334155 !important;
+            background-color: #1e293b !important;
+        }
+
+        .provider-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .provider-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* الكبسولة الداكنة الشفافة الممركزة في قلب البطاقة */
+        .prof-badge-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .prof-badge-center span {
+            background: rgba(0, 0, 0, 0.68);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: #ffffff !important;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            border: 0.5px solid rgba(255, 255, 255, 0.25);
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            max-width: 90%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 5. زر الإضافة العلوي الحر (+) */
         #header-add-btn {
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
             cursor: pointer;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 0 4px;
+            padding: 4px;
             color: #ffffff !important;
             transition: transform 0.15s ease;
         }
@@ -183,24 +256,16 @@
         #header-add-btn svg {
             width: 26px;
             height: 26px;
-            stroke-width: 2.8;
-            color: #F2A51A; /* ذهبي ملكي بارز */
+            stroke-width: 2.6;
+            color: #F2A51A; /* ذهبي ملكي ساطع */
         }
 
-        #header-add-btn span {
-            font-size: 8.5px;
-            font-weight: 800;
-            line-height: 1;
-            margin-top: 1px;
-            color: #ffffff;
-        }
-
-        /* 5. جرس الإشعارات بدون إطار مع نقطة إشعار واضحة ودقيقة */
+        /* 6. جرس الإشعارات بدون إطار مع نقطة إشعار دقيقة ومسنترة */
         .header-bell-btn {
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
-            padding: 6px;
+            padding: 4px;
             position: relative;
             cursor: pointer;
             display: flex;
@@ -209,64 +274,96 @@
         }
 
         .header-bell-btn svg {
-            width: 23px;
-            height: 23px;
+            width: 22px;
+            height: 22px;
             color: #ffffff;
         }
 
         #notif-dot {
             position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 9px;
-            height: 9px;
-            background-color: #ef4444; /* أحمر ساطع */
-            border: 2px solid #1e3a5f;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border: 1.5px solid #1e3a5f;
             border-radius: 50%;
-            box-shadow: 0 0 4px rgba(239, 68, 68, 0.8);
         }
 
-        /* 6. تهيئة البطاقات والكروت ومنع خروج البيانات */
-        .provider-card,
+        /* 7. كروت الصفحات وحل مشكلة المسافات المبالغ فيها وخروج البيانات */
         .fast-render-card > div,
         #view-jobs > div,
         #my-activity > div,
         #matching-reqs-list > div,
         #chat-history-list > div {
             border: 0.75px solid #cbd5e1 !important;
-            border-radius: 18px !important;
+            border-radius: 16px !important;
             background-color: #ffffff !important;
-            box-shadow: 0 3px 12px rgba(30, 58, 95, 0.05) !important;
+            box-shadow: 0 2px 8px rgba(30, 58, 95, 0.05) !important;
             overflow: hidden !important;
             word-break: break-word !important;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            padding: 12px 14px !important;
+            margin-bottom: 8px;
         }
 
-        .dark .provider-card,
         .dark .fast-render-card > div,
         .dark #view-jobs > div,
         .dark #my-activity > div,
         .dark #matching-reqs-list > div,
         .dark #chat-history-list > div {
-            border: 0.75px solid #334155 !important;
+            border-color: #334155 !important;
             background-color: #1e293b !important;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
         }
 
-        /* حقول الإدخال والاختيارات */
+        /* تصحيح كود الهاتف +20 ليظهر في سطر واحد دائماً */
+        .phone-input-wrap {
+            display: flex;
+            align-items: center;
+            border: 0.75px solid #cbd5e1;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #ffffff;
+            height: 38px;
+        }
+
+        .dark .phone-input-wrap {
+            border-color: #334155;
+            background-color: #1e293b;
+        }
+
+        .phone-code-badge {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-weight: 700;
+            font-size: 11px;
+            padding: 0 10px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 0.75px solid #cbd5e1;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+            min-width: 44px;
+        }
+
+        .dark .phone-code-badge {
+            background-color: #0f172a;
+            color: #94a3b8;
+            border-color: #334155;
+        }
+
+        /* الحقول والاختيارات الملمومة */
         input, select, textarea {
             border: 0.75px solid #cbd5e1 !important;
             background-color: #ffffff !important;
             border-radius: 12px !important;
-            font-size: 12px !important;
-            padding: 8px 12px !important;
+            font-size: 11.5px !important;
+            padding: 6px 10px !important;
             width: 100%;
             outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: #1e3a5f !important;
+            color: #1e293b;
         }
 
         .dark input, .dark select, .dark textarea {
@@ -275,71 +372,7 @@
             color: #ffffff !important;
         }
 
-        /* 7. القوائم المنسدلة المخصصة الملمومة */
-        .custom-select-wrapper {
-            position: relative;
-            width: 100%;
-            margin-bottom: 0.35rem;
-        }
-
-        .custom-select {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 6px 12px !important;
-            border: 0.75px solid #cbd5e1 !important;
-            border-radius: 12px !important;
-            background-color: #ffffff !important;
-            height: 38px !important;
-            font-size: 11.5px !important;
-            cursor: pointer;
-        }
-
-        .dark .custom-select {
-            background-color: #1e293b !important;
-            border-color: #334155 !important;
-            color: #ffffff !important;
-        }
-
-        .custom-options {
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            right: 0;
-            border: 0.75px solid #cbd5e1 !important;
-            border-radius: 14px !important;
-            background-color: #ffffff !important;
-            z-index: 9999;
-            max-height: 150px !important;
-            overflow-y: auto;
-            display: none;
-            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.15) !important;
-        }
-
-        .dark .custom-options {
-            background-color: #1e293b !important;
-            border-color: #334155 !important;
-        }
-
-        .custom-options.open { display: block !important; }
-
-        .custom-option {
-            padding: 6px 12px;
-            font-size: 11.5px;
-            cursor: pointer;
-        }
-
-        .custom-option:hover {
-            background-color: #EEF3F8;
-            color: #1e3a5f;
-        }
-
-        .dark .custom-option:hover {
-            background-color: #334155;
-            color: #F2A51A;
-        }
-
-        /* 8. الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية */
+        /* 8. الهيدر السفلي الكبسولي العائم المتوازن */
         #nav-bar {
             position: fixed !important;
             bottom: 12px !important;
@@ -347,14 +380,14 @@
             right: 0 !important;
             margin: 0 auto !important;
             width: 92% !important;
-            max-width: 480px !important;
-            height: 56px !important;
-            border-radius: 22px !important;
-            background: rgba(255, 255, 255, 0.95) !important;
+            max-width: 460px !important;
+            height: 54px !important;
+            border-radius: 20px !important;
+            background: rgba(255, 255, 255, 0.96) !important;
             backdrop-filter: blur(14px) !important;
             -webkit-backdrop-filter: blur(14px) !important;
             border: 0.75px solid #cbd5e1 !important;
-            box-shadow: 0 10px 30px -5px rgba(30, 58, 95, 0.2) !important;
+            box-shadow: 0 10px 25px -5px rgba(30, 58, 95, 0.18) !important;
             z-index: 90 !important;
             display: flex !important;
             justify-content: space-around !important;
@@ -363,9 +396,9 @@
         }
 
         .dark #nav-bar {
-            background: rgba(30, 41, 59, 0.95) !important;
-            border: 0.75px solid #334155 !important;
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5) !important;
+            background: rgba(30, 41, 59, 0.96) !important;
+            border-color: #334155 !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
         }
 
         .nav-btn {
@@ -383,13 +416,13 @@
         }
 
         .nav-btn svg {
-            width: 20px !important;
-            height: 20px !important;
+            width: 19px !important;
+            height: 19px !important;
             margin-bottom: 2px !important;
         }
 
         .nav-btn span {
-            font-size: 9.5px !important;
+            font-size: 9px !important;
             font-weight: 700 !important;
         }
 
@@ -402,42 +435,60 @@
             color: #F2A51A !important;
         }
 
-        /* بقية العناصر والأنماط التكميلية */
+        /* 9. القوائم المنسدلة المخصصة الملمومة */
+        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 0.35rem; }
+        .custom-select {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 4px 10px !important; border: 0.75px solid #cbd5e1 !important;
+            border-radius: 12px !important; background-color: #ffffff !important;
+            height: 36px !important; font-size: 11.5px !important; cursor: pointer;
+        }
+        .dark .custom-select { background-color: #1e293b !important; border-color: #334155 !important; color: #ffffff !important; }
+        .custom-options {
+            position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+            border: 0.75px solid #cbd5e1 !important; border-radius: 12px !important;
+            background-color: #ffffff !important; z-index: 9999; max-height: 140px !important;
+            overflow-y: auto; display: none; box-shadow: 0 6px 18px rgba(30, 58, 95, 0.12) !important;
+        }
+        .dark .custom-options { background-color: #1e293b !important; border-color: #334155 !important; }
+        .custom-options.open { display: block !important; }
+        .custom-option { padding: 6px 10px; font-size: 11px; cursor: pointer; }
+        .custom-option:hover { background-color: #EEF3F8; color: #1e3a5f; }
+        .dark .custom-option:hover { background-color: #334155; color: #F2A51A; }
+
+        /* بقية الأنماط التكميلية */
         .custom-scrollbar::-webkit-scrollbar { width: 4px; display: block; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
 
-        .full-screen-modal {
-            position: fixed; inset: 0; z-index: 150;
-            background-color: #EEF3F8; display: flex; flex-direction: column;
-        }
+        .full-screen-modal { position: fixed; inset: 0; z-index: 150; background-color: #EEF3F8; display: flex; flex-direction: column; }
         .dark .full-screen-modal { background-color: #0f172a; }
 
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7);
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
             z-index: 200; display: flex; align-items: center; justify-content: center;
-            padding: 16px; backdrop-filter: blur(6px);
+            padding: 16px; backdrop-filter: blur(4px);
         }
 
-        #toast-box { position: fixed; top: 20px; left: 0; right: 0; display: flex; justify-content: center; z-index: 99999; pointer-events: none; }
+        #toast-box { position: fixed; top: 16px; left: 0; right: 0; display: flex; justify-content: center; z-index: 99999; pointer-events: none; }
         .toast-msg {
             background: linear-gradient(135deg, #365570, #1e3a5f);
-            color: #ffffff; padding: 7px 18px; border: 0.75px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff; padding: 6px 16px; border: 0.75px solid rgba(255, 255, 255, 0.3);
             border-radius: 9999px; font-size: 11px; font-weight: 700;
-            box-shadow: 0 6px 20px rgba(30, 58, 95, 0.25); opacity: 0;
-            transform: translateY(-16px); transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(30, 58, 95, 0.2); opacity: 0;
+            transform: translateY(-12px); transition: all 0.2s ease;
         }
         .toast-msg.show { opacity: 1; transform: translateY(0); }
         .toast-msg.error { background: linear-gradient(135deg, #e11d48, #9f1239); }
 
         .star-rating { direction: ltr; display: inline-flex; }
         .star-rating input { display: none; }
-        .star-rating label { color: #cbd5e1; font-size: 22px; padding: 0 2px; cursor: pointer; }
+        .star-rating label { color: #cbd5e1; font-size: 20px; padding: 0 2px; cursor: pointer; }
         .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #F2A51A; }
     </style>
 
     <!-- استدعاء ملف الستايل الخارجي -->
-    <link rel="stylesheet" href="style.css?v=4.0">
+    <link rel="stylesheet" href="style.css?v=5.0">
 
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -454,50 +505,48 @@
 
     <!-- Luxury Loader -->
     <div id="loader" class="fixed inset-0 z-[200] flex flex-col items-center justify-center transition-opacity duration-300">
-        <div class="relative w-20 h-20 flex items-center justify-center">
+        <div class="relative w-16 h-16 flex items-center justify-center">
             <div class="absolute inset-0 border-2 border-white/20 rounded-full"></div>
             <div class="absolute inset-0 border-2 border-t-[#F2A51A] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
-            <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center shadow-lg border border-white/30">
-                <svg class="w-6 h-6 text-[#F2A51A] animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+            <div class="w-8 h-8 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/30">
+                <svg class="w-5 h-5 text-[#F2A51A] animate-pulse" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2.5L3.5 11 12 21.5 20.5 11 12 2.5zm0 2.8l5.5 6.2H6.5l5.5-6.2zM5.2 12.5h13.6L12 18.7 5.2 12.5z"/>
                 </svg>
             </div>
         </div>
-        <h2 class="mt-4 text-sm font-extrabold tracking-wider text-white">دليل الشرقية</h2>
-        <p class="mt-1 text-[10px] text-slate-300 font-semibold">جاري التجهيز...</p>
+        <h2 class="mt-3 text-xs font-extrabold text-white">دليل الشرقية</h2>
     </div>
 
     <!-- Header العلوي المنظم مع زر الإضافة الجديد وبدون إطار للإشعارات -->
     <header id="app-header">
-        <div class="flex items-center gap-2 md:gap-3">
+        <div class="flex items-center gap-2">
             <button id="btn-back" onclick="window.goBack()" class="p-1 rounded-lg text-white hover:bg-white/10 hidden transition-all active:scale-90">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
             </button>
             <h1 id="page-title" class="text-xs md:text-sm font-black text-white flex items-center gap-1 tracking-wide">الرئيسية</h1>
         </div>
         
-        <div class="flex items-center gap-3 md:gap-4">
-            <!-- زر الإضافة المنقول للهيدر العلوي (بدون إطار وبدون خلفية ويظهر فقط للمسجلين) -->
+        <div class="flex items-center gap-3">
+            <!-- زر الإضافة المنقول للهيدر العلوي (حر وبدون إطار وبدون خلفية) -->
             <button id="header-add-btn" onclick="window.navTo('add')" class="hidden" title="إضافة جديد">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                <span>إضافة</span>
             </button>
 
-            <!-- جرس الإشعارات الحر بدون إطار وبنقطة إشعار دقيقة -->
+            <!-- جرس الإشعارات بدون إطار -->
             <button onclick="window.toggleNotifPanel()" class="header-bell-btn" title="الإشعارات">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                 <span id="notif-dot" class="hidden"></span>
             </button>
 
-            <!-- الصورة الشخصية للمستخدم -->
+            <!-- الصورة الشخصية -->
             <img id="header-avatar" src="icons/icon-192x192.png" class="w-8 h-8 rounded-full bg-white/20 object-cover border border-white/60 shadow cursor-pointer hover:ring-2 hover:ring-[#F2A51A] transition-all" onclick="window.navTo('profile')">
         </div>
     </header>
 
     <!-- لوحة الإشعارات المنسدلة -->
-    <div id="notif-panel" class="fixed top-16 left-4 right-4 max-w-md mx-auto bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 shadow-2xl z-50 hidden p-4">
-        <div class="flex justify-between items-center mb-3 border-b border-slate-200 dark:border-slate-700 pb-2">
-            <h3 class="font-black text-xs md:text-sm text-slate-800 dark:text-white">الإشعارات والتنبيهات</h3>
+    <div id="notif-panel" class="fixed top-16 left-4 right-4 max-w-sm mx-auto bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 shadow-2xl z-50 hidden p-3.5">
+        <div class="flex justify-between items-center mb-2.5 border-b border-slate-200 dark:border-slate-700 pb-2">
+            <h3 class="font-black text-xs text-slate-800 dark:text-white">الإشعارات والتنبيهات</h3>
             <button onclick="window.toggleNotifPanel()" class="text-slate-400 hover:text-rose-500 font-bold p-1">✕</button>
         </div>
         <div id="notif-list" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar pr-1">
@@ -509,70 +558,70 @@
     <main id="app-view" class="px-3 md:px-6">
 
         <!-- AUTH SECTION -->
-        <section id="page-auth" class="page-section hidden max-w-md mx-auto py-6">
-            <div class="text-center mb-5">
-                <h1 class="text-xl font-black text-slate-900 dark:text-white">دليل الشرقية</h1>
-                <p class="text-xs text-slate-500 mt-1">سجل الدخول لنشر طلباتك وخدماتك</p>
+        <section id="page-auth" class="page-section hidden max-w-sm mx-auto py-3">
+            <div class="text-center mb-4">
+                <h1 class="text-lg font-black text-slate-900 dark:text-white">دليل الشرقية</h1>
+                <p class="text-[11px] text-slate-500 mt-0.5">سجل الدخول لنشر طلباتك وخدماتك</p>
             </div>
 
-            <div class="bg-slate-200 dark:bg-slate-800 p-1 rounded-xl flex mb-4 border border-slate-300 dark:border-slate-700 h-10">
+            <div class="bg-slate-200 dark:bg-slate-800 p-1 rounded-xl flex mb-3 border border-slate-300 dark:border-slate-700 h-9">
                 <button onclick="window.switchAuthMode('login')" id="btn-mode-login" class="flex-1 rounded-lg text-xs font-bold transition-all" style="background: #1e3a5f; color: white;">دخول</button>
                 <button onclick="window.switchAuthMode('signup')" id="btn-mode-signup" class="flex-1 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400 bg-transparent transition-all">حساب جديد</button>
             </div>
 
             <!-- Login Form -->
-            <form id="form-login" class="space-y-3">
-                <div class="bg-white dark:bg-[#1e293b] p-5 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm space-y-3">
-                    <div class="flex rounded-xl border border-slate-300 dark:border-slate-600 overflow-hidden h-10 bg-slate-50 dark:bg-slate-800">
+            <form id="form-login" class="space-y-2.5">
+                <div class="bg-white dark:bg-[#1e293b] p-4 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm space-y-2.5">
+                    <div class="phone-input-wrap">
                         <input type="tel" id="login-phone" placeholder="رقم الهاتف (10 أرقام)" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
-                        <span class="bg-slate-100 dark:bg-slate-700 px-3 flex items-center font-bold text-xs text-slate-600 dark:text-slate-300 border-l border-slate-300 dark:border-slate-600" dir="ltr">+20</span>
+                        <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <input type="password" id="login-pass" placeholder="كلمة المرور" class="h-10 bg-slate-50 dark:bg-slate-800 font-semibold" required>
-                    <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs text-white shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تسجيل الدخول</button>
+                    <input type="password" id="login-pass" placeholder="كلمة المرور" class="h-9 bg-slate-50 dark:bg-slate-800 font-semibold" required>
+                    <button type="submit" class="w-full py-2 rounded-xl font-bold text-xs text-white shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تسجيل الدخول</button>
                 </div>
             </form>
 
             <!-- Signup Form -->
-            <form id="form-signup" class="hidden bg-white dark:bg-[#1e293b] p-5 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm space-y-3">
+            <form id="form-signup" class="hidden bg-white dark:bg-[#1e293b] p-4 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm space-y-2.5">
                 <div class="flex justify-center mb-1">
-                    <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 border border-dashed border-slate-400 relative overflow-hidden cursor-pointer" onclick="document.getElementById('signup-file').click()">
+                    <div class="w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 border border-dashed border-slate-400 relative overflow-hidden cursor-pointer" onclick="document.getElementById('signup-file').click()">
                         <img id="signup-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239ca3af'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" class="w-full h-full object-cover">
                     </div>
                     <input type="file" id="signup-file" class="hidden" accept="image/*" onchange="window.handleImageUpload(this, 'signup-preview')">
                 </div>
 
                 <div class="space-y-2">
-                    <input type="text" id="signup-name" placeholder="الاسم الكامل" class="h-9 bg-slate-50 dark:bg-slate-800 font-semibold" required>
-                    <div class="flex rounded-xl border border-slate-300 dark:border-slate-600 overflow-hidden h-9 bg-slate-50 dark:bg-slate-800">
+                    <input type="text" id="signup-name" placeholder="الاسم الكامل" class="h-8 bg-slate-50 dark:bg-slate-800 font-semibold" required>
+                    <div class="phone-input-wrap h-8">
                         <input type="tel" id="signup-phone" placeholder="رقم الهاتف (10 أرقام)" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
-                        <span class="bg-slate-100 dark:bg-slate-700 px-3 flex items-center font-bold text-xs text-slate-600 dark:text-slate-300 border-l border-slate-300 dark:border-slate-600" dir="ltr">+20</span>
+                        <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <input type="password" id="signup-pass" placeholder="كلمة المرور" class="h-9 bg-slate-50 dark:bg-slate-800 font-semibold" required>
+                    <input type="password" id="signup-pass" placeholder="كلمة المرور" class="h-8 bg-slate-50 dark:bg-slate-800 font-semibold" required>
 
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="signup-center" onchange="window.updateVillages()" class="h-9 bg-slate-50 dark:bg-slate-800"><option value="">المركز</option></select>
-                        <select id="signup-village" class="h-9 bg-slate-50 dark:bg-slate-800"><option value="">القرية</option></select>
+                        <select id="signup-center" onchange="window.updateVillages()" class="h-8 bg-slate-50 dark:bg-slate-800"><option value="">المركز</option></select>
+                        <select id="signup-village" class="h-8 bg-slate-50 dark:bg-slate-800"><option value="">القرية</option></select>
                     </div>
-                    <input type="text" id="signup-address-detail" placeholder="العنوان التفصيلي (اختياري)" class="h-9 bg-slate-50 dark:bg-slate-800">
+                    <input type="text" id="signup-address-detail" placeholder="العنوان التفصيلي (اختياري)" class="h-8 bg-slate-50 dark:bg-slate-800">
 
                     <div class="grid grid-cols-2 gap-2">
-                        <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-300 dark:border-slate-600 h-8 items-center">
+                        <div class="flex bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-300 dark:border-slate-600 h-8 items-center">
                             <label class="flex-1 text-center cursor-pointer text-[10px] font-bold"><input type="radio" name="gender" value="male" checked> ذكر</label>
                             <label class="flex-1 text-center cursor-pointer text-[10px] font-bold"><input type="radio" name="gender" value="female"> أنثى</label>
                         </div>
-                        <div class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-300 dark:border-slate-600 h-8 items-center">
+                        <div class="flex bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-300 dark:border-slate-600 h-8 items-center">
                             <label class="flex-1 text-center cursor-pointer text-[10px] font-bold"><input type="radio" name="role" value="client" checked onchange="window.toggleProfVisibility(false)"> عميل</label>
                             <label class="flex-1 text-center cursor-pointer text-[10px] font-bold"><input type="radio" name="role" value="provider" onchange="window.toggleProfVisibility(true)"> صنايعي</label>
                         </div>
                     </div>
 
                     <div id="prof-container" class="hidden">
-                        <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="h-9 bg-slate-50 dark:bg-slate-800"><option value="">اختر المهنة...</option></select>
-                        <input type="text" id="signup-custom-prof" placeholder="اكتب الخدمة المخصصة..." class="hidden h-9 mt-1 border border-blue-400 bg-blue-50 dark:bg-slate-800">
+                        <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="h-8 bg-slate-50 dark:bg-slate-800"><option value="">اختر المهنة...</option></select>
+                        <input type="text" id="signup-custom-prof" placeholder="اكتب الخدمة المخصصة..." class="hidden h-8 mt-1 border border-blue-400 bg-blue-50 dark:bg-slate-800">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-2.5 text-white rounded-xl font-bold text-xs mt-2 shadow" style="background: #20B486;">إنشاء الحساب</button>
+                <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs mt-1 shadow" style="background: #20B486;">إنشاء الحساب</button>
             </form>
         </section>
 
@@ -583,7 +632,7 @@
                 <button id="tab-home-jobs"></button>
             </div>
 
-            <!-- حاوية البحث الكبسولية الفخمة في الصفحة الرئيسية (خارجي بلون الهيدر وداخلي أبيض معتم لا يظهر شيء خلفه) -->
+            <!-- حاوية البحث الكبسولية الفخمة في الصفحة الرئيسية (خارجي بلون الهيدر وداخلي أبيض معتم) -->
             <div id="prof-search-box" class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-white">
@@ -596,20 +645,20 @@
 
             <!-- شبكة الأقسام والمهن -->
             <div id="view-services">
-                <div id="professions-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2.5 md:gap-3.5"></div>
+                <div id="professions-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2.5 md:gap-3"></div>
             </div>
         </section>
 
         <!-- PAGE JOBS: DEDICATED JOBS SECTION -->
         <section id="page-jobs" class="page-section hidden">
-            <!-- حاوية شريط البحث الكبسولية في صفحة الوظائف مع قمع الفلترة -->
+            <!-- حاوية شريط البحث في صفحة الوظائف مع قمع الفلترة -->
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-white">
                         <svg class="w-4 h-4 text-slate-400 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="jobs-search-input" onkeyup="window.filterJobsList && window.filterJobsList()" placeholder="ابحث في الوظائف (المسمى، الراتب، التفاصيل)...">
                     </div>
-                    <!-- زر قمع الفلترة بلون أبيض ناصع وأنيق -->
+                    <!-- زر قمع الفلترة -->
                     <button onclick="window.toggleJobsFilterModal()" class="btn-filter-funnel">
                         <svg class="w-4 h-4 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                         <span>فلترة</span>
@@ -618,30 +667,30 @@
             </div>
 
             <!-- مودال فلترة الوظائف الملموم -->
-            <div id="jobs-filter-modal" class="hidden mb-4 p-4 rounded-2xl bg-white dark:bg-[#1e293b] border border-slate-300 dark:border-slate-700 shadow-md max-w-xl mx-auto">
-                <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-200 dark:border-slate-700">
-                    <span class="text-xs font-bold text-slate-800 dark:text-slate-100">تصفية نتائج الوظائف</span>
+            <div id="jobs-filter-modal" class="hidden mb-3 p-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-slate-300 dark:border-slate-700 shadow-md max-w-lg mx-auto">
+                <div class="flex justify-between items-center mb-2 pb-1.5 border-b border-slate-200 dark:border-slate-700">
+                    <span class="text-xs font-bold text-slate-800 dark:text-slate-100">تصفية الوظائف</span>
                     <button onclick="window.toggleJobsFilterModal()" class="text-xs text-slate-400 hover:text-rose-500 font-bold">إغلاق ✕</button>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <select id="filter-job-type" onchange="window.filterJobsList && window.filterJobsList()" class="h-9 text-xs bg-slate-50 dark:bg-slate-800">
+                    <select id="filter-job-type" onchange="window.filterJobsList && window.filterJobsList()" class="h-8 text-xs bg-slate-50 dark:bg-slate-800">
                         <option value="">نوع الدوام (الكل)</option>
                         <option value="full">دوام كامل</option>
                         <option value="part">دوام جزئي</option>
                     </select>
-                    <select id="filter-job-shift" onchange="window.filterJobsList && window.filterJobsList()" class="h-9 text-xs bg-slate-50 dark:bg-slate-800">
+                    <select id="filter-job-shift" onchange="window.filterJobsList && window.filterJobsList()" class="h-8 text-xs bg-slate-50 dark:bg-slate-800">
                         <option value="">الشيفت (الكل)</option>
-                        <option value="صباحي">شيفت صباحي</option>
-                        <option value="مسائي">شيفت مسائي</option>
-                        <option value="متغير">شيفت متغير</option>
+                        <option value="صباحي">صباحي</option>
+                        <option value="مسائي">مسائي</option>
+                        <option value="متغير">متغير</option>
                     </select>
-                    <button onclick="document.getElementById('filter-job-type').value=''; document.getElementById('filter-job-shift').value=''; document.getElementById('jobs-search-input').value=''; window.filterJobsList && window.filterJobsList();" class="h-9 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200">إعادة ضبط</button>
+                    <button onclick="document.getElementById('filter-job-type').value=''; document.getElementById('filter-job-shift').value=''; document.getElementById('jobs-search-input').value=''; window.filterJobsList && window.filterJobsList();" class="h-8 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200">إعادة ضبط</button>
                 </div>
             </div>
 
-            <!-- كروت الوظائف -->
+            <!-- كروت الوظائف المنظمة بدقة -->
             <div id="view-jobs" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                <p class="text-center text-slate-400 py-12 text-xs font-semibold col-span-full">جاري تحميل الوظائف...</p>
+                <p class="text-center text-slate-400 py-10 text-xs font-semibold col-span-full">جاري تحميل الوظائف...</p>
             </div>
         </section>
 
@@ -680,135 +729,135 @@
         </section>
 
         <!-- ADD SECTION (تم ضبطه وإصلاحه) -->
-        <section id="page-add" class="page-section hidden max-w-lg mx-auto py-2">
-            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-5 shadow-sm">
-                <h2 class="text-sm font-black mb-4 text-center border-b border-slate-200 dark:border-slate-700 pb-2.5 text-slate-800 dark:text-white">إضافة إعلان أو طلب جديد</h2>
+        <section id="page-add" class="page-section hidden max-w-md mx-auto py-2">
+            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-4 shadow-sm">
+                <h2 class="text-xs font-black mb-3 text-center border-b border-slate-200 dark:border-slate-700 pb-2 text-slate-800 dark:text-white">إضافة إعلان أو طلب جديد</h2>
                 
-                <div class="flex gap-2 mb-4">
-                    <button onclick="window.switchAddMode('req')" id="btn-add-req" class="flex-1 py-2 rounded-xl text-xs font-bold transition-all" style="background: #1e3a5f; color: white;">طلب خدمة</button>
-                    <button onclick="window.switchAddMode('job')" id="btn-add-job" class="flex-1 py-2 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all">إعلان توظيف</button>
+                <div class="flex gap-2 mb-3">
+                    <button onclick="window.switchAddMode('req')" id="btn-add-req" class="flex-1 py-1.5 rounded-xl text-xs font-bold transition-all" style="background: #1e3a5f; color: white;">طلب خدمة</button>
+                    <button onclick="window.switchAddMode('job')" id="btn-add-job" class="flex-1 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all">إعلان توظيف</button>
                 </div>
 
                 <!-- Form Service Request -->
-                <form id="form-req" class="space-y-3">
-                    <select id="req-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('req-custom-prof').classList.remove('hidden'); else document.getElementById('req-custom-prof').classList.add('hidden');" class="h-10 bg-slate-50 dark:bg-slate-800"></select>
-                    <input type="text" id="req-custom-prof" placeholder="اكتب الخدمة المطلوبة بدقة..." class="hidden h-10 border border-blue-400 bg-blue-50 dark:bg-slate-800">
+                <form id="form-req" class="space-y-2.5">
+                    <select id="req-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('req-custom-prof').classList.remove('hidden'); else document.getElementById('req-custom-prof').classList.add('hidden');" class="h-9 bg-slate-50 dark:bg-slate-800"></select>
+                    <input type="text" id="req-custom-prof" placeholder="اكتب الخدمة المطلوبة بدقة..." class="hidden h-9 border border-blue-400 bg-blue-50 dark:bg-slate-800">
 
                     <textarea id="req-desc" rows="3" placeholder="اشرح تفاصيل طلبك والمشكلة بدقة..." class="bg-slate-50 dark:bg-slate-800" required></textarea>
 
-                    <div class="flex rounded-xl border border-slate-300 dark:border-slate-600 overflow-hidden h-10 bg-slate-50 dark:bg-slate-800">
+                    <div class="phone-input-wrap">
                         <input type="tel" id="req-phone" placeholder="رقم الواتساب (اختياري)" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
-                        <span class="bg-slate-100 dark:bg-slate-700 px-3 flex items-center font-bold text-xs text-slate-600 dark:text-slate-300 border-l border-slate-300 dark:border-slate-600" dir="ltr">+20</span>
+                        <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <button type="submit" class="w-full py-2.5 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">نشر الطلب الآن</button>
+                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">نشر الطلب الآن</button>
                 </form>
 
                 <!-- Form Job Post -->
-                <form id="form-job" class="hidden space-y-3">
-                    <select id="job-title-select" onchange="if(this.value==='أخرى') document.getElementById('job-custom-title').classList.remove('hidden'); else document.getElementById('job-custom-title').classList.add('hidden');" class="h-10 bg-slate-50 dark:bg-slate-800"></select>
-                    <input type="text" id="job-custom-title" placeholder="اكتب المسمى المخصص..." class="hidden h-10 border border-blue-400 bg-blue-50 dark:bg-slate-800">
+                <form id="form-job" class="hidden space-y-2.5">
+                    <select id="job-title-select" onchange="if(this.value==='أخرى') document.getElementById('job-custom-title').classList.remove('hidden'); else document.getElementById('job-custom-title').classList.add('hidden');" class="h-9 bg-slate-50 dark:bg-slate-800"></select>
+                    <input type="text" id="job-custom-title" placeholder="اكتب المسمى المخصص..." class="hidden h-9 border border-blue-400 bg-blue-50 dark:bg-slate-800">
 
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="number" id="job-salary" placeholder="الراتب (ج.م)" class="h-10 bg-slate-50 dark:bg-slate-800">
-                        <input type="text" id="job-hours" placeholder="ساعات العمل" class="h-10 bg-slate-50 dark:bg-slate-800">
+                        <input type="number" id="job-salary" placeholder="الراتب (ج.م)" class="h-9 bg-slate-50 dark:bg-slate-800">
+                        <input type="text" id="job-hours" placeholder="ساعات العمل" class="h-9 bg-slate-50 dark:bg-slate-800">
                     </div>
 
                     <div class="grid grid-cols-2 gap-2">
-                        <select id="job-shift" class="h-10 bg-slate-50 dark:bg-slate-800">
+                        <select id="job-shift" class="h-9 bg-slate-50 dark:bg-slate-800">
                             <option value="">الشيفت (اختياري)</option>
                             <option value="صباحي">صباحي</option>
                             <option value="مسائي">مسائي</option>
                             <option value="متغير">متغير</option>
                         </select>
-                        <select id="job-type" class="h-10 bg-slate-50 dark:bg-slate-800">
+                        <select id="job-type" class="h-9 bg-slate-50 dark:bg-slate-800">
                             <option value="full">دوام كامل</option>
                             <option value="part">دوام جزئي</option>
                         </select>
                     </div>
 
-                    <div class="flex rounded-xl border border-slate-300 dark:border-slate-600 overflow-hidden h-10 bg-slate-50 dark:bg-slate-800">
+                    <div class="phone-input-wrap">
                         <input type="tel" id="job-phone" placeholder="رقم هاتف التوظيف" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
-                        <span class="bg-slate-100 dark:bg-slate-700 px-3 flex items-center font-bold text-xs text-slate-600 dark:text-slate-300 border-l border-slate-300 dark:border-slate-600" dir="ltr">+20</span>
+                        <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
 
                     <textarea id="job-desc" rows="3" placeholder="اكتب شروط وتفاصيل الوظيفة..." class="bg-slate-50 dark:bg-slate-800" required></textarea>
-                    <button type="submit" class="w-full py-2.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">نشر الوظيفة</button>
+                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">نشر الوظيفة</button>
                 </form>
             </div>
         </section>
 
-        <!-- PROFILE SECTION (تم ضبطه وإصلاحه) -->
-        <section id="page-profile" class="page-section hidden max-w-md mx-auto space-y-3 py-2">
-            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-5 text-center shadow-sm">
-                <img id="prof-img-view" src="" class="w-20 h-20 rounded-full border border-slate-300 dark:border-slate-600 bg-slate-100 object-cover mx-auto shadow">
-                <h2 id="prof-name-view" class="text-base font-black mt-2.5 text-slate-900 dark:text-white"></h2>
-                <div class="flex items-center gap-2 mt-1 justify-center flex-wrap">
+        <!-- PROFILE SECTION (تم ضبط المسافات وإصلاح المظهر) -->
+        <section id="page-profile" class="page-section hidden max-w-sm mx-auto space-y-2.5 py-2">
+            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-4 text-center shadow-sm">
+                <img id="prof-img-view" src="" class="w-18 h-18 rounded-full border border-slate-300 dark:border-slate-600 bg-slate-100 object-cover mx-auto shadow">
+                <h2 id="prof-name-view" class="text-sm font-black mt-2 text-slate-900 dark:text-white"></h2>
+                <div class="flex items-center gap-1.5 mt-1 justify-center flex-wrap">
                     <span id="prof-role-view" class="bg-blue-50 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 text-[10px] px-2 py-0.5 rounded-full font-bold"></span>
-                    <span id="prof-address-view" class="text-xs text-slate-500 dark:text-slate-400 font-semibold"></span>
+                    <span id="prof-address-view" class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold"></span>
                 </div>
-                <div class="flex gap-2 mt-4 max-w-xs mx-auto">
-                    <button onclick="window.navTo('edit-profile')" class="flex-1 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">تعديل الحساب</button>
-                    <button onclick="window.navTo('settings')" class="flex-1 py-2 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">الإعدادات</button>
+                <div class="flex gap-2 mt-3.5 max-w-xs mx-auto">
+                    <button onclick="window.navTo('edit-profile')" class="flex-1 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">تعديل الحساب</button>
+                    <button onclick="window.navTo('settings')" class="flex-1 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">الإعدادات</button>
                 </div>
             </div>
 
             <div class="space-y-2">
-                <button onclick="window.openActivityTab('my-activity')" class="w-full py-3 bg-white dark:bg-[#1e293b] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-4 shadow-sm">
+                <button onclick="window.openActivityTab('my-activity')" class="w-full py-2.5 bg-white dark:bg-[#1e293b] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-4 shadow-sm">
                     <span>📊 سجل نشاطي وإعلاناتي</span>
                     <span class="text-slate-400">←</span>
                 </button>
 
-                <button id="btn-profile-matching" onclick="window.openActivityTab('matching')" class="hidden w-full py-3 bg-white dark:bg-[#1e293b] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-4 shadow-sm">
+                <button id="btn-profile-matching" onclick="window.openActivityTab('matching')" class="hidden w-full py-2.5 bg-white dark:bg-[#1e293b] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-4 shadow-sm">
                     <span>🎯 طلبات جديدة تناسب مهنتي</span>
                     <span id="act-notif-badge" class="hidden bg-rose-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold">!</span>
                 </button>
 
-                <button onclick="window.logout()" class="w-full py-3 text-rose-600 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-xl font-bold text-xs">تسجيل الخروج</button>
+                <button onclick="window.logout()" class="w-full py-2.5 text-rose-600 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-xl font-bold text-xs">تسجيل الخروج</button>
             </div>
         </section>
 
         <!-- ACTIVITY PAGE -->
         <section id="page-activity" class="page-section hidden max-w-4xl mx-auto">
-            <div class="sticky top-16 z-30 py-2 bg-[#EEF3F8] dark:bg-[#0f172a] mb-3">
-                <div class="flex p-1 bg-white dark:bg-[#1e293b] rounded-xl border border-slate-300 dark:border-slate-700 max-w-md mx-auto h-10 items-center">
+            <div class="sticky top-14 z-30 py-2 bg-[#EEF3F8] dark:bg-[#0f172a] mb-2">
+                <div class="flex p-0.5 bg-white dark:bg-[#1e293b] rounded-xl border border-slate-300 dark:border-slate-700 max-w-xs mx-auto h-9 items-center">
                     <button onclick="window.switchActivityTab('my-activity')" id="tab-act-mine" class="flex-1 h-full rounded-lg text-xs font-bold text-white" style="background: #1e3a5f;">نشاطي</button>
                     <button onclick="window.switchActivityTab('matching')" id="tab-act-matching" class="flex-1 h-full rounded-lg text-xs font-bold text-slate-500">طلبات تناسبك</button>
                 </div>
             </div>
 
             <div id="view-my-activity">
-                <div id="my-activity" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                <div id="my-activity" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
             </div>
 
             <div id="view-matching-reqs" class="hidden">
-                <div id="matching-reqs-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                <div id="matching-reqs-list" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
             </div>
         </section>
 
         <!-- EDIT PROFILE -->
-        <section id="page-edit-profile" class="page-section hidden max-w-md mx-auto py-2">
-            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-5 shadow-sm space-y-3">
-                <div class="flex flex-col items-center mb-3">
-                    <img id="edit-img-preview" src="" class="w-20 h-20 rounded-full object-cover border border-slate-300 dark:border-slate-600 shadow">
-                    <button onclick="document.getElementById('edit-file').click()" class="text-xs font-bold text-[#1e3a5f] dark:text-[#F2A51A] underline mt-1.5">تغيير الصورة</button>
+        <section id="page-edit-profile" class="page-section hidden max-w-sm mx-auto py-2">
+            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-4 shadow-sm space-y-2.5">
+                <div class="flex flex-col items-center mb-2">
+                    <img id="edit-img-preview" src="" class="w-18 h-18 rounded-full object-cover border border-slate-300 dark:border-slate-600 shadow">
+                    <button onclick="document.getElementById('edit-file').click()" class="text-xs font-bold text-[#1e3a5f] dark:text-[#F2A51A] underline mt-1">تغيير الصورة</button>
                     <input type="file" id="edit-file" class="hidden" accept="image/*" onchange="window.handleImageUpload(this, 'edit-img-preview', true)">
                 </div>
                 
-                <input type="text" id="edit-name" class="h-10 bg-slate-50 dark:bg-slate-800 font-semibold" placeholder="الاسم الكامل">
+                <input type="text" id="edit-name" class="h-9 bg-slate-50 dark:bg-slate-800 font-semibold" placeholder="الاسم الكامل">
 
-                <div class="flex rounded-xl border border-slate-300 dark:border-slate-600 overflow-hidden h-10 bg-slate-50 dark:bg-slate-800">
+                <div class="phone-input-wrap">
                     <input type="tel" id="edit-phone" placeholder="الهاتف" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
-                    <span class="bg-slate-100 dark:bg-slate-700 px-3 flex items-center font-bold text-xs text-slate-600 dark:text-slate-300 border-l border-slate-300 dark:border-slate-600" dir="ltr">+20</span>
+                    <span class="phone-code-badge" dir="ltr">+20</span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
-                     <select id="edit-center" onchange="window.updateVillages('edit')" class="h-10 bg-slate-50 dark:bg-slate-800"></select>
-                     <select id="edit-village" class="h-10 bg-slate-50 dark:bg-slate-800"></select>
+                     <select id="edit-center" onchange="window.updateVillages('edit')" class="h-9 bg-slate-50 dark:bg-slate-800"></select>
+                     <select id="edit-village" class="h-9 bg-slate-50 dark:bg-slate-800"></select>
                 </div>
 
-                <input type="text" id="edit-address-detail" class="h-10 bg-slate-50 dark:bg-slate-800" placeholder="العنوان التفصيلي (اختياري)">
+                <input type="text" id="edit-address-detail" class="h-9 bg-slate-50 dark:bg-slate-800" placeholder="العنوان التفصيلي (اختياري)">
 
-                <div class="flex gap-2 pt-2">
+                <div class="flex gap-2 pt-1">
                     <button onclick="window.saveProfileChanges()" class="flex-1 py-2 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">حفظ</button>
                     <button onclick="window.goBack()" class="flex-1 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs">إلغاء</button>
                 </div>
@@ -816,48 +865,48 @@
         </section>
 
         <!-- SETTINGS -->
-        <section id="page-settings" class="page-section hidden max-w-md mx-auto py-2">
-            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-5 shadow-sm space-y-2.5">
-                <h3 class="font-black text-sm mb-3 border-b border-slate-200 dark:border-slate-700 pb-2 text-slate-800 dark:text-white">إعدادات الحساب</h3>
-                <label class="flex justify-between items-center p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+        <section id="page-settings" class="page-section hidden max-w-sm mx-auto py-2">
+            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-4 shadow-sm space-y-2">
+                <h3 class="font-black text-xs mb-2 border-b border-slate-200 dark:border-slate-700 pb-1.5 text-slate-800 dark:text-white">إعدادات الحساب</h3>
+                <label class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
                     <span class="font-bold text-xs">تفعيل الإشعارات</span>
                     <input type="checkbox" id="toggle-notif" class="w-4 h-4" checked>
                 </label>
-                <label class="flex justify-between items-center p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                <label class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
                     <span class="font-bold text-xs">إخفاء رقم هاتفي</span>
                     <input type="checkbox" id="toggle-hide-phone" class="w-4 h-4">
                 </label>
-                <label class="flex justify-between items-center p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                <label class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
                     <span class="font-bold text-xs">إخفاء الملف الشخصي</span>
                     <input type="checkbox" id="toggle-hide-profile" class="w-4 h-4">
                 </label>
-                <label id="setting-pause-reqs" class="hidden flex justify-between items-center p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                <label id="setting-pause-reqs" class="hidden flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
                     <span class="font-bold text-xs text-rose-500">إيقاف استلام الطلبات</span>
                     <input type="checkbox" id="toggle-pause-reqs" class="w-4 h-4">
                 </label>
-                <label class="flex justify-between items-center p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                <label class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
                     <span class="font-bold text-xs">الوضع الليلي (Dark Mode)</span>
                     <input type="checkbox" id="theme-toggle" class="w-4 h-4" onchange="window.toggleTheme()">
                 </label>
-                <button onclick="window.saveSettings()" class="w-full py-2.5 text-white rounded-xl font-bold mt-4 text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">حفظ التغييرات</button>
+                <button onclick="window.saveSettings()" class="w-full py-2 text-white rounded-xl font-bold mt-2 text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">حفظ التغييرات</button>
             </div>
         </section>
 
         <!-- CHAT LIST -->
-        <section id="page-chat" class="page-section hidden max-w-2xl mx-auto">
-            <div id="chat-history-list" class="flex flex-col gap-2.5">
-                <p class="text-center text-slate-400 py-12 text-xs font-semibold">جاري تحميل المحادثات...</p>
+        <section id="page-chat" class="page-section hidden max-w-xl mx-auto">
+            <div id="chat-history-list" class="flex flex-col gap-2">
+                <p class="text-center text-slate-400 py-10 text-xs font-semibold">جاري تحميل المحادثات...</p>
             </div>
         </section>
 
         <!-- USER PROFILE PAGE -->
-        <section id="page-user-profile" class="page-section hidden max-w-md mx-auto">
-            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-5 text-center shadow-sm">
-                <img id="user-profile-img" src="" class="w-20 h-20 rounded-full border border-slate-300 dark:border-slate-600 mx-auto object-cover cursor-pointer shadow">
-                <h2 id="user-profile-name" class="text-base font-black mt-2 text-slate-900 dark:text-white"></h2>
-                <p id="user-profile-role" class="text-xs font-bold text-[#1e3a5f] dark:text-[#F2A51A] mb-3"></p>
+        <section id="page-user-profile" class="page-section hidden max-w-sm mx-auto">
+            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-4 text-center shadow-sm">
+                <img id="user-profile-img" src="" class="w-18 h-18 rounded-full border border-slate-300 dark:border-slate-600 mx-auto object-cover cursor-pointer shadow">
+                <h2 id="user-profile-name" class="text-sm font-black mt-2 text-slate-900 dark:text-white"></h2>
+                <p id="user-profile-role" class="text-xs font-bold text-[#1e3a5f] dark:text-[#F2A51A] mb-2.5"></p>
 
-                <div class="w-full bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 mb-3 text-right">
+                <div class="w-full bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 mb-2.5 text-right">
                     <div class="grid grid-cols-2 gap-2 text-xs">
                         <div>
                             <span class="text-slate-400 block text-[10px]">العنوان والمركز</span>
@@ -869,13 +918,13 @@
                             <span id="user-profile-gender" class="font-bold text-slate-800 dark:text-slate-200"></span>
                         </div>
                     </div>
-                    <div class="mt-2 border-t border-slate-200 dark:border-slate-700 pt-2 text-right">
-                        <span class="text-slate-400 block text-[10px]">رقم الهاتف للتواصل</span>
+                    <div class="mt-2 border-t border-slate-200 dark:border-slate-700 pt-1.5 text-right">
+                        <span class="text-slate-400 block text-[10px]">رقم الهاتف</span>
                         <span id="user-profile-phone" class="font-bold text-xs text-slate-900 dark:text-white" dir="ltr"></span>
                     </div>
                 </div>
 
-                <div class="flex gap-2 w-full mb-3" id="user-profile-actions"></div>
+                <div class="flex gap-2 w-full mb-2.5" id="user-profile-actions"></div>
 
                 <div class="w-full border-t border-slate-200 dark:border-slate-700 pt-2 text-right">
                     <h4 class="font-bold text-xs mb-1.5 flex items-center justify-between">
@@ -883,7 +932,7 @@
                         <span id="user-profile-stars" class="text-[#F2A51A] font-bold"></span>
                     </h4>
                     <div class="border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 p-2">
-                        <div id="user-profile-reviews-list" class="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar pr-1"></div>
+                        <div id="user-profile-reviews-list" class="space-y-1.5 max-h-32 overflow-y-auto custom-scrollbar pr-1"></div>
                     </div>
                 </div>
             </div>
@@ -898,20 +947,20 @@
 
     <!-- RATE MODAL -->
     <div id="rate-modal" class="modal-overlay hidden">
-        <div class="bg-white dark:bg-[#1e293b] w-full max-w-xs rounded-2xl border border-slate-300 dark:border-slate-700 p-5 shadow-2xl">
-            <h3 class="text-center font-bold mb-3 text-xs text-slate-900 dark:text-white">تقييم تجربة الخدمة</h3>
+        <div class="bg-white dark:bg-[#1e293b] w-full max-w-xs rounded-2xl border border-slate-300 dark:border-slate-700 p-4 shadow-2xl">
+            <h3 class="text-center font-bold mb-2 text-xs text-slate-900 dark:text-white">تقييم تجربة الخدمة</h3>
             <form id="form-review">
-                <div class="star-rating mb-3 flex flex-row-reverse justify-center gap-1">
+                <div class="star-rating mb-2 flex flex-row-reverse justify-center gap-1">
                     <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
                     <input type="radio" name="stars" id="s4" value="4"><label for="s4">★</label>
                     <input type="radio" name="stars" id="s3" value="3"><label for="s3">★</label>
                     <input type="radio" name="stars" id="s2" value="2"><label for="s2">★</label>
                     <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
                 </div>
-                <textarea id="review-text" rows="2" placeholder="اكتب تعليقك..." class="w-full p-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 mb-3 outline-none"></textarea>
+                <textarea id="review-text" rows="2" placeholder="اكتب تعليقك..." class="w-full p-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 mb-2.5 outline-none"></textarea>
                 <div class="flex gap-2">
-                    <button type="button" id="btn-submit-rate" onclick="window.submitReview()" class="flex-1 py-2 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">إرسال</button>
-                    <button type="button" onclick="document.getElementById('rate-modal').classList.add('hidden')" class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-2 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
+                    <button type="button" id="btn-submit-rate" onclick="window.submitReview()" class="flex-1 py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">إرسال</button>
+                    <button type="button" onclick="document.getElementById('rate-modal').classList.add('hidden')" class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
                 </div>
             </form>
         </div>
@@ -921,28 +970,28 @@
     <div id="filter-modal-wrap" class="hidden">
         <div id="filter-modal-backdrop" onclick="document.getElementById('filter-modal-wrap').classList.add('hidden')" class="fixed inset-0 z-[130] bg-black/40 backdrop-blur-[2px]"></div>
 
-        <div id="filter-modal" class="fixed top-20 left-4 right-4 max-w-sm mx-auto z-[140] bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 shadow-2xl p-4 flex flex-col">
-            <h3 class="text-center font-bold mb-3 text-xs text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-2">تصفية البحث بالمنطقة</h3>
-            <select id="filter-center" onchange="window.updateVillages('filter')" class="mb-2 h-9 text-xs bg-slate-50 dark:bg-slate-800"></select>
-            <select id="filter-village" class="mb-2 h-9 text-xs bg-slate-50 dark:bg-slate-800"><option value="">القرية...</option></select>
+        <div id="filter-modal" class="fixed top-20 left-4 right-4 max-w-xs mx-auto z-[140] bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 shadow-2xl p-3.5 flex flex-col">
+            <h3 class="text-center font-bold mb-2.5 text-xs text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-1.5">تصفية البحث</h3>
+            <select id="filter-center" onchange="window.updateVillages('filter')" class="mb-2 h-8 text-xs bg-slate-50 dark:bg-slate-800"></select>
+            <select id="filter-village" class="mb-2 h-8 text-xs bg-slate-50 dark:bg-slate-800"><option value="">القرية...</option></select>
             <div id="filter-prof-container">
-                <select id="filter-prof" class="mb-3 h-9 text-xs bg-slate-50 dark:bg-slate-800"></select>
+                <select id="filter-prof" class="mb-2.5 h-8 text-xs bg-slate-50 dark:bg-slate-800"></select>
             </div>
             <div class="flex gap-2">
-                <button onclick="window.applyFilter()" class="flex-1 py-2 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تطبيق</button>
-                <button onclick="window.clearFilter()" class="flex-1 bg-rose-50 text-rose-600 border border-rose-200 py-2 rounded-xl font-bold text-xs">إلغاء</button>
+                <button onclick="window.applyFilter()" class="flex-1 py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تطبيق</button>
+                <button onclick="window.clearFilter()" class="flex-1 bg-rose-50 text-rose-600 border border-rose-200 py-1.5 rounded-xl font-bold text-xs">إلغاء</button>
             </div>
         </div>
     </div>
 
     <!-- DELETE CHAT MODAL -->
     <div id="delete-chat-modal" class="modal-overlay hidden z-[200]">
-        <div class="bg-white dark:bg-[#1e293b] w-full max-w-xs rounded-2xl border border-slate-300 dark:border-slate-700 p-5 shadow-2xl text-center">
-            <h3 class="font-bold mb-1.5 text-sm text-rose-600">حذف المحادثة</h3>
-            <p class="text-xs text-slate-500 mb-4">هل ترغب في مسح هذه المحادثة نهائياً؟</p>
+        <div class="bg-white dark:bg-[#1e293b] w-full max-w-xs rounded-2xl border border-slate-300 dark:border-slate-700 p-4 shadow-2xl text-center">
+            <h3 class="font-bold mb-1 text-xs text-rose-600">حذف المحادثة</h3>
+            <p class="text-[11px] text-slate-500 mb-3">هل ترغب في مسح هذه المحادثة نهائياً؟</p>
             <div class="flex gap-2">
-                <button onclick="window.confirmDeleteChat()" class="flex-1 bg-rose-600 text-white py-2 rounded-xl font-bold text-xs shadow">حذف</button>
-                <button onclick="document.getElementById('delete-chat-modal').classList.add('hidden')" class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-2 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
+                <button onclick="window.confirmDeleteChat()" class="flex-1 bg-rose-600 text-white py-1.5 rounded-xl font-bold text-xs shadow">حذف</button>
+                <button onclick="document.getElementById('delete-chat-modal').classList.add('hidden')" class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
             </div>
         </div>
     </div>
@@ -951,7 +1000,7 @@
     <div id="page-chat-room" class="full-screen-modal hidden overflow-hidden">
         <div class="h-14 px-3 flex items-center justify-between shrink-0 z-10 text-white shadow-sm" style="background: linear-gradient(135deg, #365570, #1e3a5f); border-bottom: 0.75px solid rgba(255,255,255,0.25);">
             <div class="flex items-center gap-1.5">
-                <button onclick="window.goBack()" class="p-1.5 hover:bg-white/10 rounded-full active:scale-90 transition-transform">
+                <button onclick="window.goBack()" class="p-1 hover:bg-white/10 rounded-full active:scale-90 transition-transform">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                 </button>
                 <div id="chat-header-profile" class="flex items-center gap-2 cursor-pointer hover:bg-white/10 p-1 rounded-xl">
@@ -961,21 +1010,21 @@
             </div>
             <div class="flex items-center gap-1.5">
                 <button onclick="if(window.requireAuth()) document.getElementById('rate-modal').classList.remove('hidden')" class="bg-white/10 text-[#F2A51A] px-2.5 py-1 rounded-full font-bold text-[10px] border border-[#F2A51A]/50 active:scale-95">★ تقييم</button>
-                <button onclick="document.getElementById('delete-chat-modal').classList.remove('hidden')" class="p-1.5 hover:bg-white/10 rounded-full text-slate-300 active:scale-90">
+                <button onclick="document.getElementById('delete-chat-modal').classList.remove('hidden')" class="p-1 hover:bg-white/10 rounded-full text-slate-300 active:scale-90">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
                 </button>
             </div>
         </div>
         <div id="messages-container" class="flex-1 overflow-y-auto p-3 space-y-2 bg-[#EEF3F8] dark:bg-[#0f172a] custom-scrollbar flex flex-col max-w-4xl mx-auto w-full"></div>
-        <form id="form-message" class="p-2.5 bg-white dark:bg-[#1e293b] border-t border-slate-300 dark:border-slate-700 flex gap-2 shrink-0 max-w-4xl mx-auto w-full">
+        <form id="form-message" class="p-2 bg-white dark:bg-[#1e293b] border-t border-slate-300 dark:border-slate-700 flex gap-2 shrink-0 max-w-4xl mx-auto w-full">
             <input type="text" id="msg-input" class="flex-1 p-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none" placeholder="اكتب رسالتك..." autocomplete="off">
-            <button type="submit" id="btn-send-msg" class="w-9 h-9 rounded-full text-white flex items-center justify-center shadow active:scale-90 shrink-0" style="background: linear-gradient(135deg, #365570, #1e3a5f);">
+            <button type="submit" id="btn-send-msg" class="w-8 h-8 rounded-full text-white flex items-center justify-center shadow active:scale-90 shrink-0" style="background: linear-gradient(135deg, #365570, #1e3a5f);">
                 <svg class="w-4 h-4 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
             </button>
         </form>
     </div>
 
-    <!-- الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية ومتناسقة تماماً -->
+    <!-- الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية ومتناسقة -->
     <nav id="nav-bar">
         <!-- 1. الخدمات / الرئيسية -->
         <button onclick="window.navTo('home')" class="nav-btn active">
