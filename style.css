@@ -19,14 +19,15 @@ html, body {
     font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif !important;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-y: none;
-    background-color: #EEF3F8 !important; /* خلفية سحابية مريحة للعين */
+    background-color: #EEF3F8 !important; /* خلفية سحابية هادئة ومريحة للعين */
     color: #1e293b !important;
     word-break: break-word;
+    font-size: 12px;
 }
 
-/* في الوضع الداكن: خلفية الصفحات أفتح من درجة الهيدر بوضوح */
+/* الوضع الداكن: خلفية الصفحات أفتح من الهيدر العلوي */
 .dark html, .dark body, body.dark {
-    background-color: #1e3347 !important; /* أفتح من لون الهيدر الداكن */
+    background-color: #1e3347 !important; /* أفتح من درجة الهيدر الكحلية */
     color: #f8fafc !important;
 }
 
@@ -60,11 +61,11 @@ button {
     background: #475569 !important;
 }
 
-/* 3. شاشة التحميل الماسية (تغطي الموقع بالكامل وتمنع ظهور الهيدر السفلي) */
+/* 3. شاشة التحميل الماسية (تغطي الموقع بالكامل مع الماسة الذهبية البارزة) */
 #loader {
     position: fixed !important;
     inset: 0 !important;
-    z-index: 999999 !important; /* أعلى من كل عناصر التطبيق */
+    z-index: 999999 !important; /* أعلى من كافة عناصر الموقع */
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -82,11 +83,10 @@ button {
     pointer-events: none !important;
 }
 
-/* تصميم الماسة المتلألئة */
 .diamond-icon-wrap {
     position: relative;
-    width: 76px;
-    height: 76px;
+    width: 72px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -96,7 +96,7 @@ button {
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    border: 2.5px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-top-color: #F2A51A;
     animation: spinRing 1s linear infinite;
 }
@@ -106,24 +106,24 @@ button {
 }
 
 .diamond-center-box {
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(242, 165, 26, 0.6);
-    border-radius: 14px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 15px rgba(242, 165, 26, 0.35);
+    box-shadow: 0 0 12px rgba(242, 165, 26, 0.35);
 }
 
-/* 4. الهيدر العلوي المنظم بحواف دائرية أنيقة من الأسفل */
+/* 4. الهيدر العلوي المنظم وتثبيت اللوجو لمنع خروجه نهائياً */
 #app-header, .glass-header {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    height: 54px !important;
+    height: 52px !important;
     background: linear-gradient(135deg, #365570, #1e3a5f) !important;
     border-radius: 0 0 18px 18px !important;
     border-bottom: 0.75px solid rgba(255, 255, 255, 0.2) !important;
@@ -131,13 +131,14 @@ button {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 0 14px !important;
+    padding: 0 12px !important;
     z-index: 100 !important;
+    overflow: hidden !important;
     color: #ffffff !important;
 }
 
 .dark #app-header, .dark .glass-header {
-    background: linear-gradient(135deg, #162638, #122334) !important; /* أغمق درجة في التطبيق */
+    background: linear-gradient(135deg, #162638, #122334) !important; /* أغمق درجة لضمان تباينها مع الصفحات */
     border-bottom-color: rgba(255, 255, 255, 0.1) !important;
 }
 
@@ -145,12 +146,28 @@ button {
     color: #ffffff !important;
 }
 
-/* 5. شريط البحث الكبسولي الماسي (المسافة فوقه مطابقة لتحته مع حجب تام للبطاقات خلفه) */
+/* قفل أبعاد اللوجو والصورة داخل الهيدر لمنع التضخم */
+#header-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    max-width: 32px !important;
+    max-height: 32px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    flex-shrink: 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* 5. شريط البحث الكبسولي الماسي المعتم */
 .search-sticky-wrapper {
     position: sticky !important;
-    top: 54px !important;
+    top: 52px !important;
     z-index: 45 !important;
-    background-color: #EEF3F8 !important; /* معتم تماماً لمنع ظهور البطاقات خلفه */
+    background-color: #EEF3F8 !important; /* معتم تماماً لحجب البطاقات عند التمرير */
     padding: 5px 0 6px 0 !important;
     margin-bottom: 6px !important;
 }
@@ -159,7 +176,7 @@ button {
     background-color: #1e3347 !important;
 }
 
-/* المستطيل الخارجي بلون الهيدر الماسي */
+/* المستطيل الخارجي بتدرج الهيدر الماسي */
 .search-outer-pill {
     background: linear-gradient(135deg, #365570, #1e3a5f) !important;
     border: 0.75px solid #cbd5e1 !important;
@@ -169,7 +186,7 @@ button {
     align-items: center !important;
     gap: 6px !important;
     box-shadow: 0 3px 10px rgba(30, 58, 95, 0.12) !important;
-    max-width: 620px !important;
+    max-width: 600px !important;
     margin: 0 auto !important;
     width: 100% !important;
 }
@@ -179,15 +196,15 @@ button {
     border-color: #334155 !important;
 }
 
-/* المستطيل الداخلي: أفتح درجة هادئة مريحة للعين مشتقة من الهيدر */
+/* المستطيل الداخلي بأفتح درجة هادئة مريحة للعين مشتقة من الهيدر */
 .search-inner-soft {
     flex: 1 !important;
     display: flex !important;
     align-items: center !important;
-    background-color: #EBF2F7 !important; /* لون هادئ مريح مشتق من الهيدر */
+    background-color: #EBF2F7 !important;
     border-radius: 9999px !important;
     padding: 0 10px !important;
-    height: 35px !important;
+    height: 34px !important;
 }
 
 .dark .search-inner-soft {
@@ -199,10 +216,12 @@ button {
     border: none !important;
     outline: none !important;
     background: transparent !important;
-    font-size: 11.5px !important;
+    font-size: 11px !important;
     font-weight: 600 !important;
     color: #1e293b !important;
     padding: 0 4px !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
 }
 
 .dark .search-inner-soft input {
@@ -217,7 +236,7 @@ button {
     color: #94a3b8 !important;
 }
 
-/* زر قمع الفلترة المصغر بكلمة فلترة */
+/* زر قمع الفلترة المصغر والملموم */
 .btn-filter-compact {
     height: 32px !important;
     padding: 0 11px !important;
@@ -225,7 +244,7 @@ button {
     color: #1e3a5f !important;
     border: none !important;
     border-radius: 9999px !important;
-    font-size: 11px !important;
+    font-size: 10.5px !important;
     font-weight: 800 !important;
     display: flex !important;
     align-items: center !important;
@@ -244,7 +263,7 @@ button {
     transform: scale(0.95);
 }
 
-/* 6. كروت الأقسام والمهن (عزل الضباب والزجاج الثقيل لمنع أي لاج على المعالج) */
+/* 6. كروت الأقسام والمهن (عزل الضباب والزجاج الثقيل لمنع أي لاج) */
 .provider-card {
     border: 0.75px solid #cbd5e1 !important;
     border-radius: 14px !important;
@@ -252,7 +271,7 @@ button {
     overflow: hidden !important;
     background-color: #F3F6F9 !important;
     position: relative !important;
-    height: 100px !important;
+    height: 96px !important;
     cursor: pointer !important;
     transition: transform 0.15s ease !important;
 }
@@ -272,7 +291,7 @@ button {
     object-fit: cover !important;
 }
 
-/* كبسولة العنوان الممركزة خفيفة الظل وبدون أي لاج */
+/* كبسولة العنوان الممركزة خفيفة الظل وبدون أي لاج على المعالج */
 .prof-badge-center {
     position: absolute !important;
     inset: 0 !important;
@@ -284,9 +303,9 @@ button {
 }
 
 .prof-badge-center span {
-    background: rgba(15, 23, 42, 0.75) !important; /* خلفية داكنة خفيفة عادية بدون لاج */
+    background: rgba(15, 23, 42, 0.75) !important; /* خلفية عادية بدون لاج بلور */
     color: #ffffff !important;
-    font-size: 10.5px !important;
+    font-size: 10px !important;
     font-weight: 800 !important;
     padding: 3px 10px !important;
     border-radius: 9999px !important;
@@ -298,7 +317,7 @@ button {
     text-overflow: ellipsis !important;
 }
 
-/* 7. استبدال الأبيض الساطع برصاصي سيلفر هادئ مريح للعين على كافة البطاقات */
+/* 7. البطاقات والحاويات بلون سيلفر هادئ مريح للعين */
 .fast-render-card > div,
 #view-jobs > div,
 #my-activity > div,
@@ -307,12 +326,12 @@ button {
 .custom-card-box {
     border: 0.75px solid #cbd5e1 !important;
     border-radius: 15px !important;
-    background-color: #F3F6F9 !important; /* رصاصي سيلفر هادئ مريح للعين */
+    background-color: #F3F6F9 !important;
     box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
     overflow: hidden !important;
     word-break: break-word !important;
     padding: 10px 12px !important;
-    margin-bottom: 7px !important;
+    margin-bottom: 8px !important;
 }
 
 .dark .fast-render-card > div,
@@ -322,19 +341,48 @@ button {
 .dark #chat-history-list > div,
 .dark .custom-card-box {
     border-color: #334155 !important;
-    background-color: #243d54 !important; /* أفتح من خلفية الصفحة الداكنة */
+    background-color: #243d54 !important;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.25) !important;
 }
 
-/* 8. كود الدولة +20 في سطر واحد دائماً ومنع التفافه */
+/* 8. الحقول المنظمة بظل خفيف ومسافات منتظمة بين الحقول */
+input, select, textarea {
+    border: 0.75px solid #cbd5e1 !important;
+    background-color: #ffffff !important;
+    border-radius: 11px !important;
+    font-size: 11px !important;
+    padding: 6px 10px !important;
+    width: 100% !important;
+    outline: none !important;
+    color: #1e293b !important;
+    box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04) !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+    margin-bottom: 8px !important;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #1e3a5f !important;
+    box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.1) !important;
+}
+
+.dark input, .dark select, .dark textarea {
+    background-color: #243d54 !important;
+    border-color: #334155 !important;
+    color: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* تثبيت كود الدولة +20 في سطر واحد دائماً */
 .phone-input-wrap {
     display: flex !important;
     align-items: center !important;
     border: 0.75px solid #cbd5e1 !important;
     border-radius: 11px !important;
     overflow: hidden !important;
-    background-color: #F3F6F9 !important;
+    background-color: #ffffff !important;
     height: 36px !important;
+    box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04) !important;
+    margin-bottom: 8px !important;
 }
 
 .dark .phone-input-wrap {
@@ -342,8 +390,16 @@ button {
     background-color: #243d54 !important;
 }
 
+.phone-input-wrap input {
+    border: none !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+    padding: 0 10px !important;
+    height: 100% !important;
+}
+
 .phone-code-badge {
-    background-color: #e2e8f0 !important;
+    background-color: #f1f5f9 !important;
     color: #334155 !important;
     font-weight: 800 !important;
     font-size: 11px !important;
@@ -364,25 +420,7 @@ button {
     border-color: #334155 !important;
 }
 
-/* حقول الإدخال الهادئة الملمومة */
-input, select, textarea {
-    border: 0.75px solid #cbd5e1 !important;
-    background-color: #F3F6F9 !important;
-    border-radius: 11px !important;
-    font-size: 11px !important;
-    padding: 5px 9px !important;
-    width: 100% !important;
-    outline: none !important;
-    color: #1e293b !important;
-}
-
-.dark input, .dark select, .dark textarea {
-    background-color: #243d54 !important;
-    border-color: #334155 !important;
-    color: #ffffff !important;
-}
-
-/* 9. زر الإضافة العلوي الحر (+) وجرس الإشعارات الدقيق */
+/* 9. أزرار الهيدر العلوي (+ وجرس الإشعارات) */
 #header-add-btn {
     background: transparent !important;
     border: none !important;
@@ -398,13 +436,13 @@ input, select, textarea {
     width: 24px !important;
     height: 24px !important;
     stroke-width: 2.8 !important;
-    color: #F2A51A !important; /* ذهبي ملكي ساطع */
+    color: #F2A51A !important;
 }
 
 .header-bell-btn {
     background: transparent !important;
     border: none !important;
-    padding: 3px !important;
+    padding: 2px !important;
     position: relative !important;
     cursor: pointer !important;
     display: flex !important;
@@ -420,8 +458,8 @@ input, select, textarea {
 
 #notif-dot {
     position: absolute !important;
-    top: 2px !important;
-    right: 2px !important;
+    top: 1px !important;
+    right: 1px !important;
     width: 7.5px !important;
     height: 7.5px !important;
     background-color: #ef4444 !important;
@@ -432,7 +470,7 @@ input, select, textarea {
 /* 10. لوحة الإشعارات المنسدلة المنظمة بروفيشينال */
 #notif-panel {
     position: fixed !important;
-    top: 58px !important;
+    top: 56px !important;
     left: 12px !important;
     right: 12px !important;
     max-width: 360px !important;
@@ -451,7 +489,62 @@ input, select, textarea {
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* 11. الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية */
+/* 11. كبسولة زر تسجيل الخروج الحمراء الفخمة */
+.btn-logout-capsule {
+    width: 100% !important;
+    padding: 9px 18px !important;
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 9999px !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    box-shadow: 0 3px 10px rgba(239, 68, 68, 0.35) !important;
+    cursor: pointer !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.btn-logout-capsule:active {
+    transform: scale(0.97) !important;
+}
+
+/* 12. صفحة تسجيل الدخول الحديثة */
+.auth-container-modern {
+    background: linear-gradient(135deg, #365570, #1e3a5f) !important;
+    border-radius: 20px !important;
+    padding: 18px 16px !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 30px rgba(30, 58, 95, 0.3) !important;
+    border: 0.75px solid rgba(255, 255, 255, 0.2) !important;
+    margin: 10px auto !important;
+    max-width: 380px !important;
+}
+
+.dark .auth-container-modern {
+    background: linear-gradient(135deg, #1e3347, #152636) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.auth-card-inner {
+    background-color: #F3F6F9 !important;
+    border-radius: 16px !important;
+    padding: 14px !important;
+    color: #1e293b !important;
+    border: 0.75px solid #cbd5e1 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+}
+
+.dark .auth-card-inner {
+    background-color: #243d54 !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+}
+
+/* 13. الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية */
 #nav-bar {
     position: fixed !important;
     bottom: 10px !important;
@@ -514,19 +607,20 @@ input, select, textarea {
     color: #F2A51A !important;
 }
 
-/* 12. القوائم المنسدلة الملمومة والأنماط التكميلية */
-.custom-select-wrapper { position: relative; width: 100%; margin-bottom: 0.25rem; }
+/* 14. القوائم المنسدلة الملمومة والأنماط التكميلية */
+.custom-select-wrapper { position: relative; width: 100%; margin-bottom: 8px; }
 .custom-select {
     display: flex; align-items: center; justify-content: space-between;
     padding: 3px 9px !important; border: 0.75px solid #cbd5e1 !important;
-    border-radius: 10px !important; background-color: #F3F6F9 !important;
+    border-radius: 10px !important; background-color: #ffffff !important;
     height: 34px !important; font-size: 11px !important; cursor: pointer;
+    box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04);
 }
 .dark .custom-select { background-color: #243d54 !important; border-color: #334155 !important; color: #ffffff !important; }
 .custom-options {
     position: absolute; top: calc(100% + 3px); left: 0; right: 0;
     border: 0.75px solid #cbd5e1 !important; border-radius: 12px !important;
-    background-color: #F3F6F9 !important; z-index: 9999; max-height: 135px !important;
+    background-color: #ffffff !important; z-index: 9999; max-height: 135px !important;
     overflow-y: auto; display: none; box-shadow: 0 6px 16px rgba(30, 58, 95, 0.12) !important;
 }
 .dark .custom-options { background-color: #243d54 !important; border-color: #334155 !important; }
