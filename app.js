@@ -69,7 +69,7 @@ function populateProfessionsGlobally() {
     if (document.getElementById('req-prof')) document.getElementById('req-prof').innerHTML = '<option value="">اختر المهنة...</option>' + opts;
     if (document.getElementById('job-title-select')) document.getElementById('job-title-select').innerHTML = '<option value="">اختر المسمى...</option>' + optsWithOther;
     if (document.getElementById('filter-prof')) {
-        document.getElementById('filter-prof').innerHTML = '<option value="">كل المهن والتخصصات</option>' + opts;
+        document.getElementById('filter-prof').innerHTML = '<option value="">كل المهن</option>' + opts;
         makeCustomDropdown('filter-prof', 'اختر المهنة...');
     }
 }
@@ -98,7 +98,7 @@ let reqNotifs = [];
 let reviewNotifs = [];
 window.chatNotifsGlobal = [];
 
-// توليد القوائم المنسدلة المخصصة والملمومة (بدون ازدواجية)
+// توليد القوائم المنسدلة البديلة
 function makeCustomDropdown(selectId, placeholder = '') {
     const select = document.getElementById(selectId);
     if (!select) return;
@@ -214,13 +214,17 @@ window.showToast = (msg, type = 'success') => {
 window.hideLoader = () => document.getElementById('loader').classList.add('hidden');
 window.showLoader = () => document.getElementById('loader').classList.remove('hidden');
 
+// فتح وإغلاق شريط الفلترة بالسطر الواحد
 window.openFilterModal = (source) => {
-    document.getElementById('filter-modal-wrap').classList.remove('hidden');
-    const profContainer = document.getElementById('filter-prof-container');
-    if (source === 'category') {
-        profContainer.classList.add('hidden'); 
+    if (source === 'directory') {
+        const bar = document.getElementById('dir-filter-bar');
+        if (bar) bar.classList.toggle('hidden');
+    } else if (source === 'category') {
+        const bar = document.getElementById('cat-filter-bar');
+        if (bar) bar.classList.toggle('hidden');
     } else {
-        profContainer.classList.remove('hidden'); 
+        const modal = document.getElementById('filter-modal-wrap');
+        if (modal) modal.classList.toggle('hidden');
     }
 };
 
@@ -471,7 +475,7 @@ function initApp() {
     }
 }
 
-// توليد كروت المهن مع الكبسولة الممركزة خفيفة الظل وبدون أي لاج على المعالج
+// توليد كروت المهن مع الكبسولة الممركزة
 function renderProfessionsGrid(list) {
     const grid = document.getElementById('professions-grid');
     if (grid.children.length > 0) return; 
@@ -798,7 +802,7 @@ function renderNotificationsList() {
         </div>`;
     }).join('');
     
-    document.getElementById('notif-list').innerHTML = html || '<p style="text-align: center; font-size: 10.5px; color: #94a3b8; padding: 16px 0;">لا توجد إشعارات حالياً</p>';
+    document.getElementById('notif-list').innerHTML = html || '<p style="text-align: center; font-size: 10px; color: #cbd5e1; padding: 16px 0;">لا توجد إشعارات حالياً</p>';
     
     if (unreadCount > 0 && userProfile?.settings?.notifEnabled) {
         document.getElementById('notif-dot').classList.remove('hidden');
@@ -817,7 +821,7 @@ window.toggleNotifPanel = () => {
     }
 };
 
-// تصميم احترافي متناسق لبطاقات المحادثات الواردة
+// تصميم كروت المحادثات بسطرين فقط ومقاسات منضبطة
 window.renderChatsUI = function() {
     if (isGuest) return;
     const list = document.getElementById('chat-history-list');
@@ -851,7 +855,7 @@ window.renderChatsUI = function() {
                        <h4 class="chat-user-name">${escapeHTML(otherUser.name)}</h4>
                        <span class="chat-time-tag">${time}</span>
                    </div>
-                   <p class="chat-snippet-text" style="${isNew ? 'font-weight: 800; color: #1e293b;' : ''}">${escapeHTML(c.lastMessage || '...')}</p>
+                   <p class="chat-snippet-text" style="${isNew ? 'font-weight: 900; color: #1e3a5f;' : ''}">${escapeHTML(c.lastMessage || '...')}</p>
                </div>
                ${isNew ? '<div class="chat-unread-dot"></div>' : ''}
            </div>
@@ -872,22 +876,29 @@ window.toggleJobsFilterModal = () => {
     if (modal) modal.classList.toggle('hidden');
 };
 
-// إنشاء بطاقات الوظائف المنظمة بنظام عمودي يمنع أي تداخل
+// إنشاء بطاقات الوظائف: السطر الأول الصورة واسم الناشر وتاريخ النشر أقصى اليسار
 function createJobCard(id, j) {
     const hasPhone = j.contactPhone && j.contactPhone.length > 5;
     const isMyPost = !isGuest && j.uid === currentUser?.uid;
 
     return `
         <div class="job-feed-card">
-            <div class="job-card-header">
-                <img src="${window.getCloudinaryUrl(j.posterPhoto || 'https://via.placeholder.com/40', 'thumb')}" loading="lazy">
-                <div class="job-card-header-meta">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
-                        <span class="job-card-poster">الناشر: <strong style="color: inherit;">${escapeHTML(j.posterName)}</strong></span>
-                        <span style="font-size: 9px; color: #94a3b8; font-weight: 600;" dir="ltr">${new Date(j.createdAt).toLocaleDateString('ar-EG')}</span>
+            <!-- السطر الأول: الصورة والاسم وتاريخ النشر أقصى اليسار -->
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                    <img src="${window.getCloudinaryUrl(j.posterPhoto || 'https://via.placeholder.com/40', 'thumb')}" loading="lazy" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1; flex-shrink: 0;">
+                    <div style="font-size: 11px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <span style="color: #64748b; font-size: 9.5px; font-weight: normal;">الناشر:</span> ${escapeHTML(j.posterName)}
                     </div>
-                    <div class="job-card-title">${escapeHTML(j.title)}</div>
                 </div>
+                <div style="font-size: 9.5px; color: #64748b; font-weight: 600; flex-shrink: 0;" dir="ltr">
+                    تاريخ النشر: ${new Date(j.createdAt).toLocaleDateString('ar-EG')}
+                </div>
+            </div>
+
+            <!-- السطر الثاني: الوظيفة والشارات -->
+            <div style="font-size: 12px; font-weight: 900; color: #1e3a5f; margin: 2px 0;">
+                ${escapeHTML(j.title)}
             </div>
 
             <div class="job-badges-wrap">
@@ -898,12 +909,12 @@ function createJobCard(id, j) {
             </div>
 
             <div class="job-desc-box">
-                <span style="color: #94a3b8; font-weight: 700; font-size: 9.5px; display: block; margin-bottom: 2px;">التفاصيل والشروط:</span>
+                <span style="color: #64748b; font-weight: 800; font-size: 9px; display: block; margin-bottom: 2px;">التفاصيل والشروط:</span>
                 <span>${escapeHTML(j.desc)}</span>
             </div>
 
             <div class="job-actions-wrap">
-                ${!isMyPost ? `<button onclick="window.openChat('${j.uid}')" class="btn-job-action btn-job-chat">محادثة فورية</button>` : '<span style="flex: 1; text-align: center; font-size: 11px; font-weight: 800; color: #94a3b8; padding: 6px; background: rgba(0,0,0,0.04); border-radius: 8px;">إعلانك الخاص</span>'}
+                ${!isMyPost ? `<button onclick="window.openChat('${j.uid}')" class="btn-job-action btn-job-chat">محادثة فورية</button>` : '<span style="flex: 1; text-align: center; font-size: 11px; font-weight: 800; color: #64748b; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 8px;">إعلانك الخاص</span>'}
                 ${hasPhone && !isMyPost ? `<a href="https://wa.me/20${j.contactPhone}" target="_blank" class="btn-job-action btn-job-whatsapp">واتساب WhatsApp</a>` : ''}
             </div>
         </div>
@@ -966,7 +977,6 @@ function startListeners() {
             const j = { id: d.id, ...d.data() };
             allJobsCache.push(j);
 
-            // إشعار فوري لمقدمي الخدمة المطابقين
             if (!isGuest && userProfile?.role === 'provider' && j.title === userProfile.profession && j.uid !== currentUser?.uid) {
                 if (!reqNotifs.find(n => n.id === d.id)) {
                     reqNotifs.push({ 
@@ -983,7 +993,7 @@ function startListeners() {
     });
     globalUnsubs.push(unsubJobs);
 
-    // المراقبين الخاصين بالمستخدم المسجل
+    // مراقبة المحادثات
     if (isGuest) return;
 
     const chatQuery = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'chats'), where('users', 'array-contains', currentUser.uid));
@@ -1027,7 +1037,7 @@ function startListeners() {
     });
     globalUnsubs.push(unsubChats);
 
-    // مراقبة طلبات الخدمات لمقدمي الخدمات
+    // مراقبة طلبات الخدمات
     if (userProfile?.role === 'provider') {
         const q = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'requests'), where('type', '==', 'service'));
         const unsubReqs = onSnapshot(q, (snap) => {
@@ -1065,7 +1075,7 @@ function startListeners() {
                     <div class="custom-card-box" style="position: relative; margin-bottom: 8px;">
                         ${isNew ? '<div style="position: absolute; top: 6px; right: 6px; background: #ef4444; color: #fff; font-size: 8.5px; font-weight: bold; padding: 1px 6px; border-radius: 9999px;">جديد</div>' : ''}
                         <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px;">
-                            <img src="${window.getCloudinaryUrl(reqPhoto, 'thumb')}" loading="lazy" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1;">
+                            <img src="${window.getCloudinaryUrl(reqPhoto, 'thumb')}" loading="lazy" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1;">
                             <div style="flex: 1; min-width: 0;">
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
                                     <span style="font-size: 11.5px; font-weight: 800;">طالب الخدمة: ${escapeHTML(req.requesterName)}</span>
@@ -1201,7 +1211,7 @@ window.openUserProfilePage = async (userStr) => {
     setTimeout(() => window.scrollTo(0, 0), 10);
 };
 
-// تحميل وعرض التقييمات بهيكلة مرتبة
+// تحميل التقييمات
 async function loadReviewsToPage(targetId) {
     const list = document.getElementById('user-profile-reviews-list'); 
     const starsDisplay = document.getElementById('user-profile-stars');
@@ -1292,7 +1302,7 @@ document.getElementById('form-message').onsubmit = async (e) => {
     }
 };
 
-// فتح المحادثة بهيكلة الفقاعات الفخمة
+// فتح المحادثة
 window.openChat = async (uid) => {
     if (!window.requireAuth()) return;
     document.getElementById('messages-container').innerHTML = '';
@@ -1394,24 +1404,41 @@ window.applyFilter = () => {
 };
 
 window.clearFilter = () => {
-    document.getElementById('filter-center').value = '';
-    makeCustomDropdown('filter-center', 'المركز...');
+    const centerFilter = document.getElementById('filter-center');
+    if (centerFilter) {
+        centerFilter.value = '';
+        makeCustomDropdown('filter-center', 'المركز...');
+    }
     
-    document.getElementById('filter-village').innerHTML = '<option value="">القرية...</option>';
-    makeCustomDropdown('filter-village', 'القرية...');
+    const villageFilter = document.getElementById('filter-village');
+    if (villageFilter) {
+        villageFilter.innerHTML = '<option value="">القرية...</option>';
+        makeCustomDropdown('filter-village', 'القرية...');
+    }
     
     const currentPage = navStack[navStack.length - 1];
     if (currentPage === 'category-details') {
-        document.getElementById('filter-prof').value = currentActiveCategory;
-        makeCustomDropdown('filter-prof', 'اختر المهنة...');
+        const profFilter = document.getElementById('filter-prof');
+        if (profFilter) {
+            profFilter.value = currentActiveCategory;
+            makeCustomDropdown('filter-prof', 'اختر المهنة...');
+        }
         document.getElementById('cat-search').value = '';
         window.filterCategory();
     } else {
-        document.getElementById('filter-prof').value = '';
-        makeCustomDropdown('filter-prof', 'اختر المهنة...');
+        const profFilter = document.getElementById('filter-prof');
+        if (profFilter) {
+            profFilter.value = '';
+            makeCustomDropdown('filter-prof', 'اختر المهنة...');
+        }
         document.getElementById('dir-search').value = '';
         window.filterDirectory();
     }
+    
+    const bar = document.getElementById('dir-filter-bar');
+    if (bar) bar.classList.add('hidden');
+    const catBar = document.getElementById('cat-filter-bar');
+    if (catBar) catBar.classList.add('hidden');
     document.getElementById('filter-modal-wrap').classList.add('hidden');
 };
 
@@ -1453,8 +1480,8 @@ function renderMoreDirectory() {
 
 window.filterCategory = () => {
     const term = document.getElementById('cat-search').value.trim();
-    const center = document.getElementById('filter-center')?.value || '';
-    const village = document.getElementById('filter-village')?.value || '';
+    const center = document.getElementById('cat-filter-center')?.value || document.getElementById('filter-center')?.value || '';
+    const village = document.getElementById('cat-filter-village')?.value || document.getElementById('filter-village')?.value || '';
     const prof = document.getElementById('filter-prof')?.value || '';
     
     const targetProf = prof || currentActiveCategory;
@@ -1511,31 +1538,47 @@ window.openCategory = (profName) => {
     window.navTo('category-details');
     document.getElementById('page-title').innerText = profName;
     document.getElementById('cat-search').value = '';
-    document.getElementById('filter-prof').value = profName;
-    makeCustomDropdown('filter-prof', 'اختر المهنة...');
+    const profFilter = document.getElementById('filter-prof');
+    if (profFilter) {
+        profFilter.value = profName;
+        makeCustomDropdown('filter-prof', 'اختر المهنة...');
+    }
     window.filterCategory();
 };
 
-// إنشاء بطاقات المستخدمين المنظمة بروفيشينال
+// إنشاء بطاقات الأعضاء: التزام دقيق بسطرين فقط مع الصورة في اليمين متوسطة
 function createUserCard(u) {
     const userStr = encodeURIComponent(JSON.stringify(u));
     const joinDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString('ar-EG') : 'غير متوفر';
     const locationStr = [u.area, u.city].filter(Boolean).join(' - ');
     const finalLocation = locationStr ? locationStr : 'غير محدد';
     const isClient = u.role === 'client';
-    const profStr = (!isClient && u.profession) ? u.profession : (!isClient ? 'غير محدد' : 'عميل');
+    const roleText = isClient ? 'عميل' : `مقدم خدمة: ${escapeHTML(u.profession || 'غير محدد')}`;
     
     return `
-    <div class="fast-render-card">
-        <div onclick="window.openUserProfilePage('${userStr}')" class="user-directory-card">
-            <img src="${window.getCloudinaryUrl(u.photoURL, 'thumb')}" loading="lazy">
-            <div class="user-card-info">
-                <div class="user-card-row-top">
-                    <h4 class="user-card-name"><span style="color: #94a3b8; font-size: 9.5px; font-weight: normal;">${isClient ? 'العميل:' : 'الاسم:'}</span> ${escapeHTML(u.name)}</h4>
-                    <span class="user-card-date">${joinDate}</span>
-                </div>
-                <div class="user-card-prof">${escapeHTML(profStr)}</div>
-                <div class="user-card-location">${escapeHTML(finalLocation)}</div>
+    <div onclick="window.openUserProfilePage('${userStr}')" class="member-2line-card">
+        <!-- الصورة في اليمين متوسطة بين السطرين -->
+        <img src="${window.getCloudinaryUrl(u.photoURL, 'thumb')}" loading="lazy" class="member-card-avatar">
+        
+        <div class="member-card-content">
+            <!-- السطر الأول: اسم العضو وفي أقصى اليسار تاريخ الانضمام -->
+            <div class="member-card-row">
+                <span style="font-size: 11px; font-weight: 800; color: #1e293b; overflow: hidden; text-overflow: ellipsis;">
+                    <span style="color: #64748b; font-size: 9.5px; font-weight: normal;">اسم العضو:</span> ${escapeHTML(u.name)}
+                </span>
+                <span style="font-size: 9.5px; color: #64748b; font-weight: 600; flex-shrink: 0;" dir="ltr">
+                    تاريخ انضمام العضو: ${joinDate}
+                </span>
+            </div>
+
+            <!-- السطر الثاني: عميل أو مقدم خدمة وفي اليسار العنوان (ممنوع ينكسروا لسطر ثالث) -->
+            <div class="member-card-row">
+                <span style="font-size: 10.5px; font-weight: 800; color: ${isClient ? '#0284c7' : '#1e3a5f'}; overflow: hidden; text-overflow: ellipsis;">
+                    ${roleText}
+                </span>
+                <span style="font-size: 9.5px; color: #64748b; font-weight: 600; flex-shrink: 0; margin-right: 8px;">
+                    العنوان: ${escapeHTML(finalLocation)}
+                </span>
             </div>
         </div>
     </div>`;
@@ -1703,7 +1746,6 @@ window.logout = async () => {
     document.getElementById('chat-nav-dot').classList.add('hidden');
     document.getElementById('act-notif-badge').classList.add('hidden');
     
-    // إخفاء زر الإضافة العلوي فوراً عند الخروج
     const headerAddBtn = document.getElementById('header-add-btn');
     if (headerAddBtn) headerAddBtn.classList.add('hidden');
 
