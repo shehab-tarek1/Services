@@ -1,13 +1,13 @@
 /* ==========================================================================
-   دليل الشرقية الماسي - التصميم الهندسي الموحد (Self-Contained Style Engine)
+   دليل الشرقية الماسي - التصميم الهندسي الموحد المتكامل (Master Stylesheet)
    ========================================================================== */
 
-/* 1. إخفاء العناصر برمجياً بقوة قصوى */
+/* 1. القوة القصوى للإخفاء البرمجي */
 .hidden { 
     display: none !important; 
 }
 
-/* 2. الإعدادات العامة والخلفية السحابية الهادئة المشتقة من الهيدر */
+/* 2. الإعدادات الأساسية والخلفية العامة السحابية الهادئة */
 html, body {
     margin: 0;
     padding: 0;
@@ -54,19 +54,21 @@ button {
     background: #475569 !important;
 }
 
-/* 4. الهيدر العلوي بالتدرج المعتمد */
+/* 4. الهيدر العلوي الماسي بحواف دائرية أنيقة من الأسفل ومنظم هندسياً */
 #app-header, .glass-header {
     background: linear-gradient(135deg, #365570, #1e3a5f) !important;
-    border-bottom: 0.75px solid rgba(255, 255, 255, 0.2) !important;
-    box-shadow: 0 4px 15px rgba(30, 58, 95, 0.15) !important;
+    border-bottom: 0.75px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 0 0 20px 20px !important;
+    box-shadow: 0 4px 18px rgba(30, 58, 95, 0.2) !important;
     color: #ffffff !important;
+    overflow: hidden !important;
 }
 
 #app-header * {
     color: #ffffff !important;
 }
 
-/* 5. شاشة التحميل الماسية (Splash Screen) */
+/* 5. شاشة التحميل الماسية الفخمة */
 #loader {
     background: linear-gradient(135deg, #365570, #1e3a5f) !important;
 }
@@ -77,7 +79,7 @@ button {
     transition: opacity 0.25s ease !important;
 }
 
-/* 6. تحويل كاااافة الإطارات القديمة والسوداء إلى السيلفر اللامع 0.75px */
+/* 6. تحويل كافة الإطارات القديمة إلى سيلفر لامع 0.75px وإلغاء الظلال السوداء الحادة */
 .border-black,
 .border-2,
 .border-black-custom,
@@ -98,7 +100,7 @@ button {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
 }
 
-/* 7. بطاقات المهن والخدمات (كروت أقسام الرئيسية) */
+/* 7. بطاقات المهن والخدمات (كروت أقسام الصفحة الرئيسية) */
 .provider-card {
     border: 0.75px solid #cbd5e1 !important;
     border-radius: 16px !important;
@@ -177,7 +179,7 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 0 0 0 2px rgba(242, 165, 26, 0.15) !important;
 }
 
-/* 10. شريط وحاوية البحث الكبسولية (Pill Search Architecture) */
+/* 10. شريط وحاوية البحث الكبسولية الفخمة (Pill Architecture) */
 #prof-search-box > div,
 #page-jobs .sticky > div,
 #page-directory .sticky > div,
@@ -294,12 +296,14 @@ input:focus, select:focus, textarea:focus {
     color: #F2A51A !important;
 }
 
-/* 12. الهيدر السفلي الكبسولي العائم (Floating Capsule Navbar) - محمي ومحصن */
+/* 12. الهيدر السفلي الكبسولي العائم (Floating Capsule Navbar) - محمي ومسنتر 100% */
 #nav-bar {
     position: fixed !important;
     bottom: 12px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     width: 92% !important;
     max-width: 480px !important;
     height: 56px !important;
@@ -314,7 +318,6 @@ input:focus, select:focus, textarea:focus {
     justify-content: space-around !important;
     align-items: center !important;
     padding: 0 6px !important;
-    margin: 0 !important;
 }
 
 .dark #nav-bar {
@@ -359,7 +362,7 @@ input:focus, select:focus, textarea:focus {
     color: #F2A51A !important;
 }
 
-/* حاوية زر الإضافة (+) العائم والبارز */
+/* حاوية زر الإضافة (+) العائم والبارز في المنتصف */
 #nav-add-btn-wrapper {
     display: flex !important;
     align-items: center !important;
@@ -396,7 +399,7 @@ input:focus, select:focus, textarea:focus {
     transform: scale(0.9) !important;
 }
 
-/* 13. النوافذ المنبثقة والشاملة */
+/* 13. النوافذ المنبثقة الكاملة والشاملة */
 .full-screen-modal {
     position: fixed;
     inset: 0;
@@ -422,7 +425,7 @@ input:focus, select:focus, textarea:focus {
     backdrop-filter: blur(6px);
 }
 
-/* 14. إشعارات النظام (Toast) */
+/* 14. إشعارات النظام الماسية (Toast Messages) */
 #toast-box {
     position: fixed;
     top: 20px;
@@ -457,7 +460,22 @@ input:focus, select:focus, textarea:focus {
     background: linear-gradient(135deg, #e11d48, #9f1239);
 }
 
-/* 15. نظام التقييم بالنجوم الذهبية */
+/* 15. الشارات (Badges) */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 700;
+    border: 0.75px solid #cbd5e1;
+}
+
+.dark .badge {
+    border: 0.75px solid #334155;
+}
+
+/* 16. نظام التقييم بالنجوم الذهبية */
 .star-rating {
     direction: ltr;
     display: inline-flex;
@@ -481,7 +499,7 @@ input:focus, select:focus, textarea:focus {
     color: #F2A51A;
 }
 
-/* 16. تأثيرات الحركة الناعمة */
+/* 17. تأثيرات الحركة الانتقالية الناعمة */
 @keyframes dropDownFade {
     from { opacity: 0; transform: translateY(-6px); }
     to { opacity: 1; transform: translateY(0); }
