@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- نظام CSS شامل ومستقل 100% يضبط كل العناصر الثابتة والمولدة من الجافاسكريبت -->
+    <!-- محرك التنسيقات الماسي المتكامل والمحدث بالكامل -->
     <style>
         .hidden { display: none !important; }
 
@@ -141,6 +141,7 @@
             cursor: pointer;
         }
 
+        /* زر الإضافة بنفس حجم جرس الإشعارات تماماً */
         #header-add-btn {
             padding: 3px;
             cursor: pointer;
@@ -150,8 +151,8 @@
         }
 
         #header-add-btn svg {
-            width: 24px;
-            height: 24px;
+            width: 20px !important;
+            height: 20px !important;
             stroke-width: 2.8;
             color: #F2A51A;
         }
@@ -166,8 +167,8 @@
         }
 
         .header-bell-btn svg {
-            width: 21px;
-            height: 21px;
+            width: 20px !important;
+            height: 20px !important;
             color: #ffffff;
         }
 
@@ -175,17 +176,17 @@
             position: absolute;
             top: 2px;
             right: 2px;
-            width: 7px;
-            height: 7px;
+            width: 6.5px;
+            height: 6.5px;
             background-color: #ef4444;
             border: 1.5px solid #1e3a5f;
             border-radius: 50%;
         }
 
-        /* الحاوية الأم */
+        /* الحاوية الأم لجميع الصفحات */
         #app-view {
-            padding-top: 60px;
-            padding-bottom: 76px;
+            padding-top: 58px;
+            padding-bottom: 74px;
             width: 100%;
             max-width: 1100px;
             margin: 0 auto;
@@ -193,14 +194,14 @@
             padding-right: 12px;
         }
 
-        /* شريط البحث الماسي */
+        /* شريط وحاوية البحث الماسية المعتمة */
         .search-sticky-wrapper {
             position: sticky;
             top: 52px;
             z-index: 45;
             background-color: #EEF3F8;
-            padding: 6px 0;
-            margin-bottom: 8px;
+            padding: 5px 0 6px 0;
+            margin-bottom: 6px;
         }
 
         .dark .search-sticky-wrapper {
@@ -216,7 +217,7 @@
             align-items: center;
             gap: 6px;
             box-shadow: 0 3px 10px rgba(30, 58, 95, 0.12);
-            max-width: 620px;
+            max-width: 600px;
             margin: 0 auto;
             width: 100%;
         }
@@ -233,7 +234,7 @@
             background-color: #EBF2F7;
             border-radius: 9999px;
             padding: 0 10px;
-            height: 35px;
+            height: 34px;
         }
 
         .dark .search-inner-soft {
@@ -241,10 +242,10 @@
         }
 
         .search-inner-soft svg {
-            width: 16px;
-            height: 16px;
-            min-width: 16px;
-            min-height: 16px;
+            width: 15px;
+            height: 15px;
+            min-width: 15px;
+            min-height: 15px;
             color: #64748b;
             flex-shrink: 0;
             margin-left: 6px;
@@ -266,12 +267,13 @@
         }
 
         .dark .search-inner-soft input { color: #ffffff !important; }
+        .search-inner-soft input::placeholder { color: #64748b; }
 
         .btn-filter-funnel-icon {
-            width: 35px;
-            height: 35px;
-            min-width: 35px;
-            min-height: 35px;
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            min-height: 34px;
             background-color: #EBF2F7;
             color: #1e3a5f;
             border-radius: 50%;
@@ -292,6 +294,92 @@
             width: 15px;
             height: 15px;
             stroke-width: 2.2;
+        }
+
+        /* شريط فلترة الوظائف والدليل الملموم في سطر واحد فقط */
+        .single-line-filter-bar {
+            background-color: #E2E8F0;
+            border: 0.75px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 4px 8px;
+            margin: 0 auto 8px;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .single-line-filter-bar {
+            background-color: #284560 !important;
+            border-color: #334155;
+        }
+
+        .single-line-filter-bar .filter-title-tag {
+            font-size: 10.5px;
+            font-weight: 900;
+            color: #1e3a5f;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .dark .single-line-filter-bar .filter-title-tag {
+            color: #F2A51A;
+        }
+
+        .single-line-filter-bar select {
+            height: 28px !important;
+            font-size: 10px !important;
+            padding: 0 6px !important;
+            border-radius: 8px !important;
+            background-color: #ffffff;
+            border: 0.75px solid #cbd5e1;
+            margin-bottom: 0 !important;
+            flex: 1;
+            min-width: 75px;
+        }
+
+        .dark .single-line-filter-bar select {
+            background-color: #1e3347;
+            border-color: #334155;
+            color: #ffffff;
+        }
+
+        .single-line-filter-bar .btn-reset-compact {
+            height: 28px;
+            padding: 0 8px;
+            background-color: #f1f5f9;
+            border: 0.75px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 800;
+            color: #1e293b;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .dark .single-line-filter-bar .btn-reset-compact {
+            background-color: #1e3347;
+            border-color: #334155;
+            color: #f8fafc;
+        }
+
+        /* زر الإغلاق ✕ داخل دائرة حمراء صغيرة أقصى اليسار */
+        .btn-close-red-circle {
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            min-height: 22px;
+            border-radius: 50%;
+            background-color: #ef4444;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 900;
+            flex-shrink: 0;
+            box-shadow: 0 1px 4px rgba(239, 68, 68, 0.4);
         }
 
         /* كروت الأقسام والمهن */
@@ -356,248 +444,67 @@
             text-overflow: ellipsis;
         }
 
-        /* ==========================================================================
-           الإصلاح الجذري: ضبط كافة الكروت المولدة برمجياً لمنع تضخم الصور وخروج النصوص
-           ========================================================================== */
-
-        /* 1. كروت الدليل وتفاصيل الأقسام */
-        .fast-render-card > div,
-        .user-directory-card,
-        #dir-list > div,
-        #cat-list-container > div {
+        /* 5. بطاقات الدليل والوظائف والمحادثات أغمق بدرجتين من الصفحة */
+        .member-2line-card,
+        .job-feed-card,
+        .chat-history-card,
+        .custom-card-box {
             border: 0.75px solid #cbd5e1 !important;
-            border-radius: 15px !important;
-            background-color: #F3F6F9 !important;
-            box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
+            border-radius: 14px !important;
+            background-color: #E2E8F0 !important; /* أغمق بدرجتين من خلفية الصفحة */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
             overflow: hidden !important;
-            padding: 10px 12px !important;
-            margin-bottom: 8px !important;
-            display: flex !important;
-            flex-direction: row !important;
-            align-items: center !important;
-            gap: 12px !important;
-            cursor: pointer;
-            width: 100% !important;
+            padding: 9px 12px !important;
+            margin-bottom: 6px !important;
         }
 
-        .dark .fast-render-card > div,
-        .dark .user-directory-card,
-        .dark #dir-list > div,
-        .dark #cat-list-container > div {
+        .dark .member-2line-card,
+        .dark .job-feed-card,
+        .dark .chat-history-card,
+        .dark .custom-card-box {
             border-color: #334155 !important;
-            background-color: #243d54 !important;
+            background-color: #284560 !important; /* أغمق بدرجتين في الداكن */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
         }
 
-        /* تثبيت أبعاد صورة العميل أو الحرفي ومنع تضخمها نهائياً */
-        .fast-render-card img,
-        .user-directory-card img,
-        #dir-list img,
-        #cat-list-container img {
+        /* كارت العضو بسطرين فقط والصورة في اليمين متوسطة */
+        .member-2line-card {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            cursor: pointer;
+        }
+
+        .member-card-avatar {
             width: 42px !important;
             height: 42px !important;
             min-width: 42px !important;
             min-height: 42px !important;
-            max-width: 42px !important;
-            max-height: 42px !important;
-            border-radius: 50% !important;
-            object-fit: cover !important;
-            border: 1px solid #cbd5e1 !important;
-            flex-shrink: 0 !important;
-            display: block !important;
-        }
-
-        /* 2. كروت المحادثات في صفحة الشات */
-        #chat-history-list > div,
-        .chat-history-card {
-            border: 0.75px solid #cbd5e1 !important;
-            border-radius: 14px !important;
-            background-color: #F3F6F9 !important;
-            box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
-            padding: 10px 12px !important;
-            display: flex !important;
-            flex-direction: row !important;
-            align-items: center !important;
-            gap: 10px !important;
-            cursor: pointer !important;
-            margin-bottom: 6px !important;
-            width: 100% !important;
-        }
-
-        .dark #chat-history-list > div,
-        .dark .chat-history-card {
-            border-color: #334155 !important;
-            background-color: #243d54 !important;
-        }
-
-        /* تثبيت صورة المحادثة */
-        #chat-history-list img,
-        .chat-avatar {
-            width: 40px !important;
-            height: 40px !important;
-            min-width: 40px !important;
-            min-height: 40px !important;
-            max-width: 40px !important;
-            max-height: 40px !important;
             border-radius: 50% !important;
             object-fit: cover !important;
             border: 1px solid #cbd5e1 !important;
             flex-shrink: 0 !important;
         }
 
-        /* 3. كروت الوظائف */
-        #view-jobs > div,
-        .job-feed-card {
-            border: 0.75px solid #cbd5e1 !important;
-            border-radius: 15px !important;
-            background-color: #F3F6F9 !important;
-            box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
-            padding: 12px 14px !important;
-            margin-bottom: 8px !important;
+        .member-card-content {
+            flex: 1 !important;
+            min-width: 0 !important;
             display: flex !important;
             flex-direction: column !important;
-            gap: 8px !important;
-            width: 100% !important;
-        }
-
-        .dark #view-jobs > div,
-        .dark .job-feed-card {
-            border-color: #334155 !important;
-            background-color: #243d54 !important;
-        }
-
-        #view-jobs img,
-        .job-feed-card img {
-            width: 38px !important;
-            height: 38px !important;
-            min-width: 38px !important;
-            min-height: 38px !important;
-            max-width: 38px !important;
-            max-height: 38px !important;
-            border-radius: 50% !important;
-            object-fit: cover !important;
-            border: 1px solid #cbd5e1 !important;
-            flex-shrink: 0 !important;
-        }
-
-        /* شارات الوظائف */
-        .job-badges-wrap {
-            display: flex !important;
-            flex-wrap: wrap !important;
-            gap: 4px !important;
-        }
-
-        .job-badge-item {
-            background: rgba(0,0,0,0.05) !important;
-            border: 0.75px solid #cbd5e1 !important;
-            padding: 2px 8px !important;
-            border-radius: 6px !important;
-            font-size: 9.5px !important;
-            font-weight: 700 !important;
-        }
-
-        .dark .job-badge-item {
-            background: rgba(255,255,255,0.06) !important;
-            border-color: #334155 !important;
-        }
-
-        .job-desc-box {
-            background: rgba(0,0,0,0.02) !important;
-            border: 0.75px solid #cbd5e1 !important;
-            border-radius: 10px !important;
-            padding: 8px 10px !important;
-            font-size: 11px !important;
-            max-height: 80px !important;
-            overflow-y: auto !important;
-            line-height: 1.6 !important;
-        }
-
-        .dark .job-desc-box {
-            background: rgba(0,0,0,0.2) !important;
-            border-color: #334155 !important;
-        }
-
-        /* أزرار المحادثة والواتساب الحقيقية الملونة داخل الكروت */
-        .job-actions-wrap,
-        #view-jobs .flex,
-        #matching-reqs-list .flex {
-            display: flex !important;
-            gap: 8px !important;
-            margin-top: 4px !important;
-        }
-
-        .btn-job-action,
-        #view-jobs button,
-        #view-jobs a,
-        #matching-reqs-list button,
-        #matching-reqs-list a,
-        #user-profile-actions button,
-        #user-profile-actions a {
-            flex: 1 !important;
-            height: 34px !important;
-            border-radius: 10px !important;
-            font-size: 11.5px !important;
-            font-weight: 800 !important;
-            color: #ffffff !important;
-            display: flex !important;
-            align-items: center !important;
             justify-content: center !important;
-            gap: 4px !important;
-            text-align: center !important;
-            padding: 0 10px !important;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
-            border: none !important;
+            gap: 2px !important;
         }
 
-        /* زر المحادثة الكحلي */
-        .btn-job-chat,
-        #view-jobs button:not([class*="green"]),
-        #matching-reqs-list button:not([class*="green"]),
-        #user-profile-actions button {
-            background: linear-gradient(135deg, #365570, #1e3a5f) !important;
+        .member-card-row {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
 
-        /* زر الواتساب الزمردي الأخضر */
-        .btn-job-whatsapp,
-        #view-jobs a,
-        #matching-reqs-list a,
-        #user-profile-actions a {
-            background: #20B486 !important;
-        }
-
-        /* 4. كروت سجل النشاط */
-        #my-activity > div,
-        #matching-reqs-list > div {
-            border: 0.75px solid #cbd5e1 !important;
-            border-radius: 15px !important;
-            background-color: #F3F6F9 !important;
-            box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
-            padding: 10px 12px !important;
-            margin-bottom: 8px !important;
-        }
-
-        .dark #my-activity > div,
-        .dark #matching-reqs-list > div {
-            border-color: #334155 !important;
-            background-color: #243d54 !important;
-        }
-
-        /* الحاويات العامة والبطاقات */
-        .custom-card-box {
-            border: 0.75px solid #cbd5e1;
-            border-radius: 15px;
-            background-color: #F3F6F9;
-            box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04);
-            overflow: hidden;
-            padding: 12px;
-            margin-bottom: 8px;
-        }
-
-        .dark .custom-card-box {
-            border-color: #334155;
-            background-color: #243d54;
-        }
-
-        /* الحقول ودوائر الاختيار */
+        /* الحقول العامة */
         input:not([type="radio"]):not([type="checkbox"]):not([type="file"]), 
         select, 
         textarea {
@@ -626,7 +533,6 @@
             color: #ffffff;
         }
 
-        /* حماية دوائر الـ Radio والـ Checkbox */
         input[type="radio"], input[type="checkbox"] {
             width: 15px !important;
             height: 15px !important;
@@ -686,7 +592,6 @@
             border-color: #334155;
         }
 
-        /* القوائم المنسدلة البديلة ومنع الاختفاء */
         select[style*="display: none"] { display: none !important; }
 
         .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 9px; }
@@ -735,49 +640,68 @@
         .custom-option:hover { background-color: #EEF3F8; color: #1e3a5f; }
         .dark .custom-option:hover { background-color: #1e3347; color: #F2A51A; }
 
-        /* نافذة الإشعارات المنسدلة المحاطة بطبقة معتمة لحجب ما خلفها */
+        /* صندوق الإشعارات الماسي (أفتح من لون الهيدر بدرجة) */
         #notif-panel {
             position: fixed;
             top: 56px;
             left: 12px;
             right: 12px;
-            max-width: 380px;
+            max-width: 340px;
             margin: 0 auto;
-            background-color: #F3F6F9;
+            background: #416382 !important; /* أفتح من لون الهيدر بدرجة */
+            color: #ffffff !important;
             border-radius: 16px;
-            border: 0.75px solid #cbd5e1;
-            box-shadow: 0 10px 30px rgba(30, 58, 95, 0.25);
+            border: 0.75px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
             z-index: 120;
-            padding: 14px;
+            padding: 10px 12px;
         }
 
         .dark #notif-panel {
-            background-color: #243d54;
+            background: #1e3347 !important;
             border-color: #334155;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .notif-item-card {
-            background: rgba(0,0,0,0.02);
-            border: 0.75px solid #cbd5e1;
-            border-radius: 12px;
-            padding: 8px 10px;
-            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 0.75px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 6px 8px;
+            margin-bottom: 5px;
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 1px;
             position: relative;
         }
 
-        .dark .notif-item-card { background: rgba(0,0,0,0.2); border-color: #334155; }
-        .notif-unread-badge { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; background-color: #ef4444; border-radius: 50%; }
-        .notif-item-text { font-size: 11px; font-weight: 700; padding-right: 8px; line-height: 1.5; }
-        .notif-item-time { font-size: 9px; color: #94a3b8; font-weight: 600; }
+        .notif-unread-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 6px;
+            height: 6px;
+            background-color: #ef4444;
+            border-radius: 50%;
+        }
 
-        /* كبسولة تسجيل الخروج */
+        .notif-item-text {
+            font-size: 10.5px;
+            font-weight: 700;
+            padding-right: 8px;
+            line-height: 1.4;
+            color: #ffffff;
+        }
+
+        .notif-item-time {
+            font-size: 8.5px;
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+        /* كبسولة تسجيل الخروج الحمراء */
         .btn-logout-capsule {
             width: 100%;
-            padding: 10px 18px;
+            padding: 9px 18px;
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: #ffffff;
             border-radius: 9999px;
@@ -794,7 +718,7 @@
 
         .btn-logout-capsule:active { transform: scale(0.97); }
 
-        /* بطاقة تسجيل الدخول */
+        /* بطاقة الدخول العائمة */
         .auth-container-modern {
             background: linear-gradient(135deg, #365570, #1e3a5f);
             border-radius: 20px;
@@ -825,7 +749,7 @@
             border-color: #334155;
         }
 
-        /* الهيدر السفلي */
+        /* الهيدر السفلي الكبسولي العائم */
         #nav-bar {
             position: fixed;
             bottom: 10px;
@@ -855,6 +779,7 @@
         }
 
         .nav-btn {
+            position: relative !important; /* لربط نقطة إشعار الشات بالزر دون القفز */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -870,6 +795,44 @@
         .nav-btn.active { color: #1e3a5f; transform: scale(1.04); }
         .dark .nav-btn.active { color: #F2A51A; }
 
+        /* نقطة إشعار المحادثات مثبتة بدقة فوق أيقونة الشات */
+        #chat-nav-dot {
+            position: absolute !important;
+            top: 4px !important;
+            right: calc(50% - 14px) !important;
+            width: 6.5px !important;
+            height: 6.5px !important;
+            background-color: #3b82f6 !important;
+            border-radius: 50% !important;
+            box-shadow: 0 0 4px #3b82f6;
+        }
+
+        /* كبسولة تبويبات النشاط مطابقة لعرض الهيدر */
+        .activity-tabs-capsule {
+            display: flex;
+            background: #E2E8F0;
+            padding: 2px;
+            border-radius: 14px;
+            border: 0.75px solid #cbd5e1;
+            height: 36px;
+            width: 92%;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .dark .activity-tabs-capsule {
+            background: #284560;
+            border-color: #334155;
+        }
+
+        .activity-tabs-capsule button {
+            flex: 1;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            transition: all 0.2s ease;
+        }
+
         /* الشات */
         .chat-bubble-me {
             background: linear-gradient(135deg, #365570, #1e3a5f);
@@ -881,7 +844,7 @@
         }
 
         .chat-bubble-other {
-            background-color: #F3F6F9;
+            background-color: #E2E8F0;
             color: #1e293b;
             border: 0.75px solid #cbd5e1;
             border-radius: 16px 16px 16px 4px;
@@ -891,7 +854,7 @@
         }
 
         .dark .chat-bubble-other {
-            background-color: #243d54;
+            background-color: #284560;
             color: #f8fafc;
             border-color: #334155;
         }
@@ -958,27 +921,30 @@
         </div>
         
         <div style="display: flex; align-items: center; gap: 10px;">
+            <!-- زر الإضافة بنفس حجم جرس الإشعارات -->
             <button id="header-add-btn" onclick="window.navTo('add')" class="hidden" title="إضافة جديد">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
             </button>
 
+            <!-- جرس الإشعارات -->
             <button onclick="window.toggleNotifPanel()" class="header-bell-btn" title="الإشعارات">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                 <span id="notif-dot" class="hidden"></span>
             </button>
 
+            <!-- صورة البروفايل بحجم 32px -->
             <img id="header-avatar" src="icons/icon-192x192.png" onclick="window.navTo('profile')">
         </div>
     </header>
 
-    <!-- لوحة الإشعارات المنسدلة (محاطة بطبقة معتمة لمنع تداخل الحقول) -->
+    <!-- لوحة الإشعارات المنسدلة (أفتح من لون الهيدر بدرجة) -->
     <div id="notif-panel" class="hidden">
-        <div class="notif-header-box">
-            <h3 style="font-size: 11.5px; font-weight: 800;">الإشعارات والتنبيهات</h3>
-            <button onclick="window.toggleNotifPanel()" style="color: #94a3b8; font-weight: bold;">✕</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; border-bottom: 0.75px solid rgba(255,255,255,0.2); padding-bottom: 4px;">
+            <h3 style="font-size: 11px; font-weight: 800; color: #ffffff;">الإشعارات والتنبيهات</h3>
+            <button onclick="window.toggleNotifPanel()" style="color: #ffffff; font-weight: bold; font-size: 12px;">✕</button>
         </div>
-        <div id="notif-list" style="max-height: 220px; overflow-y: auto;">
-            <p style="text-align: center; font-size: 10.5px; color: #94a3b8; padding: 20px 0;">لا توجد إشعارات حالياً</p>
+        <div id="notif-list" style="max-height: 200px; overflow-y: auto;">
+            <p style="text-align: center; font-size: 10px; color: #cbd5e1; padding: 16px 0;">لا توجد إشعارات حالياً</p>
         </div>
     </div>
 
@@ -1062,7 +1028,6 @@
                 <button id="tab-home-jobs"></button>
             </div>
 
-            <!-- شريط البحث الماسي المعتم لحجب ما خلفه تماماً -->
             <div id="prof-search-box" class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
@@ -1092,25 +1057,22 @@
                 </div>
             </div>
 
-            <div id="jobs-filter-modal" class="hidden custom-card-box" style="max-width: 500px; margin: 0 auto 10px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 0.75px solid #cbd5e1; padding-bottom: 6px;">
-                    <span style="font-size: 11.5px; font-weight: 800;">تصفية الوظائف</span>
-                    <button onclick="window.toggleJobsFilterModal()" style="color: #94a3b8; font-weight: bold;">✕</button>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
-                    <select id="filter-job-type" onchange="window.filterJobsList && window.filterJobsList()">
-                        <option value="">نوع الدوام (الكل)</option>
-                        <option value="full">دوام كامل</option>
-                        <option value="part">دوام جزئي</option>
-                    </select>
-                    <select id="filter-job-shift" onchange="window.filterJobsList && window.filterJobsList()">
-                        <option value="">الشيفت (الكل)</option>
-                        <option value="صباحي">صباحي</option>
-                        <option value="مسائي">مسائي</option>
-                        <option value="متغير">متغير</option>
-                    </select>
-                    <button onclick="document.getElementById('filter-job-type').value=''; document.getElementById('filter-job-shift').value=''; document.getElementById('jobs-search-input').value=''; window.filterJobsList && window.filterJobsList();" style="height: 38px; border-radius: 10px; font-size: 11px; font-weight: bold; background: #e2e8f0; color: #1e293b; border: 0.75px solid #cbd5e1;">إعادة ضبط</button>
-                </div>
+            <!-- شريط فلترة الوظائف في سطر واحد ملموم مع زر الإغلاق الدائري الأحمر -->
+            <div id="jobs-filter-modal" class="hidden single-line-filter-bar">
+                <span class="filter-title-tag">تصفية:</span>
+                <select id="filter-job-type" onchange="window.filterJobsList && window.filterJobsList()">
+                    <option value="">الدوام (الكل)</option>
+                    <option value="full">كامل</option>
+                    <option value="part">جزئي</option>
+                </select>
+                <select id="filter-job-shift" onchange="window.filterJobsList && window.filterJobsList()">
+                    <option value="">الشيفت (الكل)</option>
+                    <option value="صباحي">صباحي</option>
+                    <option value="مسائي">مسائي</option>
+                    <option value="متغير">متغير</option>
+                </select>
+                <button onclick="document.getElementById('filter-job-type').value=''; document.getElementById('filter-job-shift').value=''; document.getElementById('jobs-search-input').value=''; window.filterJobsList && window.filterJobsList();" class="btn-reset-compact">إعادة ضبط</button>
+                <button onclick="window.toggleJobsFilterModal()" class="btn-close-red-circle" title="إغلاق">✕</button>
             </div>
 
             <div id="view-jobs">
@@ -1131,6 +1093,16 @@
                     </button>
                 </div>
             </div>
+
+            <!-- شريط فلترة مدمج بسطر واحد -->
+            <div id="cat-filter-bar" class="hidden single-line-filter-bar">
+                <span class="filter-title-tag">تصفية:</span>
+                <select id="cat-filter-center" onchange="window.updateVillages('filter')"></select>
+                <select id="cat-filter-village"><option value="">القرية...</option></select>
+                <button onclick="window.clearFilter()" class="btn-reset-compact">إعادة ضبط</button>
+                <button onclick="document.getElementById('cat-filter-bar').classList.add('hidden')" class="btn-close-red-circle" title="إغلاق">✕</button>
+            </div>
+
             <div id="cat-list-container"></div>
         </section>
 
@@ -1147,6 +1119,19 @@
                     </button>
                 </div>
             </div>
+
+            <!-- شريط فلترة الدليل المدمج بسطر واحد -->
+            <div id="dir-filter-bar" class="hidden single-line-filter-bar">
+                <span class="filter-title-tag">تصفية:</span>
+                <select id="filter-center" onchange="window.updateVillages('filter')"></select>
+                <select id="filter-village"><option value="">القرية...</option></select>
+                <div id="filter-prof-container" style="display: contents;">
+                    <select id="filter-prof"></select>
+                </div>
+                <button onclick="window.clearFilter()" class="btn-reset-compact">إعادة ضبط</button>
+                <button onclick="document.getElementById('dir-filter-bar').classList.add('hidden')" class="btn-close-red-circle" title="إغلاق">✕</button>
+            </div>
+
             <div id="dir-list"></div>
         </section>
 
@@ -1206,7 +1191,7 @@
             </div>
         </section>
 
-        <!-- PROFILE SECTION (حسابي) -->
+        <!-- PROFILE SECTION -->
         <section id="page-profile" class="page-section hidden" style="max-width: 440px; margin: 0 auto;">
             <div class="custom-card-box" style="text-align: center; padding: 18px 14px;">
                 <div style="width: 76px; height: 76px; margin: 0 auto 8px; border-radius: 50%; overflow: hidden; border: 2px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
@@ -1237,6 +1222,7 @@
                     <span id="act-notif-badge" class="hidden" style="background: #ef4444; color: #ffffff; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold;">!</span>
                 </button>
 
+                <!-- كبسولة تسجيل الخروج الحمراء -->
                 <button onclick="window.logout()" class="btn-logout-capsule">
                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                     <span>تسجيل الخروج</span>
@@ -1244,12 +1230,12 @@
             </div>
         </section>
 
-        <!-- ACTIVITY PAGE -->
+        <!-- ACTIVITY PAGE (كبسولة بعرض الهيدر) -->
         <section id="page-activity" class="page-section hidden">
             <div class="search-sticky-wrapper" style="text-align: center;">
-                <div style="display: inline-flex; background: #e2e8f0; padding: 2px; border-radius: 12px; border: 0.75px solid #cbd5e1; height: 34px; width: 280px;">
-                    <button onclick="window.switchActivityTab('my-activity')" id="tab-act-mine" style="flex: 1; border-radius: 10px; font-size: 11px; font-weight: 800; background: #1e3a5f; color: #ffffff;">نشاطي</button>
-                    <button onclick="window.switchActivityTab('matching')" id="tab-act-matching" style="flex: 1; border-radius: 10px; font-size: 11px; font-weight: 800; color: #64748b;">طلبات تناسبك</button>
+                <div class="activity-tabs-capsule">
+                    <button onclick="window.switchActivityTab('my-activity')" id="tab-act-mine" style="background: #1e3a5f; color: #ffffff;">نشاطي</button>
+                    <button onclick="window.switchActivityTab('matching')" id="tab-act-matching" style="color: #64748b;">طلبات تناسبك</button>
                 </div>
             </div>
 
@@ -1394,7 +1380,7 @@
         </div>
     </div>
 
-    <!-- FILTER MODAL DROPDOWN (محاط بطبقة حماية معتمة) -->
+    <!-- FILTER MODAL DROPDOWN -->
     <div id="filter-modal-wrap" class="hidden">
         <div id="filter-modal-backdrop" onclick="document.getElementById('filter-modal-wrap').classList.add('hidden')" style="position: fixed; inset: 0; z-index: 130; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);"></div>
 
@@ -1472,11 +1458,11 @@
             <span>الدليل</span>
         </button>
 
-        <!-- 4. محادثات -->
-        <button onclick="window.navTo('chat')" class="nav-btn relative">
+        <!-- 4. محادثات (النقطة الزرقاء فوقه مباشرة دون أي انزياح) -->
+        <button onclick="window.navTo('chat')" class="nav-btn">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
             <span>محادثات</span>
-            <span id="chat-nav-dot" class="hidden" style="position: absolute; top: 3px; right: 14px; width: 6px; height: 6px; background-color: #3b82f6; border-radius: 50%;"></span>
+            <span id="chat-nav-dot" class="hidden"></span>
         </button>
 
         <!-- 5. حسابي -->
