@@ -1,5 +1,5 @@
 const CACHE_NAME = 'dalil-sharkia-v3.1';
-const DYNAMIC_CACHE = 'dalil-sharkia-dynamic-v3.1';
+const DYNAMIC_CACHE = 'dalil-sharkia-dynamic-v3.2';
 
 // تم استخدام مسارات نسبية (./) لتجنب أخطاء الاستضافة في المجلدات الفرعية
 const ASSETS_TO_CACHE = [
@@ -7,7 +7,6 @@ const ASSETS_TO_CACHE = [
   './index.html',
   './style.css',
   './app.js',
-  './tailwind.min.css',
   './manifest.json',
   './icons/icon-192x192.png'
 ];
