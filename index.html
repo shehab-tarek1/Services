@@ -20,13 +20,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- ملف التيلويند المتاح -->
+    <!-- ملف التيلويند الأساسي -->
     <link rel="stylesheet" href="tailwind.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- محرك التنسيقات المتكامل المطور ذاتياً 100% -->
+    <!-- محرك التنسيقات الماسي المتكامل الشامل -->
     <style>
-        /* 1. الإخفاء والأساسيات */
+        /* 1. القوة القصوى للإخفاء والأساسيات */
         .hidden { display: none !important; }
 
         *, *::before, *::after {
@@ -40,22 +40,23 @@
             min-height: 100dvh;
             font-family: 'Cairo', sans-serif !important;
             -webkit-tap-highlight-color: transparent;
-            background-color: #EEF3F8 !important; /* خلفية سحابية هادئة مريحة */
+            background-color: #EEF3F8 !important;
             color: #1e293b;
             word-break: break-word;
+            font-size: 12px;
         }
 
-        /* في الوضع الداكن: خلفية الصفحات أفتح من الهيدر بدرجة */
+        /* الوضع الداكن */
         .dark html, .dark body {
-            background-color: #1e3347 !important; /* أفتح من لون الهيدر العميق */
+            background-color: #1e3347 !important;
             color: #f8fafc !important;
         }
 
-        /* 2. شاشة التحميل الماسية (تغطي الموقع بالكامل متضمنة الهيدر السفلي) */
+        /* 2. شاشة التحميل الماسية */
         #loader {
             position: fixed;
             inset: 0;
-            z-index: 999999 !important; /* أعلى من الهيدر السفلي والعلوي */
+            z-index: 999999 !important;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -73,11 +74,10 @@
             pointer-events: none !important;
         }
 
-        /* الماسة المتألقة الواضحة */
         .diamond-icon-wrap {
             position: relative;
-            width: 76px;
-            height: 76px;
+            width: 72px;
+            height: 72px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -87,7 +87,7 @@
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            border: 2.5px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-top-color: #F2A51A;
             animation: spinRing 1s linear infinite;
         }
@@ -97,24 +97,24 @@
         }
 
         .diamond-center-box {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(242, 165, 26, 0.6);
-            border-radius: 14px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 15px rgba(242, 165, 26, 0.35);
+            box-shadow: 0 0 12px rgba(242, 165, 26, 0.35);
         }
 
-        /* 3. الهيدر العلوي الماسي المنظم بحواف سفلية دائرية */
+        /* 3. الهيدر العلوي المنظم (اللوجو منضبط ومحكوم داخل الحدود) */
         #app-header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 54px;
+            height: 52px !important;
             background: linear-gradient(135deg, #365570, #1e3a5f) !important;
             border-radius: 0 0 18px 18px !important;
             border-bottom: 0.75px solid rgba(255, 255, 255, 0.2) !important;
@@ -122,12 +122,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 14px;
+            padding: 0 12px !important;
             z-index: 100;
+            overflow: hidden !important;
         }
 
         .dark #app-header {
-            background: linear-gradient(135deg, #162638, #122334) !important; /* أغمق درجة ليصبح الهيدر أغمق من الصفحات */
+            background: linear-gradient(135deg, #162638, #122334) !important;
             border-bottom-color: rgba(255, 255, 255, 0.1) !important;
         }
 
@@ -135,9 +136,24 @@
             color: #ffffff;
         }
 
-        /* الحاوية الأم لجميع الصفحات - مسافات محسوبة لمنع التداخل */
+        /* تثبيت قياس اللوجو والصورة لعدم الخروج عن الهيدر إطلاقاً */
+        #header-avatar {
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            min-height: 32px !important;
+            max-width: 32px !important;
+            max-height: 32px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            flex-shrink: 0 !important;
+            border: 1px solid rgba(255, 255, 255, 0.6) !important;
+            overflow: hidden !important;
+        }
+
+        /* الحاوية الأم لجميع الصفحات */
         #app-view {
-            padding-top: 60px !important;
+            padding-top: 58px !important;
             padding-bottom: 74px !important;
             width: 100%;
             max-width: 1100px;
@@ -145,12 +161,12 @@
             min-height: 100vh;
         }
 
-        /* 4. شريط البحث الكبسولي الماسي (المسافة فوقه مطابقة لتحته مع حجب تام للبطاقات خلفه) */
+        /* 4. شريط البحث الكبسولي الماسي المعتم */
         .search-sticky-wrapper {
             position: sticky;
-            top: 54px;
+            top: 52px;
             z-index: 45;
-            background-color: #EEF3F8 !important; /* معتم تماماً لمنع ظهور البطاقات خلفه */
+            background-color: #EEF3F8 !important;
             padding: 5px 0 6px 0 !important;
             margin-bottom: 6px;
         }
@@ -159,7 +175,6 @@
             background-color: #1e3347 !important;
         }
 
-        /* المستطيل الخارجي بلون الهيدر الماسي */
         .search-outer-pill {
             background: linear-gradient(135deg, #365570, #1e3a5f) !important;
             border: 0.75px solid #cbd5e1;
@@ -169,7 +184,7 @@
             align-items: center;
             gap: 6px;
             box-shadow: 0 3px 10px rgba(30, 58, 95, 0.12);
-            max-width: 620px;
+            max-width: 600px;
             margin: 0 auto;
             width: 100%;
         }
@@ -179,15 +194,14 @@
             border-color: #334155;
         }
 
-        /* المستطيل الداخلي: أفتح درجة هادئة مريحة للعين مشتقة من الهيدر (وليس أبيض ساطع) */
         .search-inner-soft {
             flex: 1;
             display: flex;
             align-items: center;
-            background-color: #EBF2F7 !important; /* أفتح درجة هادئة مريحة */
+            background-color: #EBF2F7 !important;
             border-radius: 9999px;
             padding: 0 10px;
-            height: 35px;
+            height: 34px;
         }
 
         .dark .search-inner-soft {
@@ -199,10 +213,11 @@
             border: none !important;
             outline: none !important;
             background: transparent !important;
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 600;
             color: #1e293b !important;
             padding: 0 4px;
+            box-shadow: none !important;
         }
 
         .dark .search-inner-soft input {
@@ -213,11 +228,6 @@
             color: #64748b;
         }
 
-        .dark .search-inner-soft input::placeholder {
-            color: #94a3b8;
-        }
-
-        /* زر قمع الفلترة المصغر والأنيق */
         .btn-filter-compact {
             height: 32px;
             padding: 0 11px;
@@ -225,7 +235,7 @@
             color: #1e3a5f !important;
             border: none;
             border-radius: 9999px;
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -240,11 +250,7 @@
             color: #F2A51A !important;
         }
 
-        .btn-filter-compact:active {
-            transform: scale(0.95);
-        }
-
-        /* 5. كروت الأقسام والمهن (عزل الضباب لمنع أي لاج على المعالج) */
+        /* 5. كروت الأقسام والمهن (أداء عالي وسريع) */
         .provider-card {
             border: 0.75px solid #cbd5e1 !important;
             border-radius: 14px !important;
@@ -252,7 +258,7 @@
             overflow: hidden !important;
             background-color: #F3F6F9 !important;
             position: relative !important;
-            height: 100px !important;
+            height: 96px !important;
             cursor: pointer;
             transition: transform 0.15s ease;
         }
@@ -262,17 +268,12 @@
             background-color: #243d54 !important;
         }
 
-        .provider-card:hover {
-            transform: translateY(-2px);
-        }
-
         .provider-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        /* كبسولة العنوان الممركزة خفيفة الظل وبدون أي لاج */
         .prof-badge-center {
             position: absolute;
             inset: 0;
@@ -284,9 +285,9 @@
         }
 
         .prof-badge-center span {
-            background: rgba(15, 23, 42, 0.75) !important; /* خلفية داكنة خفيفة عادية بدون لاج */
+            background: rgba(15, 23, 42, 0.75) !important;
             color: #ffffff !important;
-            font-size: 10.5px;
+            font-size: 10px;
             font-weight: 800;
             padding: 3px 10px;
             border-radius: 9999px;
@@ -298,7 +299,7 @@
             text-overflow: ellipsis;
         }
 
-        /* 6. استبدال الأبيض الساطع برصاصي سيلفر هادئ مريح للعين على كافة البطاقات */
+        /* 6. البطاقات والحاويات بلون سيلفر هادئ */
         .fast-render-card > div,
         #view-jobs > div,
         #my-activity > div,
@@ -307,12 +308,12 @@
         .custom-card-box {
             border: 0.75px solid #cbd5e1 !important;
             border-radius: 15px !important;
-            background-color: #F3F6F9 !important; /* رصاصي سيلفر هادئ مريح للعين */
+            background-color: #F3F6F9 !important;
             box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
             overflow: hidden !important;
             word-break: break-word !important;
             padding: 10px 12px !important;
-            margin-bottom: 7px;
+            margin-bottom: 8px;
         }
 
         .dark .fast-render-card > div,
@@ -322,19 +323,48 @@
         .dark #chat-history-list > div,
         .dark .custom-card-box {
             border-color: #334155 !important;
-            background-color: #243d54 !important; /* أفتح من خلفية الصفحة الداكنة */
+            background-color: #243d54 !important;
             box-shadow: 0 2px 7px rgba(0, 0, 0, 0.25) !important;
         }
 
-        /* 7. كود الدولة +20 في سطر واحد دائماً */
+        /* 7. الحقول المنظمة ذات الظل الخفيف والمسافات المحسوبة */
+        input, select, textarea {
+            border: 0.75px solid #cbd5e1 !important;
+            background-color: #ffffff !important;
+            border-radius: 11px !important;
+            font-size: 11px !important;
+            padding: 6px 10px !important;
+            width: 100%;
+            outline: none;
+            color: #1e293b;
+            box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04) !important;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            margin-bottom: 8px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #1e3a5f !important;
+            box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.1) !important;
+        }
+
+        .dark input, .dark select, .dark textarea {
+            background-color: #243d54 !important;
+            border-color: #334155 !important;
+            color: #ffffff !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+        }
+
+        /* كود الدولة +20 في سطر واحد دائماً */
         .phone-input-wrap {
             display: flex;
             align-items: center;
             border: 0.75px solid #cbd5e1;
             border-radius: 11px;
             overflow: hidden;
-            background-color: #F3F6F9;
+            background-color: #ffffff;
             height: 36px;
+            box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04);
+            margin-bottom: 8px;
         }
 
         .dark .phone-input-wrap {
@@ -342,8 +372,16 @@
             background-color: #243d54;
         }
 
+        .phone-input-wrap input {
+            border: none !important;
+            box-shadow: none !important;
+            margin-bottom: 0 !important;
+            padding: 0 10px !important;
+            height: 100%;
+        }
+
         .phone-code-badge {
-            background-color: #e2e8f0;
+            background-color: #f1f5f9;
             color: #334155;
             font-weight: 800;
             font-size: 11px;
@@ -364,25 +402,7 @@
             border-color: #334155;
         }
 
-        /* حقول الإدخال الهادئة الملمومة */
-        input, select, textarea {
-            border: 0.75px solid #cbd5e1 !important;
-            background-color: #F3F6F9 !important;
-            border-radius: 11px !important;
-            font-size: 11px !important;
-            padding: 5px 9px !important;
-            width: 100%;
-            outline: none;
-            color: #1e293b;
-        }
-
-        .dark input, .dark select, .dark textarea {
-            background-color: #243d54 !important;
-            border-color: #334155 !important;
-            color: #ffffff !important;
-        }
-
-        /* 8. زر الإضافة العلوي الحر (+) وجرس الإشعارات الدقيق */
+        /* 8. أزرار الهيدر العلوي */
         #header-add-btn {
             background: transparent !important;
             border: none !important;
@@ -398,13 +418,13 @@
             width: 24px;
             height: 24px;
             stroke-width: 2.8;
-            color: #F2A51A; /* ذهبي ملكي ساطع */
+            color: #F2A51A;
         }
 
         .header-bell-btn {
             background: transparent !important;
             border: none !important;
-            padding: 3px;
+            padding: 2px;
             position: relative;
             cursor: pointer;
             display: flex;
@@ -420,8 +440,8 @@
 
         #notif-dot {
             position: absolute;
-            top: 2px;
-            right: 2px;
+            top: 1px;
+            right: 1px;
             width: 7.5px;
             height: 7.5px;
             background-color: #ef4444;
@@ -429,10 +449,10 @@
             border-radius: 50%;
         }
 
-        /* 9. لوحة الإشعارات المنسدلة المنظمة بروفيشينال */
+        /* 9. لوحة الإشعارات المنسدلة */
         #notif-panel {
             position: fixed;
-            top: 58px;
+            top: 56px;
             left: 12px;
             right: 12px;
             max-width: 360px;
@@ -451,7 +471,62 @@
             box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
         }
 
-        /* 10. الهيدر السفلي الكبسولي العائم مع حماية الفراغ تحته */
+        /* 10. كبسولة زر تسجيل الخروج الحمراء الفخمة */
+        .btn-logout-capsule {
+            width: 100%;
+            padding: 9px 18px !important;
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 9999px !important;
+            font-size: 11.5px !important;
+            font-weight: 800 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 3px 10px rgba(239, 68, 68, 0.35) !important;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn-logout-capsule:active {
+            transform: scale(0.97);
+        }
+
+        /* 11. صفحة الدخول العائمة الحديثة */
+        .auth-container-modern {
+            background: linear-gradient(135deg, #365570, #1e3a5f);
+            border-radius: 20px;
+            padding: 18px 16px;
+            color: #ffffff;
+            box-shadow: 0 10px 30px rgba(30, 58, 95, 0.3);
+            border: 0.75px solid rgba(255, 255, 255, 0.2);
+            margin: 10px auto;
+            max-width: 380px;
+        }
+
+        .dark .auth-container-modern {
+            background: linear-gradient(135deg, #1e3347, #152636);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-card-inner {
+            background-color: #F3F6F9;
+            border-radius: 16px;
+            padding: 14px;
+            color: #1e293b;
+            border: 0.75px solid #cbd5e1;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .dark .auth-card-inner {
+            background-color: #243d54;
+            color: #f8fafc;
+            border-color: #334155;
+        }
+
+        /* 12. الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية */
         #nav-bar {
             position: fixed !important;
             bottom: 10px !important;
@@ -514,19 +589,20 @@
             color: #F2A51A !important;
         }
 
-        /* 11. القوائم المنسدلة الملمومة والأنماط التكميلية */
-        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 0.25rem; }
+        /* 13. القوائم المنسدلة الملمومة والأنماط التكميلية */
+        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 8px; }
         .custom-select {
             display: flex; align-items: center; justify-content: space-between;
             padding: 3px 9px !important; border: 0.75px solid #cbd5e1 !important;
-            border-radius: 10px !important; background-color: #F3F6F9 !important;
+            border-radius: 10px !important; background-color: #ffffff !important;
             height: 34px !important; font-size: 11px !important; cursor: pointer;
+            box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04);
         }
         .dark .custom-select { background-color: #243d54 !important; border-color: #334155 !important; color: #ffffff !important; }
         .custom-options {
             position: absolute; top: calc(100% + 3px); left: 0; right: 0;
             border: 0.75px solid #cbd5e1 !important; border-radius: 12px !important;
-            background-color: #F3F6F9 !important; z-index: 9999; max-height: 135px !important;
+            background-color: #ffffff !important; z-index: 9999; max-height: 135px !important;
             overflow-y: auto; display: none; box-shadow: 0 6px 16px rgba(30, 58, 95, 0.12) !important;
         }
         .dark .custom-options { background-color: #243d54 !important; border-color: #334155 !important; }
@@ -565,7 +641,7 @@
         .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #F2A51A; }
     </style>
 
-    <link rel="stylesheet" href="style.css?v=6.0">
+    <link rel="stylesheet" href="style.css?v=7.0">
 
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -585,7 +661,6 @@
         <div class="diamond-icon-wrap">
             <div class="diamond-ring"></div>
             <div class="diamond-center-box">
-                <!-- أيقونة الماسة الذهبية البارزة -->
                 <svg class="w-6 h-6 text-[#F2A51A]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2.5L3.5 11 12 21.5 20.5 11 12 2.5zm0 2.8l5.5 6.2H6.5l5.5-6.2zM5.2 12.5h13.6L12 18.7 5.2 12.5z"/>
                 </svg>
@@ -594,29 +669,29 @@
         <h2 class="mt-3 text-xs font-black text-white tracking-widest">دليل الشرقية</h2>
     </div>
 
-    <!-- Header العلوي المنظم -->
+    <!-- Header العلوي المنظم (اللوجو منضبط ومثبت داخل الحدود) -->
     <header id="app-header">
         <div class="flex items-center gap-2">
             <button id="btn-back" onclick="window.goBack()" class="p-1 rounded-lg text-white hover:bg-white/10 hidden transition-all active:scale-90">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
             </button>
-            <h1 id="page-title" class="text-xs font-black text-white flex items-center gap-1 tracking-wide">الرئيسية</h1>
+            <h1 id="page-title" class="text-xs font-black text-white flex items-center gap-1 tracking-wide truncate max-w-[170px]">الرئيسية</h1>
         </div>
         
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-2">
             <!-- زر الإضافة المنقول للهيدر العلوي بدون إطار أو خلفية -->
             <button id="header-add-btn" onclick="window.navTo('add')" class="hidden" title="إضافة جديد">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
             </button>
 
-            <!-- جرس الإشعارات بدون إطار -->
+            <!-- جرس الإشعارات الحر بدون إطار -->
             <button onclick="window.toggleNotifPanel()" class="header-bell-btn" title="الإشعارات">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                 <span id="notif-dot" class="hidden"></span>
             </button>
 
-            <!-- الصورة الشخصية -->
-            <img id="header-avatar" src="icons/icon-192x192.png" class="w-7 h-7 rounded-full bg-white/20 object-cover border border-white/60 shadow cursor-pointer hover:ring-2 hover:ring-[#F2A51A] transition-all" onclick="window.navTo('profile')">
+            <!-- الصورة الشخصية المثبتة بحجم منضبط يمنع خروجها عن الهيدر -->
+            <img id="header-avatar" src="icons/icon-192x192.png" onclick="window.navTo('profile')">
         </div>
     </header>
 
@@ -627,77 +702,80 @@
             <button onclick="window.toggleNotifPanel()" class="text-slate-400 hover:text-rose-500 font-bold p-0.5">✕</button>
         </div>
         <div id="notif-list" class="space-y-1.5 max-h-56 overflow-y-auto custom-scrollbar pr-0.5">
-            <p class="text-center text-[11px] text-slate-400 py-5">لا توجد إشعارات حالياً</p>
+            <p class="text-center text-[10.5px] text-slate-400 py-5">لا توجد إشعارات حالياً</p>
         </div>
     </div>
 
     <!-- APP VIEW WRAPPER -->
     <main id="app-view" class="px-3 md:px-5">
 
-        <!-- AUTH SECTION -->
-        <section id="page-auth" class="page-section hidden max-w-sm mx-auto py-2">
-            <div class="text-center mb-3">
-                <h1 class="text-base font-black text-slate-900 dark:text-white">دليل الشرقية</h1>
-                <p class="text-[10px] text-slate-500 mt-0.5">سجل الدخول لنشر طلباتك وخدماتك</p>
-            </div>
+        <!-- AUTH SECTION (تصميم بطاقة حديثة بخلفية مطابقة لشاشة التحميل) -->
+        <section id="page-auth" class="page-section hidden py-2">
+            <div class="auth-container-modern">
+                <div class="text-center mb-3">
+                    <div class="w-10 h-10 mx-auto mb-1.5 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                        <svg class="w-5 h-5 text-[#F2A51A]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.5L3.5 11 12 21.5 20.5 11 12 2.5z"/></svg>
+                    </div>
+                    <h1 class="text-sm font-black text-white">دليل الشرقية الماسي</h1>
+                    <p class="text-[10px] text-slate-200 mt-0.5">سجل الدخول للتواصل وإضافة إعلاناتك</p>
+                </div>
 
-            <div class="bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl flex mb-2.5 border border-slate-300 dark:border-slate-700 h-8">
-                <button onclick="window.switchAuthMode('login')" id="btn-mode-login" class="flex-1 rounded-lg text-[11px] font-bold transition-all" style="background: #1e3a5f; color: white;">دخول</button>
-                <button onclick="window.switchAuthMode('signup')" id="btn-mode-signup" class="flex-1 rounded-lg text-[11px] font-bold text-slate-600 dark:text-slate-400 bg-transparent transition-all">حساب جديد</button>
-            </div>
+                <div class="bg-black/20 p-0.5 rounded-xl flex mb-3 border border-white/15 h-8">
+                    <button onclick="window.switchAuthMode('login')" id="btn-mode-login" class="flex-1 rounded-lg text-[11px] font-bold transition-all" style="background: #ffffff; color: #1e3a5f;">دخول</button>
+                    <button onclick="window.switchAuthMode('signup')" id="btn-mode-signup" class="flex-1 rounded-lg text-[11px] font-bold text-white/70 bg-transparent transition-all">حساب جديد</button>
+                </div>
 
-            <!-- Login Form -->
-            <form id="form-login" class="space-y-2">
-                <div class="custom-card-box space-y-2">
+                <!-- Login Form Card -->
+                <form id="form-login" class="auth-card-inner space-y-2">
                     <div class="phone-input-wrap">
-                        <input type="tel" id="login-phone" placeholder="رقم الهاتف (10 أرقام)" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
+                        <input type="tel" id="login-phone" placeholder="رقم الهاتف (10 أرقام)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
                         <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
                     <input type="password" id="login-pass" placeholder="كلمة المرور" class="h-8 font-semibold" required>
                     <button type="submit" class="w-full py-2 rounded-xl font-bold text-xs text-white shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تسجيل الدخول</button>
-                </div>
-            </form>
+                </form>
 
-            <!-- Signup Form -->
-            <form id="form-signup" class="hidden custom-card-box space-y-2">
-                <div class="flex justify-center mb-0.5">
-                    <div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 border border-dashed border-slate-400 relative overflow-hidden cursor-pointer" onclick="document.getElementById('signup-file').click()">
-                        <img id="signup-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239ca3af'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" class="w-full h-full object-cover">
+                <!-- Signup Form Card -->
+                <form id="form-signup" class="hidden auth-card-inner space-y-2">
+                    <div class="flex justify-center mb-1">
+                        <div class="w-12 h-12 rounded-full bg-white dark:bg-slate-800 border border-dashed border-slate-400 relative overflow-hidden cursor-pointer" onclick="document.getElementById('signup-file').click()">
+                            <img id="signup-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239ca3af'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" class="w-full h-full object-cover">
+                        </div>
+                        <input type="file" id="signup-file" class="hidden" accept="image/*" onchange="window.handleImageUpload(this, 'signup-preview')">
                     </div>
-                    <input type="file" id="signup-file" class="hidden" accept="image/*" onchange="window.handleImageUpload(this, 'signup-preview')">
-                </div>
 
-                <input type="text" id="signup-name" placeholder="الاسم الكامل" class="h-8 font-semibold" required>
-                <div class="phone-input-wrap">
-                    <input type="tel" id="signup-phone" placeholder="رقم الهاتف (10 أرقام)" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
-                    <span class="phone-code-badge" dir="ltr">+20</span>
-                </div>
-                <input type="password" id="signup-pass" placeholder="كلمة المرور" class="h-8 font-semibold" required>
-
-                <div class="grid grid-cols-2 gap-1.5">
-                    <select id="signup-center" onchange="window.updateVillages()" class="h-8"><option value="">المركز</option></select>
-                    <select id="signup-village" class="h-8"><option value="">القرية</option></select>
-                </div>
-                <input type="text" id="signup-address-detail" placeholder="العنوان التفصيلي (اختياري)" class="h-8">
-
-                <div class="grid grid-cols-2 gap-1.5">
-                    <div class="flex bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl h-7 items-center">
-                        <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="gender" value="male" checked> ذكر</label>
-                        <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="gender" value="female"> أنثى</label>
+                    <input type="text" id="signup-name" placeholder="الاسم الكامل" class="h-8 font-semibold" required>
+                    <div class="phone-input-wrap">
+                        <input type="tel" id="signup-phone" placeholder="رقم الهاتف (10 أرقام)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
+                        <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <div class="flex bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl h-7 items-center">
-                        <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="role" value="client" checked onchange="window.toggleProfVisibility(false)"> عميل</label>
-                        <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="role" value="provider" onchange="window.toggleProfVisibility(true)"> صنايعي</label>
+                    <input type="password" id="signup-pass" placeholder="كلمة المرور" class="h-8 font-semibold" required>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="signup-center" onchange="window.updateVillages()" class="h-8"><option value="">المركز</option></select>
+                        <select id="signup-village" class="h-8"><option value="">القرية</option></select>
                     </div>
-                </div>
+                    <input type="text" id="signup-address-detail" placeholder="العنوان التفصيلي (اختياري)" class="h-8">
 
-                <div id="prof-container" class="hidden">
-                    <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="h-8"><option value="">اختر المهنة...</option></select>
-                    <input type="text" id="signup-custom-prof" placeholder="اكتب الخدمة المخصصة..." class="hidden h-8 mt-1 border border-blue-400">
-                </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="flex bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl h-7 items-center">
+                            <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="gender" value="male" checked> ذكر</label>
+                            <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="gender" value="female"> أنثى</label>
+                        </div>
+                        <div class="flex bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl h-7 items-center">
+                            <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="role" value="client" checked onchange="window.toggleProfVisibility(false)"> عميل</label>
+                            <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="role" value="provider" onchange="window.toggleProfVisibility(true)"> صنايعي</label>
+                        </div>
+                    </div>
 
-                <button type="submit" class="w-full py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">إنشاء الحساب</button>
-            </form>
+                    <div id="prof-container" class="hidden">
+                        <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="h-8"><option value="">اختر المهنة...</option></select>
+                        <input type="text" id="signup-custom-prof" placeholder="اكتب الخدمة المخصصة..." class="hidden h-8 mt-1 border border-blue-400">
+                    </div>
+
+                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">إنشاء الحساب</button>
+                </form>
+            </div>
         </section>
 
         <!-- PAGE HOME: SERVICES & PROFESSIONS ONLY -->
@@ -707,11 +785,11 @@
                 <button id="tab-home-jobs"></button>
             </div>
 
-            <!-- حاوية البحث في الخدمات (بدون زر فلترة - متطابقة مع الوظائف - معتمة تحجب البطاقات خلفها) -->
+            <!-- حاوية البحث في الخدمات (بدون زر فلترة - معتمة تحجب البطاقات خلفها) -->
             <div id="prof-search-box" class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
-                        <svg class="w-4 h-4 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <svg class="w-3.5 h-3.5 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="prof-search" oninput="window.toggleSearchClearBtn(); window.debouncedSearch('prof')" placeholder="ابحث عن المهنة أو التخصص المطلوب...">
                         <button id="btn-clear-search" onclick="document.getElementById('prof-search').value=''; window.toggleSearchClearBtn(); window.filterProfessions()" class="hidden text-slate-400 hover:text-rose-500 text-xs px-1">✕</button>
                     </div>
@@ -730,12 +808,11 @@
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
-                        <svg class="w-4 h-4 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <svg class="w-3.5 h-3.5 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="jobs-search-input" onkeyup="window.filterJobsList && window.filterJobsList()" placeholder="ابحث في الوظائف (المسمى، الراتب، التفاصيل)...">
                     </div>
-                    <!-- زر الفلترة المصغر والملموم بكلمة فلترة -->
                     <button onclick="window.toggleJobsFilterModal()" class="btn-filter-compact">
-                        <svg class="w-3.5 h-3.5 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                        <svg class="w-3 h-3 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                         <span>فلترة</span>
                     </button>
                 </div>
@@ -747,7 +824,7 @@
                     <span class="text-xs font-bold text-slate-800 dark:text-slate-100">تصفية الوظائف</span>
                     <button onclick="window.toggleJobsFilterModal()" class="text-xs text-slate-400 hover:text-rose-500 font-bold">✕</button>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <select id="filter-job-type" onchange="window.filterJobsList && window.filterJobsList()" class="h-8 text-xs">
                         <option value="">نوع الدوام (الكل)</option>
                         <option value="full">دوام كامل</option>
@@ -774,12 +851,11 @@
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
-                        <svg class="w-4 h-4 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <svg class="w-3.5 h-3.5 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="cat-search" onkeyup="window.debouncedSearch('cat')" placeholder="ابحث بالاسم أو المكان أو القرية...">
                     </div>
-                    <!-- تم استبدال تصفية بـ فلترة لتشغيل المودال بسلاسة -->
                     <button onclick="window.openFilterModal('category')" class="btn-filter-compact">
-                        <svg class="w-3.5 h-3.5 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                        <svg class="w-3 h-3 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                         <span>فلترة</span>
                     </button>
                 </div>
@@ -792,12 +868,11 @@
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
-                        <svg class="w-4 h-4 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <svg class="w-3.5 h-3.5 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="dir-search" onkeyup="window.debouncedSearch('dir')" placeholder="ابحث في الدليل بالاسم، المهنة، القرية...">
                     </div>
-                    <!-- تم استبدال تصفية بـ فلترة -->
                     <button onclick="window.openFilterModal('directory')" class="btn-filter-compact">
-                        <svg class="w-3.5 h-3.5 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                        <svg class="w-3 h-3 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                         <span>فلترة</span>
                     </button>
                 </div>
@@ -805,12 +880,12 @@
             <div id="dir-list" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
         </section>
 
-        <!-- ADD SECTION -->
+        <!-- ADD SECTION (تم ضبط المسافات بين الحقول رأسياً وأفقياً) -->
         <section id="page-add" class="page-section hidden max-w-md mx-auto py-1">
             <div class="custom-card-box p-3.5">
                 <h2 class="text-xs font-black mb-2.5 text-center border-b border-slate-200 dark:border-slate-700 pb-1.5 text-slate-800 dark:text-white">إضافة إعلان أو طلب جديد</h2>
                 
-                <div class="flex gap-1.5 mb-2.5">
+                <div class="flex gap-2 mb-3">
                     <button onclick="window.switchAddMode('req')" id="btn-add-req" class="flex-1 py-1.5 rounded-xl text-xs font-bold transition-all" style="background: #1e3a5f; color: white;">طلب خدمة</button>
                     <button onclick="window.switchAddMode('job')" id="btn-add-job" class="flex-1 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all">إعلان توظيف</button>
                 </div>
@@ -823,10 +898,10 @@
                     <textarea id="req-desc" rows="3" placeholder="اشرح تفاصيل طلبك والمشكلة..." required></textarea>
 
                     <div class="phone-input-wrap">
-                        <input type="tel" id="req-phone" placeholder="رقم الواتساب (اختياري)" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
+                        <input type="tel" id="req-phone" placeholder="رقم الواتساب (اختياري)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
                         <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <button type="submit" class="w-full py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">نشر الطلب الآن</button>
+                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">نشر الطلب الآن</button>
                 </form>
 
                 <!-- Form Job Post -->
@@ -834,12 +909,12 @@
                     <select id="job-title-select" onchange="if(this.value==='أخرى') document.getElementById('job-custom-title').classList.remove('hidden'); else document.getElementById('job-custom-title').classList.add('hidden');" class="h-8"></select>
                     <input type="text" id="job-custom-title" placeholder="اكتب المسمى المخصص..." class="hidden h-8 border border-blue-400">
 
-                    <div class="grid grid-cols-2 gap-1.5">
+                    <div class="grid grid-cols-2 gap-2">
                         <input type="number" id="job-salary" placeholder="الراتب (ج.م)" class="h-8">
                         <input type="text" id="job-hours" placeholder="ساعات العمل" class="h-8">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-1.5">
+                    <div class="grid grid-cols-2 gap-2">
                         <select id="job-shift" class="h-8">
                             <option value="">الشيفت (اختياري)</option>
                             <option value="صباحي">صباحي</option>
@@ -853,17 +928,17 @@
                     </div>
 
                     <div class="phone-input-wrap">
-                        <input type="tel" id="job-phone" placeholder="رقم هاتف التوظيف" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
+                        <input type="tel" id="job-phone" placeholder="رقم هاتف التوظيف" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
                         <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
 
                     <textarea id="job-desc" rows="3" placeholder="اكتب شروط وتفاصيل الوظيفة..." required></textarea>
-                    <button type="submit" class="w-full py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">نشر الوظيفة</button>
+                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">نشر الوظيفة</button>
                 </form>
             </div>
         </section>
 
-        <!-- PROFILE SECTION (إعادة ترتيب محكم بدون مساحات فارغة مبالغ فيها) -->
+        <!-- PROFILE SECTION (مع كبسولة تسجيل الخروج الحمراء الفخمة) -->
         <section id="page-profile" class="page-section hidden max-w-sm mx-auto space-y-2 py-1">
             <div class="custom-card-box p-3 text-center">
                 <img id="prof-img-view" src="" class="w-16 h-16 rounded-full border border-slate-300 dark:border-slate-600 object-cover mx-auto shadow">
@@ -872,24 +947,28 @@
                     <span id="prof-role-view" class="bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 text-[9.5px] px-2 py-0.5 rounded-full font-bold"></span>
                     <span id="prof-address-view" class="text-[10.5px] text-slate-500 dark:text-slate-400 font-semibold"></span>
                 </div>
-                <div class="flex gap-1.5 mt-2.5 max-w-xs mx-auto">
+                <div class="flex gap-2 mt-2.5 max-w-xs mx-auto">
                     <button onclick="window.navTo('edit-profile')" class="flex-1 py-1 rounded-xl text-[11px] font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">تعديل الحساب</button>
                     <button onclick="window.navTo('settings')" class="flex-1 py-1 rounded-xl text-[11px] font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">الإعدادات</button>
                 </div>
             </div>
 
             <div class="space-y-1.5">
-                <button onclick="window.openActivityTab('my-activity')" class="w-full py-2 bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-3 shadow-sm">
+                <button onclick="window.openActivityTab('my-activity')" class="w-full py-2.5 bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-3 shadow-sm">
                     <span>📊 سجل نشاطي وإعلاناتي</span>
                     <span class="text-slate-400">←</span>
                 </button>
 
-                <button id="btn-profile-matching" onclick="window.openActivityTab('matching')" class="hidden w-full py-2 bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-3 shadow-sm">
+                <button id="btn-profile-matching" onclick="window.openActivityTab('matching')" class="hidden w-full py-2.5 bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-3 shadow-sm">
                     <span>🎯 طلبات جديدة تناسب مهنتي</span>
                     <span id="act-notif-badge" class="hidden bg-rose-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold">!</span>
                 </button>
 
-                <button onclick="window.logout()" class="w-full py-2 text-rose-600 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-xl font-bold text-xs">تسجيل الخروج</button>
+                <!-- زر تسجيل الخروج في كبسولة حمراء بارزة وفخمة -->
+                <button onclick="window.logout()" class="btn-logout-capsule">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    <span>تسجيل الخروج</span>
+                </button>
             </div>
         </section>
 
@@ -923,18 +1002,18 @@
                 <input type="text" id="edit-name" class="h-8 font-semibold" placeholder="الاسم الكامل">
 
                 <div class="phone-input-wrap">
-                    <input type="tel" id="edit-phone" placeholder="الهاتف" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
+                    <input type="tel" id="edit-phone" placeholder="الهاتف" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
                     <span class="phone-code-badge" dir="ltr">+20</span>
                 </div>
 
-                <div class="grid grid-cols-2 gap-1.5">
+                <div class="grid grid-cols-2 gap-2">
                      <select id="edit-center" onchange="window.updateVillages('edit')" class="h-8"></select>
                      <select id="edit-village" class="h-8"></select>
                 </div>
 
                 <input type="text" id="edit-address-detail" class="h-8" placeholder="العنوان التفصيلي (اختياري)">
 
-                <div class="flex gap-1.5 pt-1">
+                <div class="flex gap-2 pt-1">
                     <button onclick="window.saveProfileChanges()" class="flex-1 py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">حفظ</button>
                     <button onclick="window.goBack()" class="flex-1 py-1.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs">إلغاء</button>
                 </div>
@@ -969,7 +1048,7 @@
             </div>
         </section>
 
-        <!-- CHAT LIST (تصميم بروفيشنال ملموم لبطاقات المحادثات) -->
+        <!-- CHAT LIST -->
         <section id="page-chat" class="page-section hidden max-w-xl mx-auto">
             <div id="chat-history-list" class="flex flex-col gap-1.5">
                 <p class="text-center text-slate-400 py-8 text-xs font-semibold">جاري تحميل المحادثات...</p>
@@ -984,7 +1063,7 @@
                 <p id="user-profile-role" class="text-[11px] font-bold text-[#1e3a5f] dark:text-[#F2A51A] mb-2"></p>
 
                 <div class="w-full bg-slate-200/40 dark:bg-slate-800/60 p-2 rounded-xl border border-slate-200 dark:border-slate-700 mb-2 text-right">
-                    <div class="grid grid-cols-2 gap-1.5 text-xs">
+                    <div class="grid grid-cols-2 gap-2 text-xs">
                         <div>
                             <span class="text-slate-400 block text-[9.5px]">العنوان والمركز</span>
                             <span id="user-profile-addr-detail" class="font-bold text-[9.5px] text-slate-500 block"></span>
@@ -1001,7 +1080,7 @@
                     </div>
                 </div>
 
-                <div class="flex gap-1.5 w-full mb-2" id="user-profile-actions"></div>
+                <div class="flex gap-2 w-full mb-2" id="user-profile-actions"></div>
 
                 <div class="w-full border-t border-slate-200 dark:border-slate-700 pt-1.5 text-right">
                     <h4 class="font-bold text-[11px] mb-1 flex items-center justify-between">
@@ -1035,7 +1114,7 @@
                     <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
                 </div>
                 <textarea id="review-text" rows="2" placeholder="اكتب تعليقك..." class="mb-2 outline-none"></textarea>
-                <div class="flex gap-1.5">
+                <div class="flex gap-2">
                     <button type="button" id="btn-submit-rate" onclick="window.submitReview()" class="flex-1 py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">إرسال</button>
                     <button type="button" onclick="document.getElementById('rate-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
                 </div>
@@ -1043,7 +1122,7 @@
         </div>
     </div>
 
-    <!-- FILTER MODAL DROPDOWN (مصلح ومتصل بزر الفلترة) -->
+    <!-- FILTER MODAL DROPDOWN -->
     <div id="filter-modal-wrap" class="hidden">
         <div id="filter-modal-backdrop" onclick="document.getElementById('filter-modal-wrap').classList.add('hidden')" class="fixed inset-0 z-[130] bg-black/40 backdrop-blur-[2px]"></div>
 
@@ -1054,7 +1133,7 @@
             <div id="filter-prof-container">
                 <select id="filter-prof" class="mb-2 h-8 text-xs"></select>
             </div>
-            <div class="flex gap-1.5">
+            <div class="flex gap-2">
                 <button onclick="window.applyFilter()" class="flex-1 py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تطبيق</button>
                 <button onclick="window.clearFilter()" class="flex-1 bg-rose-50 text-rose-600 border border-rose-200 py-1.5 rounded-xl font-bold text-xs">إلغاء</button>
             </div>
@@ -1066,7 +1145,7 @@
         <div class="custom-card-box w-full max-w-xs p-3.5 shadow-2xl text-center">
             <h3 class="font-bold mb-1 text-xs text-rose-600">حذف المحادثة</h3>
             <p class="text-[10.5px] text-slate-500 mb-2.5">هل ترغب في مسح هذه المحادثة نهائياً؟</p>
-            <div class="flex gap-1.5">
+            <div class="flex gap-2">
                 <button onclick="window.confirmDeleteChat()" class="flex-1 bg-rose-600 text-white py-1 rounded-xl font-bold text-xs shadow">حذف</button>
                 <button onclick="document.getElementById('delete-chat-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
             </div>
@@ -1101,9 +1180,9 @@
         </form>
     </div>
 
-    <!-- الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية وبحماية من البطاقات أسفله -->
+    <!-- الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية -->
     <nav id="nav-bar">
-        <!-- 1. الخدمات / الرئيسية -->
+        <!-- 1. الخدمات -->
         <button onclick="window.navTo('home')" class="nav-btn active">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
             <span>الخدمات</span>
