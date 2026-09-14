@@ -7,7 +7,7 @@
     <title>دليل الشرقية الماسي</title>
     <meta name="description" content="دليل خدمات ووظائف محافظة الشرقية - تواصل مباشر مع مقدمي الخدمات وأصحاب العمل.">
 
-    <meta name="theme-color" content="#1e3a5f">
+    <meta name="theme-color" content="#122334">
     <link rel="manifest" href="manifest.json">
 
     <link rel="icon" type="image/png" href="icons/icon-192x192.png">
@@ -20,11 +20,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- ملف التيلويند الأساسي المتاح -->
+    <!-- ملف التيلويند المتاح -->
     <link rel="stylesheet" href="tailwind.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- محرك التنسيقات الماسي الشامل المتوافق مع الوضعين الفاتح والداكن بدقة -->
+    <!-- محرك التنسيقات المتكامل المطور ذاتياً 100% -->
     <style>
         /* 1. الإخفاء والأساسيات */
         .hidden { display: none !important; }
@@ -40,160 +40,226 @@
             min-height: 100dvh;
             font-family: 'Cairo', sans-serif !important;
             -webkit-tap-highlight-color: transparent;
-            background-color: #EEF3F8 !important;
+            background-color: #EEF3F8 !important; /* خلفية سحابية هادئة مريحة */
             color: #1e293b;
             word-break: break-word;
         }
 
+        /* في الوضع الداكن: خلفية الصفحات أفتح من الهيدر بدرجة */
         .dark html, .dark body {
-            background-color: #0f172a !important;
+            background-color: #1e3347 !important; /* أفتح من لون الهيدر العميق */
             color: #f8fafc !important;
         }
 
-        /* 2. الهيدر العلوي الماسي المنظم بحواف سفلية دائرية */
+        /* 2. شاشة التحميل الماسية (تغطي الموقع بالكامل متضمنة الهيدر السفلي) */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 999999 !important; /* أعلى من الهيدر السفلي والعلوي */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #365570, #1e3a5f) !important;
+            transition: opacity 0.25s ease;
+        }
+
+        .dark #loader {
+            background: linear-gradient(135deg, #1e3347, #152636) !important;
+        }
+
+        #loader.hidden {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /* الماسة المتألقة الواضحة */
+        .diamond-icon-wrap {
+            position: relative;
+            width: 76px;
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .diamond-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2.5px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #F2A51A;
+            animation: spinRing 1s linear infinite;
+        }
+
+        @keyframes spinRing {
+            to { transform: rotate(360deg); }
+        }
+
+        .diamond-center-box {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(242, 165, 26, 0.6);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(242, 165, 26, 0.35);
+        }
+
+        /* 3. الهيدر العلوي الماسي المنظم بحواف سفلية دائرية */
         #app-header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 56px;
+            height: 54px;
             background: linear-gradient(135deg, #365570, #1e3a5f) !important;
-            border-radius: 0 0 20px 20px !important;
-            border-bottom: 0.75px solid rgba(255, 255, 255, 0.25) !important;
-            box-shadow: 0 4px 18px rgba(30, 58, 95, 0.2) !important;
+            border-radius: 0 0 18px 18px !important;
+            border-bottom: 0.75px solid rgba(255, 255, 255, 0.2) !important;
+            box-shadow: 0 4px 16px rgba(30, 58, 95, 0.18) !important;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
+            padding: 0 14px;
             z-index: 100;
+        }
+
+        .dark #app-header {
+            background: linear-gradient(135deg, #162638, #122334) !important; /* أغمق درجة ليصبح الهيدر أغمق من الصفحات */
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important;
         }
 
         #app-header * {
             color: #ffffff;
         }
 
-        /* الحاوية الأم لكافة الصفحات */
+        /* الحاوية الأم لجميع الصفحات - مسافات محسوبة لمنع التداخل */
         #app-view {
-            padding-top: 68px !important;
-            padding-bottom: 80px !important;
+            padding-top: 60px !important;
+            padding-bottom: 74px !important;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             min-height: 100vh;
         }
 
-        /* 3. حاوية شريط البحث الكبسولية (معتمة تماماً لحجب البطاقات خلفها) */
+        /* 4. شريط البحث الكبسولي الماسي (المسافة فوقه مطابقة لتحته مع حجب تام للبطاقات خلفه) */
         .search-sticky-wrapper {
             position: sticky;
-            top: 56px;
-            z-index: 40;
-            background-color: #EEF3F8 !important; /* معتمة بنسبة 100% لتمنع ظهور البطاقات خلفها أثناء التمرير */
-            padding: 8px 0;
+            top: 54px;
+            z-index: 45;
+            background-color: #EEF3F8 !important; /* معتم تماماً لمنع ظهور البطاقات خلفه */
+            padding: 5px 0 6px 0 !important;
             margin-bottom: 6px;
         }
 
         .dark .search-sticky-wrapper {
-            background-color: #0f172a !important;
+            background-color: #1e3347 !important;
         }
 
-        /* المستطيل الخارجي بنفس تدرج الهيدر */
+        /* المستطيل الخارجي بلون الهيدر الماسي */
         .search-outer-pill {
             background: linear-gradient(135deg, #365570, #1e3a5f) !important;
             border: 0.75px solid #cbd5e1;
             border-radius: 9999px;
-            padding: 5px 8px;
+            padding: 4px 6px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 3px 12px rgba(30, 58, 95, 0.15);
-            max-width: 640px;
+            gap: 6px;
+            box-shadow: 0 3px 10px rgba(30, 58, 95, 0.12);
+            max-width: 620px;
             margin: 0 auto;
             width: 100%;
         }
 
         .dark .search-outer-pill {
+            background: linear-gradient(135deg, #162638, #122334) !important;
             border-color: #334155;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
         }
 
-        /* المستطيل الداخلي أبيض ناصع تماماً */
-        .search-inner-white {
+        /* المستطيل الداخلي: أفتح درجة هادئة مريحة للعين مشتقة من الهيدر (وليس أبيض ساطع) */
+        .search-inner-soft {
             flex: 1;
             display: flex;
             align-items: center;
-            background-color: #ffffff !important;
+            background-color: #EBF2F7 !important; /* أفتح درجة هادئة مريحة */
             border-radius: 9999px;
-            padding: 0 12px;
-            height: 38px;
+            padding: 0 10px;
+            height: 35px;
         }
 
-        .dark .search-inner-white {
-            background-color: #1e293b !important;
+        .dark .search-inner-soft {
+            background-color: #243d54 !important;
         }
 
-        .search-inner-white input {
+        .search-inner-soft input {
             width: 100%;
             border: none !important;
             outline: none !important;
             background: transparent !important;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 600;
             color: #1e293b !important;
             padding: 0 4px;
         }
 
-        .dark .search-inner-white input {
+        .dark .search-inner-soft input {
             color: #ffffff !important;
         }
 
-        .search-inner-white input::placeholder {
+        .search-inner-soft input::placeholder {
+            color: #64748b;
+        }
+
+        .dark .search-inner-soft input::placeholder {
             color: #94a3b8;
         }
 
-        /* زر قمع الفلترة في الوظائف */
-        .btn-filter-funnel {
-            height: 38px;
-            padding: 0 14px;
-            background-color: #ffffff !important;
+        /* زر قمع الفلترة المصغر والأنيق */
+        .btn-filter-compact {
+            height: 32px;
+            padding: 0 11px;
+            background-color: #EBF2F7 !important;
             color: #1e3a5f !important;
             border: none;
             border-radius: 9999px;
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             cursor: pointer;
             flex-shrink: 0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             transition: transform 0.15s ease;
         }
 
-        .dark .btn-filter-funnel {
-            background-color: #1e293b !important;
+        .dark .btn-filter-compact {
+            background-color: #243d54 !important;
             color: #F2A51A !important;
         }
 
-        .btn-filter-funnel:active {
+        .btn-filter-compact:active {
             transform: scale(0.95);
         }
 
-        /* 4. كروت الأقسام والمهن (العناوين ممركزة في قلب البطاقة بخلفية كبسولية مظللة) */
+        /* 5. كروت الأقسام والمهن (عزل الضباب لمنع أي لاج على المعالج) */
         .provider-card {
             border: 0.75px solid #cbd5e1 !important;
-            border-radius: 16px !important;
-            box-shadow: 0 2px 8px rgba(30, 58, 95, 0.06) !important;
+            border-radius: 14px !important;
+            box-shadow: 0 2px 6px rgba(30, 58, 95, 0.05) !important;
             overflow: hidden !important;
-            background-color: #ffffff !important;
+            background-color: #F3F6F9 !important;
             position: relative !important;
-            height: 105px !important;
+            height: 100px !important;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.15s ease;
         }
 
         .dark .provider-card {
             border-color: #334155 !important;
-            background-color: #1e293b !important;
+            background-color: #243d54 !important;
         }
 
         .provider-card:hover {
@@ -206,66 +272,139 @@
             object-fit: cover;
         }
 
-        /* الكبسولة الداكنة الشفافة الممركزة في قلب البطاقة */
+        /* كبسولة العنوان الممركزة خفيفة الظل وبدون أي لاج */
         .prof-badge-center {
             position: absolute;
             inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 6px;
-            background: rgba(0, 0, 0, 0.25);
+            padding: 4px;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .prof-badge-center span {
-            background: rgba(0, 0, 0, 0.68);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.75) !important; /* خلفية داكنة خفيفة عادية بدون لاج */
             color: #ffffff !important;
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 800;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 9999px;
-            border: 0.5px solid rgba(255, 255, 255, 0.25);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
             text-align: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
             max-width: 90%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* 5. زر الإضافة العلوي الحر (+) */
+        /* 6. استبدال الأبيض الساطع برصاصي سيلفر هادئ مريح للعين على كافة البطاقات */
+        .fast-render-card > div,
+        #view-jobs > div,
+        #my-activity > div,
+        #matching-reqs-list > div,
+        #chat-history-list > div,
+        .custom-card-box {
+            border: 0.75px solid #cbd5e1 !important;
+            border-radius: 15px !important;
+            background-color: #F3F6F9 !important; /* رصاصي سيلفر هادئ مريح للعين */
+            box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
+            overflow: hidden !important;
+            word-break: break-word !important;
+            padding: 10px 12px !important;
+            margin-bottom: 7px;
+        }
+
+        .dark .fast-render-card > div,
+        .dark #view-jobs > div,
+        .dark #my-activity > div,
+        .dark #matching-reqs-list > div,
+        .dark #chat-history-list > div,
+        .dark .custom-card-box {
+            border-color: #334155 !important;
+            background-color: #243d54 !important; /* أفتح من خلفية الصفحة الداكنة */
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.25) !important;
+        }
+
+        /* 7. كود الدولة +20 في سطر واحد دائماً */
+        .phone-input-wrap {
+            display: flex;
+            align-items: center;
+            border: 0.75px solid #cbd5e1;
+            border-radius: 11px;
+            overflow: hidden;
+            background-color: #F3F6F9;
+            height: 36px;
+        }
+
+        .dark .phone-input-wrap {
+            border-color: #334155;
+            background-color: #243d54;
+        }
+
+        .phone-code-badge {
+            background-color: #e2e8f0;
+            color: #334155;
+            font-weight: 800;
+            font-size: 11px;
+            padding: 0 8px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 0.75px solid #cbd5e1;
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+            min-width: 42px;
+        }
+
+        .dark .phone-code-badge {
+            background-color: #1e3347;
+            color: #cbd5e1;
+            border-color: #334155;
+        }
+
+        /* حقول الإدخال الهادئة الملمومة */
+        input, select, textarea {
+            border: 0.75px solid #cbd5e1 !important;
+            background-color: #F3F6F9 !important;
+            border-radius: 11px !important;
+            font-size: 11px !important;
+            padding: 5px 9px !important;
+            width: 100%;
+            outline: none;
+            color: #1e293b;
+        }
+
+        .dark input, .dark select, .dark textarea {
+            background-color: #243d54 !important;
+            border-color: #334155 !important;
+            color: #ffffff !important;
+        }
+
+        /* 8. زر الإضافة العلوي الحر (+) وجرس الإشعارات الدقيق */
         #header-add-btn {
             background: transparent !important;
             border: none !important;
-            box-shadow: none !important;
+            padding: 2px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 4px;
-            color: #ffffff !important;
-            transition: transform 0.15s ease;
-        }
-
-        #header-add-btn:active {
-            transform: scale(0.9);
+            color: #ffffff;
         }
 
         #header-add-btn svg {
-            width: 26px;
-            height: 26px;
-            stroke-width: 2.6;
+            width: 24px;
+            height: 24px;
+            stroke-width: 2.8;
             color: #F2A51A; /* ذهبي ملكي ساطع */
         }
 
-        /* 6. جرس الإشعارات بدون إطار مع نقطة إشعار دقيقة ومسنترة */
         .header-bell-btn {
             background: transparent !important;
             border: none !important;
-            box-shadow: none !important;
-            padding: 4px;
+            padding: 3px;
             position: relative;
             cursor: pointer;
             display: flex;
@@ -274,8 +413,8 @@
         }
 
         .header-bell-btn svg {
-            width: 22px;
-            height: 22px;
+            width: 21px;
+            height: 21px;
             color: #ffffff;
         }
 
@@ -283,122 +422,62 @@
             position: absolute;
             top: 2px;
             right: 2px;
-            width: 8px;
-            height: 8px;
+            width: 7.5px;
+            height: 7.5px;
             background-color: #ef4444;
             border: 1.5px solid #1e3a5f;
             border-radius: 50%;
         }
 
-        /* 7. كروت الصفحات وحل مشكلة المسافات المبالغ فيها وخروج البيانات */
-        .fast-render-card > div,
-        #view-jobs > div,
-        #my-activity > div,
-        #matching-reqs-list > div,
-        #chat-history-list > div {
-            border: 0.75px solid #cbd5e1 !important;
-            border-radius: 16px !important;
-            background-color: #ffffff !important;
-            box-shadow: 0 2px 8px rgba(30, 58, 95, 0.05) !important;
-            overflow: hidden !important;
-            word-break: break-word !important;
-            padding: 12px 14px !important;
-            margin-bottom: 8px;
-        }
-
-        .dark .fast-render-card > div,
-        .dark #view-jobs > div,
-        .dark #my-activity > div,
-        .dark #matching-reqs-list > div,
-        .dark #chat-history-list > div {
-            border-color: #334155 !important;
-            background-color: #1e293b !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-        }
-
-        /* تصحيح كود الهاتف +20 ليظهر في سطر واحد دائماً */
-        .phone-input-wrap {
-            display: flex;
-            align-items: center;
+        /* 9. لوحة الإشعارات المنسدلة المنظمة بروفيشينال */
+        #notif-panel {
+            position: fixed;
+            top: 58px;
+            left: 12px;
+            right: 12px;
+            max-width: 360px;
+            margin: 0 auto;
+            background-color: #F3F6F9;
+            border-radius: 16px;
             border: 0.75px solid #cbd5e1;
-            border-radius: 12px;
-            overflow: hidden;
-            background-color: #ffffff;
-            height: 38px;
+            box-shadow: 0 10px 28px rgba(30, 58, 95, 0.2);
+            z-index: 110;
+            padding: 12px;
         }
 
-        .dark .phone-input-wrap {
+        .dark #notif-panel {
+            background-color: #243d54;
             border-color: #334155;
-            background-color: #1e293b;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
         }
 
-        .phone-code-badge {
-            background-color: #f1f5f9;
-            color: #475569;
-            font-weight: 700;
-            font-size: 11px;
-            padding: 0 10px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-left: 0.75px solid #cbd5e1;
-            white-space: nowrap !important;
-            flex-shrink: 0 !important;
-            min-width: 44px;
-        }
-
-        .dark .phone-code-badge {
-            background-color: #0f172a;
-            color: #94a3b8;
-            border-color: #334155;
-        }
-
-        /* الحقول والاختيارات الملمومة */
-        input, select, textarea {
-            border: 0.75px solid #cbd5e1 !important;
-            background-color: #ffffff !important;
-            border-radius: 12px !important;
-            font-size: 11.5px !important;
-            padding: 6px 10px !important;
-            width: 100%;
-            outline: none;
-            color: #1e293b;
-        }
-
-        .dark input, .dark select, .dark textarea {
-            background-color: #1e293b !important;
-            border-color: #334155 !important;
-            color: #ffffff !important;
-        }
-
-        /* 8. الهيدر السفلي الكبسولي العائم المتوازن */
+        /* 10. الهيدر السفلي الكبسولي العائم مع حماية الفراغ تحته */
         #nav-bar {
             position: fixed !important;
-            bottom: 12px !important;
+            bottom: 10px !important;
             left: 0 !important;
             right: 0 !important;
             margin: 0 auto !important;
             width: 92% !important;
-            max-width: 460px !important;
-            height: 54px !important;
-            border-radius: 20px !important;
-            background: rgba(255, 255, 255, 0.96) !important;
-            backdrop-filter: blur(14px) !important;
-            -webkit-backdrop-filter: blur(14px) !important;
+            max-width: 440px !important;
+            height: 52px !important;
+            border-radius: 18px !important;
+            background: rgba(243, 246, 249, 0.96) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
             border: 0.75px solid #cbd5e1 !important;
-            box-shadow: 0 10px 25px -5px rgba(30, 58, 95, 0.18) !important;
+            box-shadow: 0 8px 24px -4px rgba(30, 58, 95, 0.16) !important;
             z-index: 90 !important;
             display: flex !important;
             justify-content: space-around !important;
             align-items: center !important;
-            padding: 0 4px !important;
+            padding: 0 2px !important;
         }
 
         .dark #nav-bar {
-            background: rgba(30, 41, 59, 0.96) !important;
+            background: rgba(36, 61, 84, 0.96) !important;
             border-color: #334155 !important;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+            box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4) !important;
         }
 
         .nav-btn {
@@ -411,84 +490,82 @@
             background: transparent !important;
             border: none !important;
             color: #94a3b8 !important;
-            transition: all 0.2s ease !important;
+            transition: all 0.15s ease !important;
             padding: 0 !important;
         }
 
         .nav-btn svg {
-            width: 19px !important;
-            height: 19px !important;
+            width: 18px !important;
+            height: 18px !important;
             margin-bottom: 2px !important;
         }
 
         .nav-btn span {
-            font-size: 9px !important;
+            font-size: 8.5px !important;
             font-weight: 700 !important;
         }
 
         .nav-btn.active {
             color: #1e3a5f !important;
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
 
         .dark .nav-btn.active {
             color: #F2A51A !important;
         }
 
-        /* 9. القوائم المنسدلة المخصصة الملمومة */
-        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 0.35rem; }
+        /* 11. القوائم المنسدلة الملمومة والأنماط التكميلية */
+        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 0.25rem; }
         .custom-select {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 4px 10px !important; border: 0.75px solid #cbd5e1 !important;
-            border-radius: 12px !important; background-color: #ffffff !important;
-            height: 36px !important; font-size: 11.5px !important; cursor: pointer;
+            padding: 3px 9px !important; border: 0.75px solid #cbd5e1 !important;
+            border-radius: 10px !important; background-color: #F3F6F9 !important;
+            height: 34px !important; font-size: 11px !important; cursor: pointer;
         }
-        .dark .custom-select { background-color: #1e293b !important; border-color: #334155 !important; color: #ffffff !important; }
+        .dark .custom-select { background-color: #243d54 !important; border-color: #334155 !important; color: #ffffff !important; }
         .custom-options {
-            position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+            position: absolute; top: calc(100% + 3px); left: 0; right: 0;
             border: 0.75px solid #cbd5e1 !important; border-radius: 12px !important;
-            background-color: #ffffff !important; z-index: 9999; max-height: 140px !important;
-            overflow-y: auto; display: none; box-shadow: 0 6px 18px rgba(30, 58, 95, 0.12) !important;
+            background-color: #F3F6F9 !important; z-index: 9999; max-height: 135px !important;
+            overflow-y: auto; display: none; box-shadow: 0 6px 16px rgba(30, 58, 95, 0.12) !important;
         }
-        .dark .custom-options { background-color: #1e293b !important; border-color: #334155 !important; }
+        .dark .custom-options { background-color: #243d54 !important; border-color: #334155 !important; }
         .custom-options.open { display: block !important; }
-        .custom-option { padding: 6px 10px; font-size: 11px; cursor: pointer; }
+        .custom-option { padding: 5px 9px; font-size: 10.5px; cursor: pointer; }
         .custom-option:hover { background-color: #EEF3F8; color: #1e3a5f; }
-        .dark .custom-option:hover { background-color: #334155; color: #F2A51A; }
+        .dark .custom-option:hover { background-color: #1e3347; color: #F2A51A; }
 
-        /* بقية الأنماط التكميلية */
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; display: block; }
+        .custom-scrollbar::-webkit-scrollbar { width: 3px; display: block; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; }
 
         .full-screen-modal { position: fixed; inset: 0; z-index: 150; background-color: #EEF3F8; display: flex; flex-direction: column; }
-        .dark .full-screen-modal { background-color: #0f172a; }
+        .dark .full-screen-modal { background-color: #1e3347; }
 
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
             z-index: 200; display: flex; align-items: center; justify-content: center;
-            padding: 16px; backdrop-filter: blur(4px);
+            padding: 14px; backdrop-filter: blur(4px);
         }
 
-        #toast-box { position: fixed; top: 16px; left: 0; right: 0; display: flex; justify-content: center; z-index: 99999; pointer-events: none; }
+        #toast-box { position: fixed; top: 14px; left: 0; right: 0; display: flex; justify-content: center; z-index: 99999; pointer-events: none; }
         .toast-msg {
             background: linear-gradient(135deg, #365570, #1e3a5f);
-            color: #ffffff; padding: 6px 16px; border: 0.75px solid rgba(255, 255, 255, 0.3);
-            border-radius: 9999px; font-size: 11px; font-weight: 700;
-            box-shadow: 0 4px 14px rgba(30, 58, 95, 0.2); opacity: 0;
-            transform: translateY(-12px); transition: all 0.2s ease;
+            color: #ffffff; padding: 6px 15px; border: 0.75px solid rgba(255, 255, 255, 0.3);
+            border-radius: 9999px; font-size: 10.5px; font-weight: 700;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2); opacity: 0;
+            transform: translateY(-10px); transition: all 0.15s ease;
         }
         .toast-msg.show { opacity: 1; transform: translateY(0); }
         .toast-msg.error { background: linear-gradient(135deg, #e11d48, #9f1239); }
 
         .star-rating { direction: ltr; display: inline-flex; }
         .star-rating input { display: none; }
-        .star-rating label { color: #cbd5e1; font-size: 20px; padding: 0 2px; cursor: pointer; }
+        .star-rating label { color: #cbd5e1; font-size: 18px; padding: 0 1px; cursor: pointer; }
         .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #F2A51A; }
     </style>
 
-    <!-- استدعاء ملف الستايل الخارجي -->
-    <link rel="stylesheet" href="style.css?v=5.0">
+    <link rel="stylesheet" href="style.css?v=6.0">
 
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -503,31 +580,31 @@
     <!-- Toast Container -->
     <div id="toast-box"></div>
 
-    <!-- Luxury Loader -->
-    <div id="loader" class="fixed inset-0 z-[200] flex flex-col items-center justify-center transition-opacity duration-300">
-        <div class="relative w-16 h-16 flex items-center justify-center">
-            <div class="absolute inset-0 border-2 border-white/20 rounded-full"></div>
-            <div class="absolute inset-0 border-2 border-t-[#F2A51A] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
-            <div class="w-8 h-8 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/30">
-                <svg class="w-5 h-5 text-[#F2A51A] animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+    <!-- Luxury Loader مع إظهار الماسة البارزة ومنع ظهور أي عنصر تحته -->
+    <div id="loader">
+        <div class="diamond-icon-wrap">
+            <div class="diamond-ring"></div>
+            <div class="diamond-center-box">
+                <!-- أيقونة الماسة الذهبية البارزة -->
+                <svg class="w-6 h-6 text-[#F2A51A]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2.5L3.5 11 12 21.5 20.5 11 12 2.5zm0 2.8l5.5 6.2H6.5l5.5-6.2zM5.2 12.5h13.6L12 18.7 5.2 12.5z"/>
                 </svg>
             </div>
         </div>
-        <h2 class="mt-3 text-xs font-extrabold text-white">دليل الشرقية</h2>
+        <h2 class="mt-3 text-xs font-black text-white tracking-widest">دليل الشرقية</h2>
     </div>
 
-    <!-- Header العلوي المنظم مع زر الإضافة الجديد وبدون إطار للإشعارات -->
+    <!-- Header العلوي المنظم -->
     <header id="app-header">
         <div class="flex items-center gap-2">
             <button id="btn-back" onclick="window.goBack()" class="p-1 rounded-lg text-white hover:bg-white/10 hidden transition-all active:scale-90">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
             </button>
-            <h1 id="page-title" class="text-xs md:text-sm font-black text-white flex items-center gap-1 tracking-wide">الرئيسية</h1>
+            <h1 id="page-title" class="text-xs font-black text-white flex items-center gap-1 tracking-wide">الرئيسية</h1>
         </div>
         
-        <div class="flex items-center gap-3">
-            <!-- زر الإضافة المنقول للهيدر العلوي (حر وبدون إطار وبدون خلفية) -->
+        <div class="flex items-center gap-2.5">
+            <!-- زر الإضافة المنقول للهيدر العلوي بدون إطار أو خلفية -->
             <button id="header-add-btn" onclick="window.navTo('add')" class="hidden" title="إضافة جديد">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
             </button>
@@ -539,89 +616,87 @@
             </button>
 
             <!-- الصورة الشخصية -->
-            <img id="header-avatar" src="icons/icon-192x192.png" class="w-8 h-8 rounded-full bg-white/20 object-cover border border-white/60 shadow cursor-pointer hover:ring-2 hover:ring-[#F2A51A] transition-all" onclick="window.navTo('profile')">
+            <img id="header-avatar" src="icons/icon-192x192.png" class="w-7 h-7 rounded-full bg-white/20 object-cover border border-white/60 shadow cursor-pointer hover:ring-2 hover:ring-[#F2A51A] transition-all" onclick="window.navTo('profile')">
         </div>
     </header>
 
-    <!-- لوحة الإشعارات المنسدلة -->
-    <div id="notif-panel" class="fixed top-16 left-4 right-4 max-w-sm mx-auto bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 shadow-2xl z-50 hidden p-3.5">
-        <div class="flex justify-between items-center mb-2.5 border-b border-slate-200 dark:border-slate-700 pb-2">
+    <!-- لوحة الإشعارات المنسدلة المصممة باحترافية -->
+    <div id="notif-panel" class="hidden">
+        <div class="flex justify-between items-center mb-2 border-b border-slate-200 dark:border-slate-700 pb-1.5">
             <h3 class="font-black text-xs text-slate-800 dark:text-white">الإشعارات والتنبيهات</h3>
-            <button onclick="window.toggleNotifPanel()" class="text-slate-400 hover:text-rose-500 font-bold p-1">✕</button>
+            <button onclick="window.toggleNotifPanel()" class="text-slate-400 hover:text-rose-500 font-bold p-0.5">✕</button>
         </div>
-        <div id="notif-list" class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar pr-1">
-            <p class="text-center text-xs text-slate-400 py-6">لا توجد إشعارات حالياً</p>
+        <div id="notif-list" class="space-y-1.5 max-h-56 overflow-y-auto custom-scrollbar pr-0.5">
+            <p class="text-center text-[11px] text-slate-400 py-5">لا توجد إشعارات حالياً</p>
         </div>
     </div>
 
     <!-- APP VIEW WRAPPER -->
-    <main id="app-view" class="px-3 md:px-6">
+    <main id="app-view" class="px-3 md:px-5">
 
         <!-- AUTH SECTION -->
-        <section id="page-auth" class="page-section hidden max-w-sm mx-auto py-3">
-            <div class="text-center mb-4">
-                <h1 class="text-lg font-black text-slate-900 dark:text-white">دليل الشرقية</h1>
-                <p class="text-[11px] text-slate-500 mt-0.5">سجل الدخول لنشر طلباتك وخدماتك</p>
+        <section id="page-auth" class="page-section hidden max-w-sm mx-auto py-2">
+            <div class="text-center mb-3">
+                <h1 class="text-base font-black text-slate-900 dark:text-white">دليل الشرقية</h1>
+                <p class="text-[10px] text-slate-500 mt-0.5">سجل الدخول لنشر طلباتك وخدماتك</p>
             </div>
 
-            <div class="bg-slate-200 dark:bg-slate-800 p-1 rounded-xl flex mb-3 border border-slate-300 dark:border-slate-700 h-9">
-                <button onclick="window.switchAuthMode('login')" id="btn-mode-login" class="flex-1 rounded-lg text-xs font-bold transition-all" style="background: #1e3a5f; color: white;">دخول</button>
-                <button onclick="window.switchAuthMode('signup')" id="btn-mode-signup" class="flex-1 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400 bg-transparent transition-all">حساب جديد</button>
+            <div class="bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl flex mb-2.5 border border-slate-300 dark:border-slate-700 h-8">
+                <button onclick="window.switchAuthMode('login')" id="btn-mode-login" class="flex-1 rounded-lg text-[11px] font-bold transition-all" style="background: #1e3a5f; color: white;">دخول</button>
+                <button onclick="window.switchAuthMode('signup')" id="btn-mode-signup" class="flex-1 rounded-lg text-[11px] font-bold text-slate-600 dark:text-slate-400 bg-transparent transition-all">حساب جديد</button>
             </div>
 
             <!-- Login Form -->
-            <form id="form-login" class="space-y-2.5">
-                <div class="bg-white dark:bg-[#1e293b] p-4 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm space-y-2.5">
+            <form id="form-login" class="space-y-2">
+                <div class="custom-card-box space-y-2">
                     <div class="phone-input-wrap">
                         <input type="tel" id="login-phone" placeholder="رقم الهاتف (10 أرقام)" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
                         <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <input type="password" id="login-pass" placeholder="كلمة المرور" class="h-9 bg-slate-50 dark:bg-slate-800 font-semibold" required>
+                    <input type="password" id="login-pass" placeholder="كلمة المرور" class="h-8 font-semibold" required>
                     <button type="submit" class="w-full py-2 rounded-xl font-bold text-xs text-white shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تسجيل الدخول</button>
                 </div>
             </form>
 
             <!-- Signup Form -->
-            <form id="form-signup" class="hidden bg-white dark:bg-[#1e293b] p-4 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm space-y-2.5">
-                <div class="flex justify-center mb-1">
-                    <div class="w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 border border-dashed border-slate-400 relative overflow-hidden cursor-pointer" onclick="document.getElementById('signup-file').click()">
+            <form id="form-signup" class="hidden custom-card-box space-y-2">
+                <div class="flex justify-center mb-0.5">
+                    <div class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 border border-dashed border-slate-400 relative overflow-hidden cursor-pointer" onclick="document.getElementById('signup-file').click()">
                         <img id="signup-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239ca3af'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" class="w-full h-full object-cover">
                     </div>
                     <input type="file" id="signup-file" class="hidden" accept="image/*" onchange="window.handleImageUpload(this, 'signup-preview')">
                 </div>
 
-                <div class="space-y-2">
-                    <input type="text" id="signup-name" placeholder="الاسم الكامل" class="h-8 bg-slate-50 dark:bg-slate-800 font-semibold" required>
-                    <div class="phone-input-wrap h-8">
-                        <input type="tel" id="signup-phone" placeholder="رقم الهاتف (10 أرقام)" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
-                        <span class="phone-code-badge" dir="ltr">+20</span>
-                    </div>
-                    <input type="password" id="signup-pass" placeholder="كلمة المرور" class="h-8 bg-slate-50 dark:bg-slate-800 font-semibold" required>
+                <input type="text" id="signup-name" placeholder="الاسم الكامل" class="h-8 font-semibold" required>
+                <div class="phone-input-wrap">
+                    <input type="tel" id="signup-phone" placeholder="رقم الهاتف (10 أرقام)" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
+                    <span class="phone-code-badge" dir="ltr">+20</span>
+                </div>
+                <input type="password" id="signup-pass" placeholder="كلمة المرور" class="h-8 font-semibold" required>
 
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="signup-center" onchange="window.updateVillages()" class="h-8 bg-slate-50 dark:bg-slate-800"><option value="">المركز</option></select>
-                        <select id="signup-village" class="h-8 bg-slate-50 dark:bg-slate-800"><option value="">القرية</option></select>
-                    </div>
-                    <input type="text" id="signup-address-detail" placeholder="العنوان التفصيلي (اختياري)" class="h-8 bg-slate-50 dark:bg-slate-800">
+                <div class="grid grid-cols-2 gap-1.5">
+                    <select id="signup-center" onchange="window.updateVillages()" class="h-8"><option value="">المركز</option></select>
+                    <select id="signup-village" class="h-8"><option value="">القرية</option></select>
+                </div>
+                <input type="text" id="signup-address-detail" placeholder="العنوان التفصيلي (اختياري)" class="h-8">
 
-                    <div class="grid grid-cols-2 gap-2">
-                        <div class="flex bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-300 dark:border-slate-600 h-8 items-center">
-                            <label class="flex-1 text-center cursor-pointer text-[10px] font-bold"><input type="radio" name="gender" value="male" checked> ذكر</label>
-                            <label class="flex-1 text-center cursor-pointer text-[10px] font-bold"><input type="radio" name="gender" value="female"> أنثى</label>
-                        </div>
-                        <div class="flex bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-300 dark:border-slate-600 h-8 items-center">
-                            <label class="flex-1 text-center cursor-pointer text-[10px] font-bold"><input type="radio" name="role" value="client" checked onchange="window.toggleProfVisibility(false)"> عميل</label>
-                            <label class="flex-1 text-center cursor-pointer text-[10px] font-bold"><input type="radio" name="role" value="provider" onchange="window.toggleProfVisibility(true)"> صنايعي</label>
-                        </div>
+                <div class="grid grid-cols-2 gap-1.5">
+                    <div class="flex bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl h-7 items-center">
+                        <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="gender" value="male" checked> ذكر</label>
+                        <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="gender" value="female"> أنثى</label>
                     </div>
-
-                    <div id="prof-container" class="hidden">
-                        <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="h-8 bg-slate-50 dark:bg-slate-800"><option value="">اختر المهنة...</option></select>
-                        <input type="text" id="signup-custom-prof" placeholder="اكتب الخدمة المخصصة..." class="hidden h-8 mt-1 border border-blue-400 bg-blue-50 dark:bg-slate-800">
+                    <div class="flex bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl h-7 items-center">
+                        <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="role" value="client" checked onchange="window.toggleProfVisibility(false)"> عميل</label>
+                        <label class="flex-1 text-center cursor-pointer text-[9.5px] font-bold"><input type="radio" name="role" value="provider" onchange="window.toggleProfVisibility(true)"> صنايعي</label>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs mt-1 shadow" style="background: #20B486;">إنشاء الحساب</button>
+                <div id="prof-container" class="hidden">
+                    <select id="signup-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('signup-custom-prof').classList.remove('hidden'); else document.getElementById('signup-custom-prof').classList.add('hidden');" class="h-8"><option value="">اختر المهنة...</option></select>
+                    <input type="text" id="signup-custom-prof" placeholder="اكتب الخدمة المخصصة..." class="hidden h-8 mt-1 border border-blue-400">
+                </div>
+
+                <button type="submit" class="w-full py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">إنشاء الحساب</button>
             </form>
         </section>
 
@@ -632,12 +707,12 @@
                 <button id="tab-home-jobs"></button>
             </div>
 
-            <!-- حاوية البحث الكبسولية الفخمة في الصفحة الرئيسية (خارجي بلون الهيدر وداخلي أبيض معتم) -->
+            <!-- حاوية البحث في الخدمات (بدون زر فلترة - متطابقة مع الوظائف - معتمة تحجب البطاقات خلفها) -->
             <div id="prof-search-box" class="search-sticky-wrapper">
                 <div class="search-outer-pill">
-                    <div class="search-inner-white">
-                        <svg class="w-4 h-4 text-slate-400 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        <input type="text" id="prof-search" oninput="window.toggleSearchClearBtn(); window.debouncedSearch('prof')" placeholder="ابحث عن المهنة، الحرفة أو التخصص المطلوب...">
+                    <div class="search-inner-soft">
+                        <svg class="w-4 h-4 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text" id="prof-search" oninput="window.toggleSearchClearBtn(); window.debouncedSearch('prof')" placeholder="ابحث عن المهنة أو التخصص المطلوب...">
                         <button id="btn-clear-search" onclick="document.getElementById('prof-search').value=''; window.toggleSearchClearBtn(); window.filterProfessions()" class="hidden text-slate-400 hover:text-rose-500 text-xs px-1">✕</button>
                     </div>
                 </div>
@@ -645,52 +720,52 @@
 
             <!-- شبكة الأقسام والمهن -->
             <div id="view-services">
-                <div id="professions-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2.5 md:gap-3"></div>
+                <div id="professions-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2"></div>
             </div>
         </section>
 
         <!-- PAGE JOBS: DEDICATED JOBS SECTION -->
         <section id="page-jobs" class="page-section hidden">
-            <!-- حاوية شريط البحث في صفحة الوظائف مع قمع الفلترة -->
+            <!-- حاوية شريط البحث في صفحة الوظائف مع زر الفلترة المصغر -->
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
-                    <div class="search-inner-white">
-                        <svg class="w-4 h-4 text-slate-400 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <div class="search-inner-soft">
+                        <svg class="w-4 h-4 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="jobs-search-input" onkeyup="window.filterJobsList && window.filterJobsList()" placeholder="ابحث في الوظائف (المسمى، الراتب، التفاصيل)...">
                     </div>
-                    <!-- زر قمع الفلترة -->
-                    <button onclick="window.toggleJobsFilterModal()" class="btn-filter-funnel">
-                        <svg class="w-4 h-4 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                    <!-- زر الفلترة المصغر والملموم بكلمة فلترة -->
+                    <button onclick="window.toggleJobsFilterModal()" class="btn-filter-compact">
+                        <svg class="w-3.5 h-3.5 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
                         <span>فلترة</span>
                     </button>
                 </div>
             </div>
 
             <!-- مودال فلترة الوظائف الملموم -->
-            <div id="jobs-filter-modal" class="hidden mb-3 p-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-slate-300 dark:border-slate-700 shadow-md max-w-lg mx-auto">
-                <div class="flex justify-between items-center mb-2 pb-1.5 border-b border-slate-200 dark:border-slate-700">
+            <div id="jobs-filter-modal" class="hidden mb-2.5 p-3 rounded-2xl bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 shadow-md max-w-md mx-auto">
+                <div class="flex justify-between items-center mb-2 pb-1 border-b border-slate-200 dark:border-slate-700">
                     <span class="text-xs font-bold text-slate-800 dark:text-slate-100">تصفية الوظائف</span>
-                    <button onclick="window.toggleJobsFilterModal()" class="text-xs text-slate-400 hover:text-rose-500 font-bold">إغلاق ✕</button>
+                    <button onclick="window.toggleJobsFilterModal()" class="text-xs text-slate-400 hover:text-rose-500 font-bold">✕</button>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <select id="filter-job-type" onchange="window.filterJobsList && window.filterJobsList()" class="h-8 text-xs bg-slate-50 dark:bg-slate-800">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                    <select id="filter-job-type" onchange="window.filterJobsList && window.filterJobsList()" class="h-8 text-xs">
                         <option value="">نوع الدوام (الكل)</option>
                         <option value="full">دوام كامل</option>
                         <option value="part">دوام جزئي</option>
                     </select>
-                    <select id="filter-job-shift" onchange="window.filterJobsList && window.filterJobsList()" class="h-8 text-xs bg-slate-50 dark:bg-slate-800">
+                    <select id="filter-job-shift" onchange="window.filterJobsList && window.filterJobsList()" class="h-8 text-xs">
                         <option value="">الشيفت (الكل)</option>
                         <option value="صباحي">صباحي</option>
                         <option value="مسائي">مسائي</option>
                         <option value="متغير">متغير</option>
                     </select>
-                    <button onclick="document.getElementById('filter-job-type').value=''; document.getElementById('filter-job-shift').value=''; document.getElementById('jobs-search-input').value=''; window.filterJobsList && window.filterJobsList();" class="h-8 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200">إعادة ضبط</button>
+                    <button onclick="document.getElementById('filter-job-type').value=''; document.getElementById('filter-job-shift').value=''; document.getElementById('jobs-search-input').value=''; window.filterJobsList && window.filterJobsList();" class="h-8 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200">إعادة ضبط</button>
                 </div>
             </div>
 
-            <!-- كروت الوظائف المنظمة بدقة -->
-            <div id="view-jobs" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                <p class="text-center text-slate-400 py-10 text-xs font-semibold col-span-full">جاري تحميل الوظائف...</p>
+            <!-- كروت الوظائف المنظمة -->
+            <div id="view-jobs" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                <p class="text-center text-slate-400 py-8 text-xs font-semibold col-span-full">جاري تحميل الوظائف...</p>
             </div>
         </section>
 
@@ -698,78 +773,80 @@
         <section id="page-category-details" class="page-section hidden max-w-4xl mx-auto">
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
-                    <div class="search-inner-white">
-                        <svg class="w-4 h-4 text-slate-400 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <div class="search-inner-soft">
+                        <svg class="w-4 h-4 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="cat-search" onkeyup="window.debouncedSearch('cat')" placeholder="ابحث بالاسم أو المكان أو القرية...">
                     </div>
-                    <button onclick="window.openFilterModal('category')" class="btn-filter-funnel">
-                        <svg class="w-4 h-4 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                        <span>تصفية</span>
+                    <!-- تم استبدال تصفية بـ فلترة لتشغيل المودال بسلاسة -->
+                    <button onclick="window.openFilterModal('category')" class="btn-filter-compact">
+                        <svg class="w-3.5 h-3.5 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                        <span>فلترة</span>
                     </button>
                 </div>
             </div>
-            <div id="cat-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+            <div id="cat-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
         </section>
 
         <!-- DIRECTORY -->
         <section id="page-directory" class="page-section hidden max-w-4xl mx-auto">
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
-                    <div class="search-inner-white">
-                        <svg class="w-4 h-4 text-slate-400 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <div class="search-inner-soft">
+                        <svg class="w-4 h-4 text-slate-500 ml-1.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <input type="text" id="dir-search" onkeyup="window.debouncedSearch('dir')" placeholder="ابحث في الدليل بالاسم، المهنة، القرية...">
                     </div>
-                    <button onclick="window.openFilterModal('directory')" class="btn-filter-funnel">
-                        <svg class="w-4 h-4 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                        <span>تصفية</span>
+                    <!-- تم استبدال تصفية بـ فلترة -->
+                    <button onclick="window.openFilterModal('directory')" class="btn-filter-compact">
+                        <svg class="w-3.5 h-3.5 text-[#F2A51A]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                        <span>فلترة</span>
                     </button>
                 </div>
             </div>
-            <div id="dir-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+            <div id="dir-list" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
         </section>
 
-        <!-- ADD SECTION (تم ضبطه وإصلاحه) -->
-        <section id="page-add" class="page-section hidden max-w-md mx-auto py-2">
-            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-4 shadow-sm">
-                <h2 class="text-xs font-black mb-3 text-center border-b border-slate-200 dark:border-slate-700 pb-2 text-slate-800 dark:text-white">إضافة إعلان أو طلب جديد</h2>
+        <!-- ADD SECTION -->
+        <section id="page-add" class="page-section hidden max-w-md mx-auto py-1">
+            <div class="custom-card-box p-3.5">
+                <h2 class="text-xs font-black mb-2.5 text-center border-b border-slate-200 dark:border-slate-700 pb-1.5 text-slate-800 dark:text-white">إضافة إعلان أو طلب جديد</h2>
                 
-                <div class="flex gap-2 mb-3">
+                <div class="flex gap-1.5 mb-2.5">
                     <button onclick="window.switchAddMode('req')" id="btn-add-req" class="flex-1 py-1.5 rounded-xl text-xs font-bold transition-all" style="background: #1e3a5f; color: white;">طلب خدمة</button>
-                    <button onclick="window.switchAddMode('job')" id="btn-add-job" class="flex-1 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all">إعلان توظيف</button>
+                    <button onclick="window.switchAddMode('job')" id="btn-add-job" class="flex-1 py-1.5 rounded-xl text-xs font-bold border border-slate-300 dark:border-slate-600 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all">إعلان توظيف</button>
                 </div>
 
                 <!-- Form Service Request -->
-                <form id="form-req" class="space-y-2.5">
-                    <select id="req-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('req-custom-prof').classList.remove('hidden'); else document.getElementById('req-custom-prof').classList.add('hidden');" class="h-9 bg-slate-50 dark:bg-slate-800"></select>
-                    <input type="text" id="req-custom-prof" placeholder="اكتب الخدمة المطلوبة بدقة..." class="hidden h-9 border border-blue-400 bg-blue-50 dark:bg-slate-800">
+                <form id="form-req" class="space-y-2">
+                    <select id="req-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('req-custom-prof').classList.remove('hidden'); else document.getElementById('req-custom-prof').classList.add('hidden');" class="h-8"></select>
+                    <input type="text" id="req-custom-prof" placeholder="اكتب الخدمة المطلوبة بدقة..." class="hidden h-8 border border-blue-400">
 
-                    <textarea id="req-desc" rows="3" placeholder="اشرح تفاصيل طلبك والمشكلة بدقة..." class="bg-slate-50 dark:bg-slate-800" required></textarea>
+                    <textarea id="req-desc" rows="3" placeholder="اشرح تفاصيل طلبك والمشكلة..." required></textarea>
 
                     <div class="phone-input-wrap">
                         <input type="tel" id="req-phone" placeholder="رقم الواتساب (اختياري)" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
                         <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">نشر الطلب الآن</button>
+                    <button type="submit" class="w-full py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">نشر الطلب الآن</button>
                 </form>
 
                 <!-- Form Job Post -->
-                <form id="form-job" class="hidden space-y-2.5">
-                    <select id="job-title-select" onchange="if(this.value==='أخرى') document.getElementById('job-custom-title').classList.remove('hidden'); else document.getElementById('job-custom-title').classList.add('hidden');" class="h-9 bg-slate-50 dark:bg-slate-800"></select>
-                    <input type="text" id="job-custom-title" placeholder="اكتب المسمى المخصص..." class="hidden h-9 border border-blue-400 bg-blue-50 dark:bg-slate-800">
+                <form id="form-job" class="hidden space-y-2">
+                    <select id="job-title-select" onchange="if(this.value==='أخرى') document.getElementById('job-custom-title').classList.remove('hidden'); else document.getElementById('job-custom-title').classList.add('hidden');" class="h-8"></select>
+                    <input type="text" id="job-custom-title" placeholder="اكتب المسمى المخصص..." class="hidden h-8 border border-blue-400">
 
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="number" id="job-salary" placeholder="الراتب (ج.م)" class="h-9 bg-slate-50 dark:bg-slate-800">
-                        <input type="text" id="job-hours" placeholder="ساعات العمل" class="h-9 bg-slate-50 dark:bg-slate-800">
+                    <div class="grid grid-cols-2 gap-1.5">
+                        <input type="number" id="job-salary" placeholder="الراتب (ج.م)" class="h-8">
+                        <input type="text" id="job-hours" placeholder="ساعات العمل" class="h-8">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2">
-                        <select id="job-shift" class="h-9 bg-slate-50 dark:bg-slate-800">
+                    <div class="grid grid-cols-2 gap-1.5">
+                        <select id="job-shift" class="h-8">
                             <option value="">الشيفت (اختياري)</option>
                             <option value="صباحي">صباحي</option>
                             <option value="مسائي">مسائي</option>
                             <option value="متغير">متغير</option>
                         </select>
-                        <select id="job-type" class="h-9 bg-slate-50 dark:bg-slate-800">
+                        <select id="job-type" class="h-8">
                             <option value="full">دوام كامل</option>
                             <option value="part">دوام جزئي</option>
                         </select>
@@ -780,159 +857,159 @@
                         <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
 
-                    <textarea id="job-desc" rows="3" placeholder="اكتب شروط وتفاصيل الوظيفة..." class="bg-slate-50 dark:bg-slate-800" required></textarea>
-                    <button type="submit" class="w-full py-2 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">نشر الوظيفة</button>
+                    <textarea id="job-desc" rows="3" placeholder="اكتب شروط وتفاصيل الوظيفة..." required></textarea>
+                    <button type="submit" class="w-full py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">نشر الوظيفة</button>
                 </form>
             </div>
         </section>
 
-        <!-- PROFILE SECTION (تم ضبط المسافات وإصلاح المظهر) -->
-        <section id="page-profile" class="page-section hidden max-w-sm mx-auto space-y-2.5 py-2">
-            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-4 text-center shadow-sm">
-                <img id="prof-img-view" src="" class="w-18 h-18 rounded-full border border-slate-300 dark:border-slate-600 bg-slate-100 object-cover mx-auto shadow">
-                <h2 id="prof-name-view" class="text-sm font-black mt-2 text-slate-900 dark:text-white"></h2>
-                <div class="flex items-center gap-1.5 mt-1 justify-center flex-wrap">
-                    <span id="prof-role-view" class="bg-blue-50 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 text-[10px] px-2 py-0.5 rounded-full font-bold"></span>
-                    <span id="prof-address-view" class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold"></span>
+        <!-- PROFILE SECTION (إعادة ترتيب محكم بدون مساحات فارغة مبالغ فيها) -->
+        <section id="page-profile" class="page-section hidden max-w-sm mx-auto space-y-2 py-1">
+            <div class="custom-card-box p-3 text-center">
+                <img id="prof-img-view" src="" class="w-16 h-16 rounded-full border border-slate-300 dark:border-slate-600 object-cover mx-auto shadow">
+                <h2 id="prof-name-view" class="text-xs font-black mt-1.5 text-slate-900 dark:text-white"></h2>
+                <div class="flex items-center gap-1 mt-0.5 justify-center flex-wrap">
+                    <span id="prof-role-view" class="bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300 text-[9.5px] px-2 py-0.5 rounded-full font-bold"></span>
+                    <span id="prof-address-view" class="text-[10.5px] text-slate-500 dark:text-slate-400 font-semibold"></span>
                 </div>
-                <div class="flex gap-2 mt-3.5 max-w-xs mx-auto">
-                    <button onclick="window.navTo('edit-profile')" class="flex-1 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">تعديل الحساب</button>
-                    <button onclick="window.navTo('settings')" class="flex-1 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">الإعدادات</button>
+                <div class="flex gap-1.5 mt-2.5 max-w-xs mx-auto">
+                    <button onclick="window.navTo('edit-profile')" class="flex-1 py-1 rounded-xl text-[11px] font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">تعديل الحساب</button>
+                    <button onclick="window.navTo('settings')" class="flex-1 py-1 rounded-xl text-[11px] font-bold bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600">الإعدادات</button>
                 </div>
             </div>
 
-            <div class="space-y-2">
-                <button onclick="window.openActivityTab('my-activity')" class="w-full py-2.5 bg-white dark:bg-[#1e293b] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-4 shadow-sm">
+            <div class="space-y-1.5">
+                <button onclick="window.openActivityTab('my-activity')" class="w-full py-2 bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-3 shadow-sm">
                     <span>📊 سجل نشاطي وإعلاناتي</span>
                     <span class="text-slate-400">←</span>
                 </button>
 
-                <button id="btn-profile-matching" onclick="window.openActivityTab('matching')" class="hidden w-full py-2.5 bg-white dark:bg-[#1e293b] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-4 shadow-sm">
+                <button id="btn-profile-matching" onclick="window.openActivityTab('matching')" class="hidden w-full py-2 bg-[#F3F6F9] dark:bg-[#243d54] border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-xs flex justify-between items-center px-3 shadow-sm">
                     <span>🎯 طلبات جديدة تناسب مهنتي</span>
                     <span id="act-notif-badge" class="hidden bg-rose-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold">!</span>
                 </button>
 
-                <button onclick="window.logout()" class="w-full py-2.5 text-rose-600 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-xl font-bold text-xs">تسجيل الخروج</button>
+                <button onclick="window.logout()" class="w-full py-2 text-rose-600 bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-xl font-bold text-xs">تسجيل الخروج</button>
             </div>
         </section>
 
         <!-- ACTIVITY PAGE -->
-        <section id="page-activity" class="page-section hidden max-w-4xl mx-auto">
-            <div class="sticky top-14 z-30 py-2 bg-[#EEF3F8] dark:bg-[#0f172a] mb-2">
-                <div class="flex p-0.5 bg-white dark:bg-[#1e293b] rounded-xl border border-slate-300 dark:border-slate-700 max-w-xs mx-auto h-9 items-center">
-                    <button onclick="window.switchActivityTab('my-activity')" id="tab-act-mine" class="flex-1 h-full rounded-lg text-xs font-bold text-white" style="background: #1e3a5f;">نشاطي</button>
-                    <button onclick="window.switchActivityTab('matching')" id="tab-act-matching" class="flex-1 h-full rounded-lg text-xs font-bold text-slate-500">طلبات تناسبك</button>
+        <section id="page-activity" class="page-section hidden max-w-3xl mx-auto">
+            <div class="sticky top-14 z-30 py-1.5 bg-[#EEF3F8] dark:bg-[#1e3347] mb-2">
+                <div class="flex p-0.5 bg-[#F3F6F9] dark:bg-[#243d54] rounded-xl border border-slate-300 dark:border-slate-700 max-w-xs mx-auto h-8 items-center">
+                    <button onclick="window.switchActivityTab('my-activity')" id="tab-act-mine" class="flex-1 h-full rounded-lg text-[11px] font-bold text-white" style="background: #1e3a5f;">نشاطي</button>
+                    <button onclick="window.switchActivityTab('matching')" id="tab-act-matching" class="flex-1 h-full rounded-lg text-[11px] font-bold text-slate-500">طلبات تناسبك</button>
                 </div>
             </div>
 
             <div id="view-my-activity">
-                <div id="my-activity" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+                <div id="my-activity" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
             </div>
 
             <div id="view-matching-reqs" class="hidden">
-                <div id="matching-reqs-list" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+                <div id="matching-reqs-list" class="grid grid-cols-1 md:grid-cols-2 gap-2"></div>
             </div>
         </section>
 
         <!-- EDIT PROFILE -->
-        <section id="page-edit-profile" class="page-section hidden max-w-sm mx-auto py-2">
-            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-4 shadow-sm space-y-2.5">
-                <div class="flex flex-col items-center mb-2">
-                    <img id="edit-img-preview" src="" class="w-18 h-18 rounded-full object-cover border border-slate-300 dark:border-slate-600 shadow">
-                    <button onclick="document.getElementById('edit-file').click()" class="text-xs font-bold text-[#1e3a5f] dark:text-[#F2A51A] underline mt-1">تغيير الصورة</button>
+        <section id="page-edit-profile" class="page-section hidden max-w-sm mx-auto py-1">
+            <div class="custom-card-box p-3 space-y-2">
+                <div class="flex flex-col items-center mb-1">
+                    <img id="edit-img-preview" src="" class="w-16 h-16 rounded-full object-cover border border-slate-300 dark:border-slate-600 shadow">
+                    <button onclick="document.getElementById('edit-file').click()" class="text-[11px] font-bold text-[#1e3a5f] dark:text-[#F2A51A] underline mt-0.5">تغيير الصورة</button>
                     <input type="file" id="edit-file" class="hidden" accept="image/*" onchange="window.handleImageUpload(this, 'edit-img-preview', true)">
                 </div>
                 
-                <input type="text" id="edit-name" class="h-9 bg-slate-50 dark:bg-slate-800 font-semibold" placeholder="الاسم الكامل">
+                <input type="text" id="edit-name" class="h-8 font-semibold" placeholder="الاسم الكامل">
 
                 <div class="phone-input-wrap">
                     <input type="tel" id="edit-phone" placeholder="الهاتف" class="border-none outline-none text-left font-semibold" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
                     <span class="phone-code-badge" dir="ltr">+20</span>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2">
-                     <select id="edit-center" onchange="window.updateVillages('edit')" class="h-9 bg-slate-50 dark:bg-slate-800"></select>
-                     <select id="edit-village" class="h-9 bg-slate-50 dark:bg-slate-800"></select>
+                <div class="grid grid-cols-2 gap-1.5">
+                     <select id="edit-center" onchange="window.updateVillages('edit')" class="h-8"></select>
+                     <select id="edit-village" class="h-8"></select>
                 </div>
 
-                <input type="text" id="edit-address-detail" class="h-9 bg-slate-50 dark:bg-slate-800" placeholder="العنوان التفصيلي (اختياري)">
+                <input type="text" id="edit-address-detail" class="h-8" placeholder="العنوان التفصيلي (اختياري)">
 
-                <div class="flex gap-2 pt-1">
-                    <button onclick="window.saveProfileChanges()" class="flex-1 py-2 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">حفظ</button>
-                    <button onclick="window.goBack()" class="flex-1 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs">إلغاء</button>
+                <div class="flex gap-1.5 pt-1">
+                    <button onclick="window.saveProfileChanges()" class="flex-1 py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">حفظ</button>
+                    <button onclick="window.goBack()" class="flex-1 py-1.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 rounded-xl font-bold text-xs">إلغاء</button>
                 </div>
             </div>
         </section>
 
         <!-- SETTINGS -->
-        <section id="page-settings" class="page-section hidden max-w-sm mx-auto py-2">
-            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-4 shadow-sm space-y-2">
-                <h3 class="font-black text-xs mb-2 border-b border-slate-200 dark:border-slate-700 pb-1.5 text-slate-800 dark:text-white">إعدادات الحساب</h3>
-                <label class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
-                    <span class="font-bold text-xs">تفعيل الإشعارات</span>
-                    <input type="checkbox" id="toggle-notif" class="w-4 h-4" checked>
+        <section id="page-settings" class="page-section hidden max-w-sm mx-auto py-1">
+            <div class="custom-card-box p-3 space-y-1.5">
+                <h3 class="font-black text-xs mb-1.5 border-b border-slate-200 dark:border-slate-700 pb-1 text-slate-800 dark:text-white">إعدادات الحساب</h3>
+                <label class="flex justify-between items-center p-1.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                    <span class="font-bold text-[11px]">تفعيل الإشعارات</span>
+                    <input type="checkbox" id="toggle-notif" class="w-3.5 h-3.5" checked>
                 </label>
-                <label class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
-                    <span class="font-bold text-xs">إخفاء رقم هاتفي</span>
-                    <input type="checkbox" id="toggle-hide-phone" class="w-4 h-4">
+                <label class="flex justify-between items-center p-1.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                    <span class="font-bold text-[11px]">إخفاء رقم هاتفي</span>
+                    <input type="checkbox" id="toggle-hide-phone" class="w-3.5 h-3.5">
                 </label>
-                <label class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
-                    <span class="font-bold text-xs">إخفاء الملف الشخصي</span>
-                    <input type="checkbox" id="toggle-hide-profile" class="w-4 h-4">
+                <label class="flex justify-between items-center p-1.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                    <span class="font-bold text-[11px]">إخفاء الملف الشخصي</span>
+                    <input type="checkbox" id="toggle-hide-profile" class="w-3.5 h-3.5">
                 </label>
-                <label id="setting-pause-reqs" class="hidden flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
-                    <span class="font-bold text-xs text-rose-500">إيقاف استلام الطلبات</span>
-                    <input type="checkbox" id="toggle-pause-reqs" class="w-4 h-4">
+                <label id="setting-pause-reqs" class="hidden flex justify-between items-center p-1.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                    <span class="font-bold text-[11px] text-rose-500">إيقاف استلام الطلبات</span>
+                    <input type="checkbox" id="toggle-pause-reqs" class="w-3.5 h-3.5">
                 </label>
-                <label class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
-                    <span class="font-bold text-xs">الوضع الليلي (Dark Mode)</span>
-                    <input type="checkbox" id="theme-toggle" class="w-4 h-4" onchange="window.toggleTheme()">
+                <label class="flex justify-between items-center p-1.5 bg-slate-200/50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 cursor-pointer">
+                    <span class="font-bold text-[11px]">الوضع الليلي (Dark Mode)</span>
+                    <input type="checkbox" id="theme-toggle" class="w-3.5 h-3.5" onchange="window.toggleTheme()">
                 </label>
-                <button onclick="window.saveSettings()" class="w-full py-2 text-white rounded-xl font-bold mt-2 text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">حفظ التغييرات</button>
+                <button onclick="window.saveSettings()" class="w-full py-1.5 text-white rounded-xl font-bold mt-1 text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">حفظ التغييرات</button>
             </div>
         </section>
 
-        <!-- CHAT LIST -->
+        <!-- CHAT LIST (تصميم بروفيشنال ملموم لبطاقات المحادثات) -->
         <section id="page-chat" class="page-section hidden max-w-xl mx-auto">
-            <div id="chat-history-list" class="flex flex-col gap-2">
-                <p class="text-center text-slate-400 py-10 text-xs font-semibold">جاري تحميل المحادثات...</p>
+            <div id="chat-history-list" class="flex flex-col gap-1.5">
+                <p class="text-center text-slate-400 py-8 text-xs font-semibold">جاري تحميل المحادثات...</p>
             </div>
         </section>
 
         <!-- USER PROFILE PAGE -->
         <section id="page-user-profile" class="page-section hidden max-w-sm mx-auto">
-            <div class="bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 p-4 text-center shadow-sm">
-                <img id="user-profile-img" src="" class="w-18 h-18 rounded-full border border-slate-300 dark:border-slate-600 mx-auto object-cover cursor-pointer shadow">
-                <h2 id="user-profile-name" class="text-sm font-black mt-2 text-slate-900 dark:text-white"></h2>
-                <p id="user-profile-role" class="text-xs font-bold text-[#1e3a5f] dark:text-[#F2A51A] mb-2.5"></p>
+            <div class="custom-card-box p-3 text-center">
+                <img id="user-profile-img" src="" class="w-16 h-16 rounded-full border border-slate-300 dark:border-slate-600 mx-auto object-cover cursor-pointer shadow">
+                <h2 id="user-profile-name" class="text-xs font-black mt-1.5 text-slate-900 dark:text-white"></h2>
+                <p id="user-profile-role" class="text-[11px] font-bold text-[#1e3a5f] dark:text-[#F2A51A] mb-2"></p>
 
-                <div class="w-full bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 mb-2.5 text-right">
-                    <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="w-full bg-slate-200/40 dark:bg-slate-800/60 p-2 rounded-xl border border-slate-200 dark:border-slate-700 mb-2 text-right">
+                    <div class="grid grid-cols-2 gap-1.5 text-xs">
                         <div>
-                            <span class="text-slate-400 block text-[10px]">العنوان والمركز</span>
-                            <span id="user-profile-addr-detail" class="font-bold text-[10px] text-slate-500 block"></span>
-                            <span id="user-profile-addr" class="font-bold text-slate-800 dark:text-slate-200"></span>
+                            <span class="text-slate-400 block text-[9.5px]">العنوان والمركز</span>
+                            <span id="user-profile-addr-detail" class="font-bold text-[9.5px] text-slate-500 block"></span>
+                            <span id="user-profile-addr" class="font-bold text-[10.5px] text-slate-800 dark:text-slate-200"></span>
                         </div>
                         <div>
-                            <span class="text-slate-400 block text-[10px]">النوع</span>
-                            <span id="user-profile-gender" class="font-bold text-slate-800 dark:text-slate-200"></span>
+                            <span class="text-slate-400 block text-[9.5px]">النوع</span>
+                            <span id="user-profile-gender" class="font-bold text-[10.5px] text-slate-800 dark:text-slate-200"></span>
                         </div>
                     </div>
-                    <div class="mt-2 border-t border-slate-200 dark:border-slate-700 pt-1.5 text-right">
-                        <span class="text-slate-400 block text-[10px]">رقم الهاتف</span>
-                        <span id="user-profile-phone" class="font-bold text-xs text-slate-900 dark:text-white" dir="ltr"></span>
+                    <div class="mt-1.5 border-t border-slate-200 dark:border-slate-700 pt-1 text-right">
+                        <span class="text-slate-400 block text-[9.5px]">رقم الهاتف</span>
+                        <span id="user-profile-phone" class="font-bold text-[11px] text-slate-900 dark:text-white" dir="ltr"></span>
                     </div>
                 </div>
 
-                <div class="flex gap-2 w-full mb-2.5" id="user-profile-actions"></div>
+                <div class="flex gap-1.5 w-full mb-2" id="user-profile-actions"></div>
 
-                <div class="w-full border-t border-slate-200 dark:border-slate-700 pt-2 text-right">
-                    <h4 class="font-bold text-xs mb-1.5 flex items-center justify-between">
+                <div class="w-full border-t border-slate-200 dark:border-slate-700 pt-1.5 text-right">
+                    <h4 class="font-bold text-[11px] mb-1 flex items-center justify-between">
                         <span>التقييمات</span>
                         <span id="user-profile-stars" class="text-[#F2A51A] font-bold"></span>
                     </h4>
-                    <div class="border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 p-2">
-                        <div id="user-profile-reviews-list" class="space-y-1.5 max-h-32 overflow-y-auto custom-scrollbar pr-1"></div>
+                    <div class="border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-200/30 dark:bg-slate-800/40 p-1.5">
+                        <div id="user-profile-reviews-list" class="space-y-1 max-h-28 overflow-y-auto custom-scrollbar pr-0.5"></div>
                     </div>
                 </div>
             </div>
@@ -940,44 +1017,44 @@
     </main>
 
     <!-- LIGHTBOX MODAL -->
-    <div id="lightbox-modal" class="fixed inset-0 bg-black/90 z-[9999] hidden flex flex-col justify-center items-center p-4 backdrop-blur-md">
-        <button onclick="document.getElementById('lightbox-modal').classList.add('hidden')" class="absolute top-6 right-6 text-white text-3xl font-bold hover:text-rose-500 z-10">✕</button>
+    <div id="lightbox-modal" class="fixed inset-0 bg-black/90 z-[99999] hidden flex flex-col justify-center items-center p-4 backdrop-blur-md">
+        <button onclick="document.getElementById('lightbox-modal').classList.add('hidden')" class="absolute top-5 right-5 text-white text-2xl font-bold hover:text-rose-500 z-10">✕</button>
         <img id="lightbox-img" src="" class="max-w-full max-h-full rounded-xl shadow-2xl object-contain">
     </div>
 
     <!-- RATE MODAL -->
     <div id="rate-modal" class="modal-overlay hidden">
-        <div class="bg-white dark:bg-[#1e293b] w-full max-w-xs rounded-2xl border border-slate-300 dark:border-slate-700 p-4 shadow-2xl">
-            <h3 class="text-center font-bold mb-2 text-xs text-slate-900 dark:text-white">تقييم تجربة الخدمة</h3>
+        <div class="custom-card-box w-full max-w-xs p-3.5 shadow-2xl">
+            <h3 class="text-center font-bold mb-1.5 text-xs text-slate-900 dark:text-white">تقييم تجربة الخدمة</h3>
             <form id="form-review">
-                <div class="star-rating mb-2 flex flex-row-reverse justify-center gap-1">
+                <div class="star-rating mb-1.5 flex flex-row-reverse justify-center gap-1">
                     <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
                     <input type="radio" name="stars" id="s4" value="4"><label for="s4">★</label>
                     <input type="radio" name="stars" id="s3" value="3"><label for="s3">★</label>
                     <input type="radio" name="stars" id="s2" value="2"><label for="s2">★</label>
                     <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
                 </div>
-                <textarea id="review-text" rows="2" placeholder="اكتب تعليقك..." class="w-full p-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 mb-2.5 outline-none"></textarea>
-                <div class="flex gap-2">
+                <textarea id="review-text" rows="2" placeholder="اكتب تعليقك..." class="mb-2 outline-none"></textarea>
+                <div class="flex gap-1.5">
                     <button type="button" id="btn-submit-rate" onclick="window.submitReview()" class="flex-1 py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: #20B486;">إرسال</button>
-                    <button type="button" onclick="document.getElementById('rate-modal').classList.add('hidden')" class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
+                    <button type="button" onclick="document.getElementById('rate-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- FILTER MODAL DROPDOWN -->
+    <!-- FILTER MODAL DROPDOWN (مصلح ومتصل بزر الفلترة) -->
     <div id="filter-modal-wrap" class="hidden">
         <div id="filter-modal-backdrop" onclick="document.getElementById('filter-modal-wrap').classList.add('hidden')" class="fixed inset-0 z-[130] bg-black/40 backdrop-blur-[2px]"></div>
 
-        <div id="filter-modal" class="fixed top-20 left-4 right-4 max-w-xs mx-auto z-[140] bg-white dark:bg-[#1e293b] rounded-2xl border border-slate-300 dark:border-slate-700 shadow-2xl p-3.5 flex flex-col">
-            <h3 class="text-center font-bold mb-2.5 text-xs text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-1.5">تصفية البحث</h3>
-            <select id="filter-center" onchange="window.updateVillages('filter')" class="mb-2 h-8 text-xs bg-slate-50 dark:bg-slate-800"></select>
-            <select id="filter-village" class="mb-2 h-8 text-xs bg-slate-50 dark:bg-slate-800"><option value="">القرية...</option></select>
+        <div id="filter-modal" class="fixed top-16 left-4 right-4 max-w-xs mx-auto z-[140] custom-card-box shadow-2xl p-3 flex flex-col">
+            <h3 class="text-center font-bold mb-2 text-xs text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-700 pb-1">فلترة نتائج البحث</h3>
+            <select id="filter-center" onchange="window.updateVillages('filter')" class="mb-1.5 h-8 text-xs"></select>
+            <select id="filter-village" class="mb-1.5 h-8 text-xs"><option value="">القرية...</option></select>
             <div id="filter-prof-container">
-                <select id="filter-prof" class="mb-2.5 h-8 text-xs bg-slate-50 dark:bg-slate-800"></select>
+                <select id="filter-prof" class="mb-2 h-8 text-xs"></select>
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-1.5">
                 <button onclick="window.applyFilter()" class="flex-1 py-1.5 text-white rounded-xl font-bold text-xs shadow" style="background: linear-gradient(135deg, #365570, #1e3a5f);">تطبيق</button>
                 <button onclick="window.clearFilter()" class="flex-1 bg-rose-50 text-rose-600 border border-rose-200 py-1.5 rounded-xl font-bold text-xs">إلغاء</button>
             </div>
@@ -986,45 +1063,45 @@
 
     <!-- DELETE CHAT MODAL -->
     <div id="delete-chat-modal" class="modal-overlay hidden z-[200]">
-        <div class="bg-white dark:bg-[#1e293b] w-full max-w-xs rounded-2xl border border-slate-300 dark:border-slate-700 p-4 shadow-2xl text-center">
+        <div class="custom-card-box w-full max-w-xs p-3.5 shadow-2xl text-center">
             <h3 class="font-bold mb-1 text-xs text-rose-600">حذف المحادثة</h3>
-            <p class="text-[11px] text-slate-500 mb-3">هل ترغب في مسح هذه المحادثة نهائياً؟</p>
-            <div class="flex gap-2">
-                <button onclick="window.confirmDeleteChat()" class="flex-1 bg-rose-600 text-white py-1.5 rounded-xl font-bold text-xs shadow">حذف</button>
-                <button onclick="document.getElementById('delete-chat-modal').classList.add('hidden')" class="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1.5 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
+            <p class="text-[10.5px] text-slate-500 mb-2.5">هل ترغب في مسح هذه المحادثة نهائياً؟</p>
+            <div class="flex gap-1.5">
+                <button onclick="window.confirmDeleteChat()" class="flex-1 bg-rose-600 text-white py-1 rounded-xl font-bold text-xs shadow">حذف</button>
+                <button onclick="document.getElementById('delete-chat-modal').classList.add('hidden')" class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 py-1 rounded-xl font-bold text-xs border border-slate-300 dark:border-slate-600">إلغاء</button>
             </div>
         </div>
     </div>
 
     <!-- FULLSCREEN CHAT ROOM -->
     <div id="page-chat-room" class="full-screen-modal hidden overflow-hidden">
-        <div class="h-14 px-3 flex items-center justify-between shrink-0 z-10 text-white shadow-sm" style="background: linear-gradient(135deg, #365570, #1e3a5f); border-bottom: 0.75px solid rgba(255,255,255,0.25);">
+        <div class="h-12 px-3 flex items-center justify-between shrink-0 z-10 text-white shadow-sm" style="background: linear-gradient(135deg, #365570, #1e3a5f); border-bottom: 0.75px solid rgba(255,255,255,0.2);">
             <div class="flex items-center gap-1.5">
                 <button onclick="window.goBack()" class="p-1 hover:bg-white/10 rounded-full active:scale-90 transition-transform">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                 </button>
-                <div id="chat-header-profile" class="flex items-center gap-2 cursor-pointer hover:bg-white/10 p-1 rounded-xl">
-                    <img id="chat-room-avatar" src="" class="w-8 h-8 rounded-full border border-white/60 object-cover bg-slate-200">
-                    <h3 id="chat-room-name" class="font-bold text-xs md:text-sm">...</h3>
+                <div id="chat-header-profile" class="flex items-center gap-1.5 cursor-pointer hover:bg-white/10 p-1 rounded-xl">
+                    <img id="chat-room-avatar" src="" class="w-7 h-7 rounded-full border border-white/60 object-cover bg-slate-200">
+                    <h3 id="chat-room-name" class="font-bold text-xs">...</h3>
                 </div>
             </div>
-            <div class="flex items-center gap-1.5">
-                <button onclick="if(window.requireAuth()) document.getElementById('rate-modal').classList.remove('hidden')" class="bg-white/10 text-[#F2A51A] px-2.5 py-1 rounded-full font-bold text-[10px] border border-[#F2A51A]/50 active:scale-95">★ تقييم</button>
+            <div class="flex items-center gap-1">
+                <button onclick="if(window.requireAuth()) document.getElementById('rate-modal').classList.remove('hidden')" class="bg-white/10 text-[#F2A51A] px-2 py-0.5 rounded-full font-bold text-[10px] border border-[#F2A51A]/50 active:scale-95">★ تقييم</button>
                 <button onclick="document.getElementById('delete-chat-modal').classList.remove('hidden')" class="p-1 hover:bg-white/10 rounded-full text-slate-300 active:scale-90">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
                 </button>
             </div>
         </div>
-        <div id="messages-container" class="flex-1 overflow-y-auto p-3 space-y-2 bg-[#EEF3F8] dark:bg-[#0f172a] custom-scrollbar flex flex-col max-w-4xl mx-auto w-full"></div>
-        <form id="form-message" class="p-2 bg-white dark:bg-[#1e293b] border-t border-slate-300 dark:border-slate-700 flex gap-2 shrink-0 max-w-4xl mx-auto w-full">
-            <input type="text" id="msg-input" class="flex-1 p-2 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none" placeholder="اكتب رسالتك..." autocomplete="off">
+        <div id="messages-container" class="flex-1 overflow-y-auto p-2.5 space-y-1.5 bg-[#EEF3F8] dark:bg-[#1e3347] custom-scrollbar flex flex-col max-w-4xl mx-auto w-full"></div>
+        <form id="form-message" class="p-2 bg-[#F3F6F9] dark:bg-[#243d54] border-t border-slate-300 dark:border-slate-700 flex gap-1.5 shrink-0 max-w-4xl mx-auto w-full">
+            <input type="text" id="msg-input" class="flex-1 p-1.5 px-3 rounded-full bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none" placeholder="اكتب رسالتك..." autocomplete="off">
             <button type="submit" id="btn-send-msg" class="w-8 h-8 rounded-full text-white flex items-center justify-center shadow active:scale-90 shrink-0" style="background: linear-gradient(135deg, #365570, #1e3a5f);">
-                <svg class="w-4 h-4 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                <svg class="w-3.5 h-3.5 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
             </button>
         </form>
     </div>
 
-    <!-- الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية ومتناسقة -->
+    <!-- الهيدر السفلي الكبسولي العائم الموزع بـ 5 أزرار متساوية وبحماية من البطاقات أسفله -->
     <nav id="nav-bar">
         <!-- 1. الخدمات / الرئيسية -->
         <button onclick="window.navTo('home')" class="nav-btn active">
@@ -1048,7 +1125,7 @@
         <button onclick="window.navTo('chat')" class="nav-btn relative">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
             <span>محادثات</span>
-            <span id="chat-nav-dot" class="hidden absolute top-1 right-3 w-2 h-2 bg-blue-500 rounded-full border border-white"></span>
+            <span id="chat-nav-dot" class="hidden absolute top-1 right-3 w-1.5 h-1.5 bg-blue-500 rounded-full border border-white"></span>
         </button>
 
         <!-- 5. حسابي -->
