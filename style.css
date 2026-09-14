@@ -1,41 +1,27 @@
 /* ==========================================================================
-   دليل الشرقية الماسي - الأنماط والهوية البصرية الموحدة (UI/UX Stylesheet)
+   دليل الشرقية الماسي - التصميم الهندسي الموحد (Self-Contained Style Engine)
    ========================================================================== */
 
-/* 1. الأهمية القصوى: إخفاء العناصر برمجياً */
+/* 1. إخفاء العناصر برمجياً بقوة قصوى */
 .hidden { 
     display: none !important; 
 }
 
-/* 2. المتغيرات العامة والألوان الأساسية */
-:root {
-    --header-gradient: linear-gradient(135deg, #365570, #1e3a5f);
-    --success-emerald: #20B486;
-    --accent-gold: #F2A51A;
-    --accent-gold-hover: #d98207;
-    --page-bg-light: #EEF3F8;
-    --page-bg-dark: #0f172a;
-    --card-bg-light: #ffffff;
-    --card-bg-dark: #1e293b;
-    --silver-border-light: 0.75px solid #cbd5e1;
-    --silver-border-dark: 0.75px solid #334155;
-    --soft-shadow: 0 4px 16px -2px rgba(30, 58, 95, 0.07);
-    --floating-nav-shadow: 0 10px 25px -5px rgba(30, 58, 95, 0.15);
-}
-
-/* 3. الإعدادات الأساسية ونظام الشاشات */
+/* 2. الإعدادات العامة والخلفية السحابية الهادئة المشتقة من الهيدر */
 html, body {
-    min-height: 100dvh;
-    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100dvh !important;
+    font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif !important;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-y: none;
-    background-color: var(--page-bg-light);
-    color: #1e293b;
+    background-color: #EEF3F8 !important;
+    color: #1e293b !important;
 }
 
-.dark body {
-    background-color: var(--page-bg-dark);
-    color: #f8fafc;
+.dark html, .dark body, body.dark {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
 }
 
 ::-webkit-scrollbar {
@@ -46,90 +32,117 @@ html, body {
 button {
     cursor: pointer;
     touch-action: manipulation;
+    font-family: inherit;
 }
 
-/* 4. شريط التمرير المخصص للقوائم والمحادثات */
+/* 3. شريط التمرير المخصص الناعم للقوائم والمحادثات */
 .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
-    display: block;
+    width: 4px !important;
+    display: block !important;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+    background: transparent !important;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
+    background: #cbd5e1 !important;
+    border-radius: 10px !important;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #475569;
+    background: #475569 !important;
 }
 
-/* 5. مكونات الواجهة، الهيدر والحاويات */
-.glass-header {
-    background: var(--header-gradient) !important;
-    border-bottom: 0.75px solid rgba(255, 255, 255, 0.18) !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+/* 4. الهيدر العلوي بالتدرج المعتمد */
+#app-header, .glass-header {
+    background: linear-gradient(135deg, #365570, #1e3a5f) !important;
+    border-bottom: 0.75px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 15px rgba(30, 58, 95, 0.15) !important;
+    color: #ffffff !important;
 }
 
-/* حقول الإدخال، الاختيار والنصوص - إطارات سيلفر 0.75px ملمومة وناعمة */
-input, select, textarea {
-    border: var(--silver-border-light);
-    background-color: #ffffff;
-    font-size: 12px;
-    border-radius: 12px;
-    transition: all 0.2s ease;
+#app-header * {
+    color: #ffffff !important;
 }
 
-input:focus, select:focus, textarea:focus {
-    border-color: #1e3a5f;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.1);
+/* 5. شاشة التحميل الماسية (Splash Screen) */
+#loader {
+    background: linear-gradient(135deg, #365570, #1e3a5f) !important;
 }
 
-.dark input, .dark select, .dark textarea {
-    background-color: var(--card-bg-dark);
-    border: var(--silver-border-dark);
-    color: #ffffff;
+#loader.hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.25s ease !important;
 }
 
-.dark input:focus, .dark select:focus, .dark textarea:focus {
-    border-color: var(--accent-gold);
-    box-shadow: 0 0 0 2px rgba(242, 165, 26, 0.15);
+/* 6. تحويل كاااافة الإطارات القديمة والسوداء إلى السيلفر اللامع 0.75px */
+.border-black,
+.border-2,
+.border-black-custom,
+.border-gray-200,
+.border-gray-300,
+.border-gray-500,
+.border-gray-600 {
+    border: 0.75px solid #cbd5e1 !important;
+    box-shadow: 0 2px 8px rgba(30, 58, 95, 0.05) !important;
 }
 
-/* 6. تحويل الإطارات السوداء إلى السيلفر اللامع 0.75px */
-.border-black-custom {
-    border: var(--silver-border-light) !important;
-    box-shadow: var(--soft-shadow) !important;
+.dark .border-black,
+.dark .border-2,
+.dark .border-black-custom,
+.dark .border-gray-500,
+.dark .border-gray-600 {
+    border: 0.75px solid #334155 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
 }
 
-.dark .border-black-custom {
-    border: var(--silver-border-dark) !important;
-    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3) !important;
-}
-
+/* 7. بطاقات المهن والخدمات (كروت أقسام الرئيسية) */
 .provider-card {
-    border: var(--silver-border-light);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: var(--soft-shadow);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 0.75px solid #cbd5e1 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 10px rgba(30, 58, 95, 0.06) !important;
+    overflow: hidden !important;
+    background-color: #ffffff !important;
+    position: relative !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .dark .provider-card {
-    border: var(--silver-border-dark);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    border: 0.75px solid #334155 !important;
+    background-color: #1e293b !important;
 }
 
 .provider-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(30, 58, 95, 0.12);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(30, 58, 95, 0.12) !important;
 }
 
-/* 7. تحسين الأداء للقوائم الطويلة */
+/* 8. بطاقات الوظائف والمستخدمين والنشاط والمحادثات المولدة برمجياً */
+.fast-render-card > div,
+#view-jobs > div,
+#my-activity > div,
+#matching-reqs-list > div,
+#chat-history-list > div {
+    border: 0.75px solid #cbd5e1 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 2px 10px rgba(30, 58, 95, 0.05) !important;
+    background-color: #ffffff !important;
+    transition: border-color 0.2s ease, transform 0.15s ease !important;
+}
+
+.dark .fast-render-card > div,
+.dark #view-jobs > div,
+.dark #my-activity > div,
+.dark #matching-reqs-list > div,
+.dark #chat-history-list > div {
+    border: 0.75px solid #334155 !important;
+    background-color: #1e293b !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* تحسين الأداء للقوائم الطويلة */
 .fast-render-card { 
     content-visibility: auto; 
     contain-intrinsic-size: 110px; 
@@ -137,33 +150,279 @@ input:focus, select:focus, textarea:focus {
     will-change: transform;
 }
 
-/* 8. النوافذ المنبثقة والشاملة */
+/* 9. حقول الإدخال، النصوص، والاختيارات الملمومة */
+input, select, textarea {
+    border: 0.75px solid #cbd5e1 !important;
+    background-color: #ffffff !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    color: #1e293b !important;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #1e3a5f !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.1) !important;
+}
+
+.dark input, .dark select, .dark textarea {
+    background-color: #1e293b !important;
+    border: 0.75px solid #334155 !important;
+    color: #ffffff !important;
+}
+
+.dark input:focus, .dark select:focus, .dark textarea:focus {
+    border-color: #F2A51A !important;
+    box-shadow: 0 0 0 2px rgba(242, 165, 26, 0.15) !important;
+}
+
+/* 10. شريط وحاوية البحث الكبسولية (Pill Search Architecture) */
+#prof-search-box > div,
+#page-jobs .sticky > div,
+#page-directory .sticky > div,
+#page-category-details .sticky > div {
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 0.75px solid #cbd5e1 !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 3px 12px rgba(30, 58, 95, 0.06) !important;
+}
+
+.dark #prof-search-box > div,
+.dark #page-jobs .sticky > div,
+.dark #page-directory .sticky > div,
+.dark #page-category-details .sticky > div {
+    background: rgba(30, 41, 59, 0.96) !important;
+    border-color: #334155 !important;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* الحاوية الداخلية لشريط البحث */
+#prof-search-box input,
+#jobs-search-input,
+#dir-search,
+#cat-search {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 12px !important;
+}
+
+/* 11. القوائم المنسدلة المخصصة الملمومة (Compact Custom Dropdowns) */
+.custom-select-wrapper {
+    position: relative;
+    user-select: none;
+    width: 100%;
+    margin-bottom: 0.35rem;
+}
+
+.custom-select {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.35rem 0.75rem !important;
+    border: 0.75px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    background-color: #ffffff !important;
+    cursor: pointer;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    height: 38px !important;
+    transition: all 0.2s ease;
+}
+
+.dark .custom-select {
+    border: 0.75px solid #334155 !important;
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+}
+
+.custom-options {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    border: 0.75px solid #cbd5e1 !important;
+    border-radius: 14px !important;
+    background-color: #ffffff !important;
+    z-index: 99999 !important;
+    overflow-y: auto;
+    max-height: 155px !important; /* طول ملموم وأنيق جداً */
+    display: none;
+    box-shadow: 0 8px 24px -4px rgba(30, 58, 95, 0.15) !important;
+}
+
+.dark .custom-options {
+    border: 0.75px solid #334155 !important;
+    background-color: #1e293b !important;
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4) !important;
+}
+
+.custom-options.open {
+    display: block !important;
+    animation: dropDownFade 0.15s ease-out;
+}
+
+.custom-option {
+    padding: 0.45rem 0.75rem !important;
+    cursor: pointer;
+    font-size: 11.5px !important;
+    font-weight: 600;
+    transition: background-color 0.15s ease;
+}
+
+.custom-option:hover {
+    background-color: #EEF3F8 !important;
+    color: #1e3a5f !important;
+}
+
+.dark .custom-option:hover {
+    background-color: #334155 !important;
+    color: #F2A51A !important;
+}
+
+.custom-option.selected {
+    font-weight: 700;
+    background-color: #e2e8f0 !important;
+    color: #1e3a5f !important;
+}
+
+.dark .custom-option.selected {
+    background-color: #334155 !important;
+    color: #F2A51A !important;
+}
+
+/* 12. الهيدر السفلي الكبسولي العائم (Floating Capsule Navbar) - محمي ومحصن */
+#nav-bar {
+    position: fixed !important;
+    bottom: 12px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 92% !important;
+    max-width: 480px !important;
+    height: 56px !important;
+    border-radius: 22px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border: 0.75px solid #cbd5e1 !important;
+    box-shadow: 0 10px 30px -5px rgba(30, 58, 95, 0.2) !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    padding: 0 6px !important;
+    margin: 0 !important;
+}
+
+.dark #nav-bar {
+    background: rgba(30, 41, 59, 0.95) !important;
+    border: 0.75px solid #334155 !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* أزرار الهيدر السفلي */
+.nav-btn {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 1 !important;
+    height: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    color: #94a3b8 !important;
+    transition: all 0.2s ease !important;
+    padding: 0 !important;
+}
+
+.nav-btn svg {
+    width: 20px !important;
+    height: 20px !important;
+    margin-bottom: 2px !important;
+}
+
+.nav-btn span {
+    font-size: 9.5px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+}
+
+.nav-btn.active {
+    color: #1e3a5f !important;
+    transform: scale(1.05);
+}
+
+.dark .nav-btn.active {
+    color: #F2A51A !important;
+}
+
+/* حاوية زر الإضافة (+) العائم والبارز */
+#nav-add-btn-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    top: -14px !important;
+    padding: 0 4px !important;
+    z-index: 1001 !important;
+}
+
+#nav-add-btn-wrapper.hidden {
+    display: none !important;
+}
+
+#nav-add-btn-wrapper button {
+    width: 46px !important;
+    height: 46px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #F2A51A, #d98207) !important;
+    color: #ffffff !important;
+    border: 2.5px solid #ffffff !important;
+    box-shadow: 0 6px 16px rgba(242, 165, 26, 0.45) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.15s ease !important;
+}
+
+.dark #nav-add-btn-wrapper button {
+    border-color: #1e293b !important;
+}
+
+#nav-add-btn-wrapper button:active {
+    transform: scale(0.9) !important;
+}
+
+/* 13. النوافذ المنبثقة والشاملة */
 .full-screen-modal {
     position: fixed;
     inset: 0;
-    z-index: 100;
-    background-color: var(--page-bg-light);
+    z-index: 150;
+    background-color: #EEF3F8;
     display: flex;
     flex-direction: column;
 }
 
 .dark .full-screen-modal {
-    background-color: var(--page-bg-dark);
+    background-color: #0f172a;
 }
 
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.65);
-    z-index: 150;
+    background: rgba(15, 23, 42, 0.7);
+    z-index: 200;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 16px;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(6px);
 }
 
-/* 9. إشعارات النظام الماسية (Toast Messages) */
+/* 14. إشعارات النظام (Toast) */
 #toast-box {
     position: fixed;
     top: 20px;
@@ -171,7 +430,7 @@ input:focus, select:focus, textarea:focus {
     right: 0;
     display: flex;
     justify-content: center;
-    z-index: 9999;
+    z-index: 99999;
     pointer-events: none;
 }
 
@@ -198,22 +457,7 @@ input:focus, select:focus, textarea:focus {
     background: linear-gradient(135deg, #e11d48, #9f1239);
 }
 
-/* 10. الشارات (Badges) */
-.badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 8px;
-    border-radius: 9999px;
-    font-size: 10px;
-    font-weight: 700;
-    border: var(--silver-border-light);
-}
-
-.dark .badge {
-    border: var(--silver-border-dark);
-}
-
-/* 11. نظام التقييم بالنجوم الذهبية */
+/* 15. نظام التقييم بالنجوم الذهبية */
 .star-rating {
     direction: ltr;
     display: inline-flex;
@@ -234,175 +478,18 @@ input:focus, select:focus, textarea:focus {
 .star-rating input:checked ~ label, 
 .star-rating label:hover, 
 .star-rating label:hover ~ label {
-    color: var(--accent-gold);
+    color: #F2A51A;
 }
 
-/* 12. شاشة التحميل الماسية */
-#loader.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-}
-
-/* 13. القوائم المنسدلة المخصصة الملمومة (Compact Custom Dropdowns) */
-.custom-select-wrapper {
-    position: relative;
-    user-select: none;
-    width: 100%;
-    margin-bottom: 0.4rem;
-}
-
-.custom-select {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.35rem 0.75rem;
-    border: var(--silver-border-light);
-    border-radius: 12px;
-    background-color: #ffffff;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 600;
-    height: 36px;
-    transition: all 0.2s ease;
-}
-
-@media (min-width: 768px) {
-    .custom-select {
-        height: 38px;
-        font-size: 12px;
-    }
-}
-
-.dark .custom-select {
-    border: var(--silver-border-dark);
-    background-color: var(--card-bg-dark);
-    color: #ffffff;
-}
-
-.custom-select:hover {
-    border-color: #94a3b8;
-}
-
-.custom-options {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-    border: var(--silver-border-light);
-    border-radius: 14px;
-    background-color: #ffffff;
-    z-index: 60;
-    overflow-y: auto;
-    max-height: 160px; /* تقليص الطول ليكون ملموماً ومريحاً */
-    display: none;
-    box-shadow: 0 8px 24px -4px rgba(30, 58, 95, 0.12);
-}
-
-.dark .custom-options {
-    border: var(--silver-border-dark);
-    background-color: var(--card-bg-dark);
-    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
-}
-
-.custom-options.open {
-    display: block;
-    animation: dropDownFade 0.15s ease-out;
-}
-
-.custom-option {
-    padding: 0.45rem 0.75rem;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 600;
-    transition: background-color 0.15s ease;
-}
-
-@media (min-width: 768px) {
-    .custom-option {
-        font-size: 12px;
-    }
-}
-
-.custom-option:hover {
-    background-color: #f1f5f9;
-}
-
-.dark .custom-option:hover {
-    background-color: #334155;
-}
-
-.custom-option.selected {
-    font-weight: 700;
-    background-color: #e2e8f0;
-    color: #1e3a5f;
-}
-
-.dark .custom-option.selected {
-    background-color: #334155;
-    color: var(--accent-gold);
-}
-
-/* 14. الهيدر السفلي الكبسولي العائم (Floating Capsule Navbar) */
-#nav-bar {
-    position: fixed;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 92%;
-    max-width: 500px;
-    border-radius: 22px;
-    background-color: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(12px);
-    border: var(--silver-border-light);
-    box-shadow: var(--floating-nav-shadow);
-    z-index: 40;
-}
-
-.dark #nav-bar {
-    background-color: rgba(30, 41, 59, 0.94);
-    border: var(--silver-border-dark);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
-}
-
-.nav-btn {
-    transition: transform 0.15s ease, color 0.15s ease;
-}
-
-.nav-btn:active {
-    transform: scale(0.92);
-}
-
-.nav-btn.active {
-    color: #1e3a5f !important;
-}
-
-.dark .nav-btn.active {
-    color: var(--accent-gold) !important;
-}
-
-/* 15. الحركات والتأثيرات الانتقالية (Smooth Animations) */
+/* 16. تأثيرات الحركة الناعمة */
 @keyframes dropDownFade {
-    from {
-        opacity: 0;
-        transform: translateY(-6px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes popIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.92);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
+    0% { opacity: 0; transform: scale(0.94); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
 .animate-pop {
