@@ -21,9 +21,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- نظام CSS مستقل 100% (تم فك الارتباط بملف التيلويند نهائياً) -->
+    <!-- نظام CSS شامل ومستقل 100% يضبط كل العناصر الثابتة والمولدة من الجافاسكريبت -->
     <style>
-        /* 1. الإخفاء والأساسيات العامة */
         .hidden { display: none !important; }
 
         *, *::before, *::after {
@@ -44,7 +43,6 @@
             line-height: 1.5;
         }
 
-        /* الوضع الداكن: خلفية الصفحات أفتح من درجة الهيدر */
         .dark html, .dark body {
             background-color: #1e3347 !important;
             color: #f8fafc !important;
@@ -53,7 +51,7 @@
         a { text-decoration: none; color: inherit; }
         button { font-family: inherit; cursor: pointer; border: none; outline: none; background: transparent; }
 
-        /* 2. شاشة التحميل الماسية */
+        /* شاشة التحميل الماسية */
         #loader {
             position: fixed;
             inset: 0;
@@ -93,9 +91,7 @@
             animation: spinRing 1s linear infinite;
         }
 
-        @keyframes spinRing {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spinRing { to { transform: rotate(360deg); } }
 
         .diamond-center-box {
             width: 40px;
@@ -109,7 +105,7 @@
             box-shadow: 0 0 14px rgba(242, 165, 26, 0.35);
         }
 
-        /* 3. الهيدر العلوي */
+        /* الهيدر العلوي */
         #app-header {
             position: fixed;
             top: 0;
@@ -186,7 +182,7 @@
             border-radius: 50%;
         }
 
-        /* 4. الحاوية الأم لجميع الصفحات */
+        /* الحاوية الأم */
         #app-view {
             padding-top: 60px;
             padding-bottom: 76px;
@@ -197,7 +193,7 @@
             padding-right: 12px;
         }
 
-        /* 5. حاوية البحث الكبسولية الفخمة الموحدة (بدون تداخل مستطيلات) */
+        /* شريط البحث الماسي */
         .search-sticky-wrapper {
             position: sticky;
             top: 52px;
@@ -267,12 +263,10 @@
             padding: 0;
             margin: 0 !important;
             box-shadow: none !important;
-            height: auto !important;
         }
 
         .dark .search-inner-soft input { color: #ffffff !important; }
 
-        /* زر قمع الفلترة الكبسولي الدائري فقط بدون نص */
         .btn-filter-funnel-icon {
             width: 35px;
             height: 35px;
@@ -300,9 +294,7 @@
             stroke-width: 2.2;
         }
 
-        .btn-filter-funnel-icon:active { transform: scale(0.92); }
-
-        /* 6. كروت الأقسام والمهن */
+        /* كروت الأقسام والمهن */
         .professions-grid-wrap {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -350,7 +342,7 @@
         }
 
         .prof-badge-center span {
-            background: rgba(15, 23, 42, 0.75);
+            background: rgba(15, 23, 42, 0.78);
             color: #ffffff;
             font-size: 10px;
             font-weight: 800;
@@ -364,7 +356,232 @@
             text-overflow: ellipsis;
         }
 
-        /* 7. البطاقات والحاويات العامة بلون سيلفر هادئ */
+        /* ==========================================================================
+           الإصلاح الجذري: ضبط كافة الكروت المولدة برمجياً لمنع تضخم الصور وخروج النصوص
+           ========================================================================== */
+
+        /* 1. كروت الدليل وتفاصيل الأقسام */
+        .fast-render-card > div,
+        .user-directory-card,
+        #dir-list > div,
+        #cat-list-container > div {
+            border: 0.75px solid #cbd5e1 !important;
+            border-radius: 15px !important;
+            background-color: #F3F6F9 !important;
+            box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
+            overflow: hidden !important;
+            padding: 10px 12px !important;
+            margin-bottom: 8px !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 12px !important;
+            cursor: pointer;
+            width: 100% !important;
+        }
+
+        .dark .fast-render-card > div,
+        .dark .user-directory-card,
+        .dark #dir-list > div,
+        .dark #cat-list-container > div {
+            border-color: #334155 !important;
+            background-color: #243d54 !important;
+        }
+
+        /* تثبيت أبعاد صورة العميل أو الحرفي ومنع تضخمها نهائياً */
+        .fast-render-card img,
+        .user-directory-card img,
+        #dir-list img,
+        #cat-list-container img {
+            width: 42px !important;
+            height: 42px !important;
+            min-width: 42px !important;
+            min-height: 42px !important;
+            max-width: 42px !important;
+            max-height: 42px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            border: 1px solid #cbd5e1 !important;
+            flex-shrink: 0 !important;
+            display: block !important;
+        }
+
+        /* 2. كروت المحادثات في صفحة الشات */
+        #chat-history-list > div,
+        .chat-history-card {
+            border: 0.75px solid #cbd5e1 !important;
+            border-radius: 14px !important;
+            background-color: #F3F6F9 !important;
+            box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
+            padding: 10px 12px !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 10px !important;
+            cursor: pointer !important;
+            margin-bottom: 6px !important;
+            width: 100% !important;
+        }
+
+        .dark #chat-history-list > div,
+        .dark .chat-history-card {
+            border-color: #334155 !important;
+            background-color: #243d54 !important;
+        }
+
+        /* تثبيت صورة المحادثة */
+        #chat-history-list img,
+        .chat-avatar {
+            width: 40px !important;
+            height: 40px !important;
+            min-width: 40px !important;
+            min-height: 40px !important;
+            max-width: 40px !important;
+            max-height: 40px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            border: 1px solid #cbd5e1 !important;
+            flex-shrink: 0 !important;
+        }
+
+        /* 3. كروت الوظائف */
+        #view-jobs > div,
+        .job-feed-card {
+            border: 0.75px solid #cbd5e1 !important;
+            border-radius: 15px !important;
+            background-color: #F3F6F9 !important;
+            box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
+            padding: 12px 14px !important;
+            margin-bottom: 8px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+
+        .dark #view-jobs > div,
+        .dark .job-feed-card {
+            border-color: #334155 !important;
+            background-color: #243d54 !important;
+        }
+
+        #view-jobs img,
+        .job-feed-card img {
+            width: 38px !important;
+            height: 38px !important;
+            min-width: 38px !important;
+            min-height: 38px !important;
+            max-width: 38px !important;
+            max-height: 38px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            border: 1px solid #cbd5e1 !important;
+            flex-shrink: 0 !important;
+        }
+
+        /* شارات الوظائف */
+        .job-badges-wrap {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 4px !important;
+        }
+
+        .job-badge-item {
+            background: rgba(0,0,0,0.05) !important;
+            border: 0.75px solid #cbd5e1 !important;
+            padding: 2px 8px !important;
+            border-radius: 6px !important;
+            font-size: 9.5px !important;
+            font-weight: 700 !important;
+        }
+
+        .dark .job-badge-item {
+            background: rgba(255,255,255,0.06) !important;
+            border-color: #334155 !important;
+        }
+
+        .job-desc-box {
+            background: rgba(0,0,0,0.02) !important;
+            border: 0.75px solid #cbd5e1 !important;
+            border-radius: 10px !important;
+            padding: 8px 10px !important;
+            font-size: 11px !important;
+            max-height: 80px !important;
+            overflow-y: auto !important;
+            line-height: 1.6 !important;
+        }
+
+        .dark .job-desc-box {
+            background: rgba(0,0,0,0.2) !important;
+            border-color: #334155 !important;
+        }
+
+        /* أزرار المحادثة والواتساب الحقيقية الملونة داخل الكروت */
+        .job-actions-wrap,
+        #view-jobs .flex,
+        #matching-reqs-list .flex {
+            display: flex !important;
+            gap: 8px !important;
+            margin-top: 4px !important;
+        }
+
+        .btn-job-action,
+        #view-jobs button,
+        #view-jobs a,
+        #matching-reqs-list button,
+        #matching-reqs-list a,
+        #user-profile-actions button,
+        #user-profile-actions a {
+            flex: 1 !important;
+            height: 34px !important;
+            border-radius: 10px !important;
+            font-size: 11.5px !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            text-align: center !important;
+            padding: 0 10px !important;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+            border: none !important;
+        }
+
+        /* زر المحادثة الكحلي */
+        .btn-job-chat,
+        #view-jobs button:not([class*="green"]),
+        #matching-reqs-list button:not([class*="green"]),
+        #user-profile-actions button {
+            background: linear-gradient(135deg, #365570, #1e3a5f) !important;
+        }
+
+        /* زر الواتساب الزمردي الأخضر */
+        .btn-job-whatsapp,
+        #view-jobs a,
+        #matching-reqs-list a,
+        #user-profile-actions a {
+            background: #20B486 !important;
+        }
+
+        /* 4. كروت سجل النشاط */
+        #my-activity > div,
+        #matching-reqs-list > div {
+            border: 0.75px solid #cbd5e1 !important;
+            border-radius: 15px !important;
+            background-color: #F3F6F9 !important;
+            box-shadow: 0 2px 7px rgba(30, 58, 95, 0.04) !important;
+            padding: 10px 12px !important;
+            margin-bottom: 8px !important;
+        }
+
+        .dark #my-activity > div,
+        .dark #matching-reqs-list > div {
+            border-color: #334155 !important;
+            background-color: #243d54 !important;
+        }
+
+        /* الحاويات العامة والبطاقات */
         .custom-card-box {
             border: 0.75px solid #cbd5e1;
             border-radius: 15px;
@@ -378,10 +595,9 @@
         .dark .custom-card-box {
             border-color: #334155;
             background-color: #243d54;
-            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.25);
         }
 
-        /* 8. ضبط الحقول والأزرار وحل مشكلة تضخم دوائر الاختيار (Radio Buttons) */
+        /* الحقول ودوائر الاختيار */
         input:not([type="radio"]):not([type="checkbox"]):not([type="file"]), 
         select, 
         textarea {
@@ -400,16 +616,7 @@
             display: block;
         }
 
-        textarea {
-            height: auto;
-            padding: 8px 10px;
-            resize: vertical;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: #1e3a5f;
-            box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.1);
-        }
+        textarea { height: auto; padding: 8px 10px; resize: vertical; }
 
         .dark input:not([type="radio"]):not([type="checkbox"]):not([type="file"]), 
         .dark select, 
@@ -419,7 +626,7 @@
             color: #ffffff;
         }
 
-        /* حماية وحصر مقاس دوائر الـ Radio والـ Checkbox لمنع تضخمها نهائياً */
+        /* حماية دوائر الـ Radio والـ Checkbox */
         input[type="radio"], input[type="checkbox"] {
             width: 15px !important;
             height: 15px !important;
@@ -432,7 +639,6 @@
             vertical-align: middle;
         }
 
-        /* كود الدولة +20 */
         .phone-input-wrap {
             display: flex;
             align-items: center;
@@ -480,17 +686,10 @@
             border-color: #334155;
         }
 
-        /* إخفاء القوائم الأصلية عند تفعيل المنسدلة البديلة لمنع الازدواجية */
-        select[style*="display: none"] {
-            display: none !important;
-        }
+        /* القوائم المنسدلة البديلة ومنع الاختفاء */
+        select[style*="display: none"] { display: none !important; }
 
-        .custom-select-wrapper {
-            position: relative;
-            width: 100%;
-            margin-bottom: 9px;
-        }
-
+        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 9px; }
         .custom-select {
             display: flex;
             align-items: center;
@@ -519,7 +718,7 @@
             border: 0.75px solid #cbd5e1;
             border-radius: 12px;
             background-color: #ffffff;
-            z-index: 9999;
+            z-index: 99999 !important;
             max-height: 140px;
             overflow-y: auto;
             display: none;
@@ -532,33 +731,50 @@
         }
 
         .custom-options.open { display: block; }
-        .custom-option { padding: 6px 10px; font-size: 11px; cursor: pointer; }
+        .custom-option { padding: 7px 10px; font-size: 11px; cursor: pointer; }
         .custom-option:hover { background-color: #EEF3F8; color: #1e3a5f; }
         .dark .custom-option:hover { background-color: #1e3347; color: #F2A51A; }
 
-        /* 9. لوحة الإشعارات المنسدلة */
+        /* نافذة الإشعارات المنسدلة المحاطة بطبقة معتمة لحجب ما خلفها */
         #notif-panel {
             position: fixed;
             top: 56px;
             left: 12px;
             right: 12px;
-            max-width: 360px;
+            max-width: 380px;
             margin: 0 auto;
             background-color: #F3F6F9;
             border-radius: 16px;
             border: 0.75px solid #cbd5e1;
-            box-shadow: 0 10px 28px rgba(30, 58, 95, 0.2);
-            z-index: 110;
-            padding: 12px;
+            box-shadow: 0 10px 30px rgba(30, 58, 95, 0.25);
+            z-index: 120;
+            padding: 14px;
         }
 
         .dark #notif-panel {
             background-color: #243d54;
             border-color: #334155;
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        /* 10. كبسولة زر تسجيل الخروج الحمراء */
+        .notif-item-card {
+            background: rgba(0,0,0,0.02);
+            border: 0.75px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            position: relative;
+        }
+
+        .dark .notif-item-card { background: rgba(0,0,0,0.2); border-color: #334155; }
+        .notif-unread-badge { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; background-color: #ef4444; border-radius: 50%; }
+        .notif-item-text { font-size: 11px; font-weight: 700; padding-right: 8px; line-height: 1.5; }
+        .notif-item-time { font-size: 9px; color: #94a3b8; font-weight: 600; }
+
+        /* كبسولة تسجيل الخروج */
         .btn-logout-capsule {
             width: 100%;
             padding: 10px 18px;
@@ -578,7 +794,7 @@
 
         .btn-logout-capsule:active { transform: scale(0.97); }
 
-        /* 11. بطاقة تسجيل الدخول الحديثة */
+        /* بطاقة تسجيل الدخول */
         .auth-container-modern {
             background: linear-gradient(135deg, #365570, #1e3a5f);
             border-radius: 20px;
@@ -609,7 +825,7 @@
             border-color: #334155;
         }
 
-        /* 12. الهيدر السفلي الكبسولي */
+        /* الهيدر السفلي */
         #nav-bar {
             position: fixed;
             bottom: 10px;
@@ -649,27 +865,37 @@
             transition: all 0.15s ease;
         }
 
-        .nav-btn svg {
-            width: 18px;
-            height: 18px;
-            margin-bottom: 2px;
+        .nav-btn svg { width: 18px; height: 18px; margin-bottom: 2px; }
+        .nav-btn span { font-size: 8.5px; font-weight: 700; }
+        .nav-btn.active { color: #1e3a5f; transform: scale(1.04); }
+        .dark .nav-btn.active { color: #F2A51A; }
+
+        /* الشات */
+        .chat-bubble-me {
+            background: linear-gradient(135deg, #365570, #1e3a5f);
+            color: #ffffff;
+            border-radius: 16px 16px 4px 16px;
+            padding: 8px 12px;
+            max-width: 80%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
-        .nav-btn span {
-            font-size: 8.5px;
-            font-weight: 700;
+        .chat-bubble-other {
+            background-color: #F3F6F9;
+            color: #1e293b;
+            border: 0.75px solid #cbd5e1;
+            border-radius: 16px 16px 16px 4px;
+            padding: 8px 12px;
+            max-width: 80%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
         }
 
-        .nav-btn.active {
-            color: #1e3a5f;
-            transform: scale(1.04);
+        .dark .chat-bubble-other {
+            background-color: #243d54;
+            color: #f8fafc;
+            border-color: #334155;
         }
 
-        .dark .nav-btn.active {
-            color: #F2A51A;
-        }
-
-        /* 13. بقية الأدوات التكميلية */
         .full-screen-modal { position: fixed; inset: 0; z-index: 150; background-color: #EEF3F8; display: flex; flex-direction: column; }
         .dark .full-screen-modal { background-color: #1e3347; }
 
@@ -722,7 +948,7 @@
         <h2 style="margin-top: 10px; font-size: 12px; font-weight: 900; color: #ffffff; letter-spacing: 1px;">دليل الشرقية</h2>
     </div>
 
-    <!-- Header العلوي المنظم (اللوجو منضبط 32px) -->
+    <!-- Header العلوي المنظم -->
     <header id="app-header">
         <div style="display: flex; align-items: center; gap: 8px;">
             <button id="btn-back" onclick="window.goBack()" class="hidden" style="padding: 4px; display: flex; align-items: center;">
@@ -732,25 +958,22 @@
         </div>
         
         <div style="display: flex; align-items: center; gap: 10px;">
-            <!-- زر الإضافة المنقول للهيدر العلوي -->
             <button id="header-add-btn" onclick="window.navTo('add')" class="hidden" title="إضافة جديد">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
             </button>
 
-            <!-- جرس الإشعارات -->
             <button onclick="window.toggleNotifPanel()" class="header-bell-btn" title="الإشعارات">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                 <span id="notif-dot" class="hidden"></span>
             </button>
 
-            <!-- صورة البروفايل بحجم ثابت 32px -->
             <img id="header-avatar" src="icons/icon-192x192.png" onclick="window.navTo('profile')">
         </div>
     </header>
 
-    <!-- لوحة الإشعارات المنسدلة -->
+    <!-- لوحة الإشعارات المنسدلة (محاطة بطبقة معتمة لمنع تداخل الحقول) -->
     <div id="notif-panel" class="hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 0.75px solid #cbd5e1; padding-bottom: 6px;">
+        <div class="notif-header-box">
             <h3 style="font-size: 11.5px; font-weight: 800;">الإشعارات والتنبيهات</h3>
             <button onclick="window.toggleNotifPanel()" style="color: #94a3b8; font-weight: bold;">✕</button>
         </div>
@@ -762,7 +985,7 @@
     <!-- APP VIEW WRAPPER -->
     <main id="app-view">
 
-        <!-- AUTH SECTION (بطاقة عائمة حديثة) -->
+        <!-- AUTH SECTION -->
         <section id="page-auth" class="page-section hidden">
             <div class="auth-container-modern">
                 <div style="text-align: center; margin-bottom: 12px;">
@@ -778,7 +1001,6 @@
                     <button onclick="window.switchAuthMode('signup')" id="btn-mode-signup" style="flex: 1; border-radius: 10px; font-size: 11px; font-weight: bold; color: rgba(255,255,255,0.7);">حساب جديد</button>
                 </div>
 
-                <!-- Login Form -->
                 <form id="form-login" class="auth-card-inner">
                     <div class="phone-input-wrap">
                         <input type="tel" id="login-phone" placeholder="رقم الهاتف (10 أرقام)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required dir="ltr">
@@ -788,7 +1010,6 @@
                     <button type="submit" style="width: 100%; height: 36px; border-radius: 10px; font-size: 11.5px; font-weight: 800; color: #ffffff; background: linear-gradient(135deg, #365570, #1e3a5f); box-shadow: 0 2px 8px rgba(0,0,0,0.15);">تسجيل الدخول</button>
                 </form>
 
-                <!-- Signup Form -->
                 <form id="form-signup" class="hidden auth-card-inner">
                     <div style="display: flex; justify-content: center; margin-bottom: 8px;">
                         <div style="width: 52px; height: 52px; border-radius: 50%; background: #ffffff; border: 1px dashed #94a3b8; overflow: hidden; cursor: pointer; display: flex; align-items: center; justify-content: center;" onclick="document.getElementById('signup-file').click()">
@@ -841,7 +1062,7 @@
                 <button id="tab-home-jobs"></button>
             </div>
 
-            <!-- شريط البحث (بدون زر فلترة - عدسة ثابتة مقاس 16px - معتم لحجب البطاقات خلفه) -->
+            <!-- شريط البحث الماسي المعتم لحجب ما خلفه تماماً -->
             <div id="prof-search-box" class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
@@ -859,7 +1080,6 @@
 
         <!-- PAGE JOBS: DEDICATED JOBS SECTION -->
         <section id="page-jobs" class="page-section hidden">
-            <!-- شريط البحث مع زر القمع الكبسولي الدائري فقط -->
             <div class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
@@ -872,7 +1092,6 @@
                 </div>
             </div>
 
-            <!-- مودال فلترة الوظائف -->
             <div id="jobs-filter-modal" class="hidden custom-card-box" style="max-width: 500px; margin: 0 auto 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 0.75px solid #cbd5e1; padding-bottom: 6px;">
                     <span style="font-size: 11.5px; font-weight: 800;">تصفية الوظائف</span>
@@ -941,7 +1160,6 @@
                     <button onclick="window.switchAddMode('job')" id="btn-add-job" style="flex: 1; height: 34px; border-radius: 10px; font-size: 11.5px; font-weight: bold; background: #e2e8f0; color: #475569; border: 0.75px solid #cbd5e1;">إعلان توظيف</button>
                 </div>
 
-                <!-- Form Service Request -->
                 <form id="form-req">
                     <select id="req-prof" onchange="if(this.value==='خدمات أخرى') document.getElementById('req-custom-prof').classList.remove('hidden'); else document.getElementById('req-custom-prof').classList.add('hidden');"></select>
                     <input type="text" id="req-custom-prof" placeholder="اكتب الخدمة المطلوبة بدقة..." class="hidden" style="border-color: #60a5fa;">
@@ -955,7 +1173,6 @@
                     <button type="submit" style="width: 100%; height: 36px; border-radius: 10px; font-size: 11.5px; font-weight: 800; color: #ffffff; background: linear-gradient(135deg, #365570, #1e3a5f); box-shadow: 0 2px 8px rgba(0,0,0,0.15);">نشر الطلب الآن</button>
                 </form>
 
-                <!-- Form Job Post -->
                 <form id="form-job" class="hidden">
                     <select id="job-title-select" onchange="if(this.value==='أخرى') document.getElementById('job-custom-title').classList.remove('hidden'); else document.getElementById('job-custom-title').classList.add('hidden');"></select>
                     <input type="text" id="job-custom-title" placeholder="اكتب المسمى المخصص..." class="hidden" style="border-color: #60a5fa;">
@@ -989,7 +1206,7 @@
             </div>
         </section>
 
-        <!-- PROFILE SECTION (حسابي: تصميم واسع، صورة 76px، خط واضح، كبسولة حمراء) -->
+        <!-- PROFILE SECTION (حسابي) -->
         <section id="page-profile" class="page-section hidden" style="max-width: 440px; margin: 0 auto;">
             <div class="custom-card-box" style="text-align: center; padding: 18px 14px;">
                 <div style="width: 76px; height: 76px; margin: 0 auto 8px; border-radius: 50%; overflow: hidden; border: 2px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
@@ -1020,7 +1237,6 @@
                     <span id="act-notif-badge" class="hidden" style="background: #ef4444; color: #ffffff; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold;">!</span>
                 </button>
 
-                <!-- زر تسجيل الخروج في كبسولة حمراء بارزة -->
                 <button onclick="window.logout()" class="btn-logout-capsule">
                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                     <span>تسجيل الخروج</span>
@@ -1108,7 +1324,7 @@
             </div>
         </section>
 
-        <!-- USER PROFILE PAGE (إعادة بناء وهيكلة شاملة وفخمة لبروفايل الغير) -->
+        <!-- USER PROFILE PAGE -->
         <section id="page-user-profile" class="page-section hidden" style="max-width: 440px; margin: 0 auto;">
             <div class="custom-card-box" style="text-align: center; padding: 18px 14px;">
                 <div style="width: 76px; height: 76px; margin: 0 auto 8px; border-radius: 50%; overflow: hidden; border: 2px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer;">
@@ -1118,7 +1334,6 @@
                 <h2 id="user-profile-name" style="font-size: 15px; font-weight: 900; color: #1e293b; margin-bottom: 2px;"></h2>
                 <p id="user-profile-role" style="font-size: 11.5px; font-weight: 800; color: #1e3a5f; margin-bottom: 12px;"></p>
 
-                <!-- شبكة البيانات المنظمة -->
                 <div style="background: rgba(0,0,0,0.03); border: 0.75px solid #cbd5e1; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; text-align: right;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px; margin-bottom: 8px;">
                         <div>
@@ -1137,10 +1352,8 @@
                     </div>
                 </div>
 
-                <!-- أزرار الإجراءات (واتساب ومحادثة) -->
                 <div id="user-profile-actions" style="display: flex; gap: 8px; margin-bottom: 14px;"></div>
 
-                <!-- قسم التقييمات -->
                 <div style="border-top: 0.75px solid #cbd5e1; padding-top: 10px; text-align: right;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
                         <span style="font-size: 11.5px; font-weight: 800;">تقييمات العملاء</span>
@@ -1181,9 +1394,9 @@
         </div>
     </div>
 
-    <!-- FILTER MODAL DROPDOWN -->
+    <!-- FILTER MODAL DROPDOWN (محاط بطبقة حماية معتمة) -->
     <div id="filter-modal-wrap" class="hidden">
-        <div id="filter-modal-backdrop" onclick="document.getElementById('filter-modal-wrap').classList.add('hidden')" style="position: fixed; inset: 0; z-index: 130; background: rgba(0,0,0,0.4);"></div>
+        <div id="filter-modal-backdrop" onclick="document.getElementById('filter-modal-wrap').classList.add('hidden')" style="position: fixed; inset: 0; z-index: 130; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);"></div>
 
         <div id="filter-modal" class="custom-card-box" style="position: fixed; top: 60px; left: 14px; right: 14px; max-width: 320px; margin: 0 auto; z-index: 140; box-shadow: 0 10px 28px rgba(0,0,0,0.25);">
             <h3 style="text-align: center; font-size: 11.5px; font-weight: 800; border-bottom: 0.75px solid #cbd5e1; padding-bottom: 6px; margin-bottom: 8px;">فلترة نتائج البحث</h3>
@@ -1239,7 +1452,7 @@
         </form>
     </div>
 
-    <!-- الهيدر السفلي الكبسولي العائم (5 أزرار متناسقة) -->
+    <!-- الهيدر السفلي الكبسولي العائم -->
     <nav id="nav-bar">
         <!-- 1. الخدمات -->
         <button onclick="window.navTo('home')" class="nav-btn active">
