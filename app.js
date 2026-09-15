@@ -70,7 +70,6 @@ function populateProfessionsGlobally() {
     if (document.getElementById('job-title-select')) document.getElementById('job-title-select').innerHTML = '<option value="">اختر المسمى...</option>' + optsWithOther;
     if (document.getElementById('filter-prof')) {
         document.getElementById('filter-prof').innerHTML = '<option value="">كل المهن</option>' + opts;
-        makeCustomDropdown('filter-prof', 'اختر المهنة...');
     }
 }
 populateProfessionsGlobally();
@@ -97,69 +96,6 @@ let currentActiveCategory = "";
 let reqNotifs = [];
 let reviewNotifs = [];
 window.chatNotifsGlobal = [];
-
-// توليد القوائم المنسدلة البديلة
-function makeCustomDropdown(selectId, placeholder = '') {
-    const select = document.getElementById(selectId);
-    if (!select) return;
-    let wrapper = select.nextElementSibling;
-    if (wrapper && wrapper.classList.contains('custom-select-wrapper')) wrapper.remove();
-    
-    select.style.display = 'none';
-    wrapper = document.createElement('div');
-    wrapper.className = 'custom-select-wrapper';
-    
-    const trigger = document.createElement('div');
-    trigger.className = 'custom-select';
-    
-    const selectedOpt = select.options[select.selectedIndex];
-    const textSpan = document.createElement('span');
-    textSpan.innerText = selectedOpt && selectedOpt.value !== '' ? selectedOpt.text : placeholder;
-    if (!selectedOpt || selectedOpt.value === '') textSpan.style.color = '#94a3b8';
-    
-    const icon = document.createElement('span');
-    icon.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>';
-    
-    trigger.appendChild(textSpan);
-    trigger.appendChild(icon);
-    
-    const optionsCont = document.createElement('div');
-    optionsCont.className = 'custom-options custom-scrollbar';
-    
-    Array.from(select.options).forEach(opt => {
-        const div = document.createElement('div');
-        div.className = 'custom-option' + (opt.selected && opt.value !== '' ? ' selected' : '');
-        div.innerText = opt.text;
-        div.dataset.value = opt.value;
-        div.onclick = (e) => {
-            e.stopPropagation();
-            select.value = opt.value;
-            select.dispatchEvent(new Event('change'));
-            textSpan.innerText = opt.text;
-            if (opt.value === '') textSpan.style.color = '#94a3b8';
-            else textSpan.style.color = '';
-            optionsCont.classList.remove('open');
-            Array.from(optionsCont.children).forEach(c => c.classList.remove('selected'));
-            div.classList.add('selected');
-        };
-        optionsCont.appendChild(div);
-    });
-    
-    trigger.onclick = (e) => {
-        e.stopPropagation();
-        const isOpen = optionsCont.classList.contains('open');
-        document.querySelectorAll('.custom-options').forEach(el => el.classList.remove('open'));
-        if (!isOpen) optionsCont.classList.add('open');
-    };
-    
-    wrapper.appendChild(trigger);
-    wrapper.appendChild(optionsCont);
-    select.parentNode.insertBefore(wrapper, select.nextSibling);
-}
-
-document.addEventListener('click', () => { 
-    document.querySelectorAll('.custom-options').forEach(el => el.classList.remove('open')); 
-});
 
 let dirRenderedCount = 0;
 let catRenderedCount = 0;
@@ -214,7 +150,7 @@ window.showToast = (msg, type = 'success') => {
 window.hideLoader = () => document.getElementById('loader').classList.add('hidden');
 window.showLoader = () => document.getElementById('loader').classList.remove('hidden');
 
-// فتح وإغلاق شريط الفلترة بالسطر الواحد
+// فتح وإغلاق شريط الفلترة بالسطرين الملمومين
 window.openFilterModal = (source) => {
     if (source === 'directory') {
         const bar = document.getElementById('dir-filter-bar');
@@ -265,17 +201,17 @@ window.switchActivityTab = (tab) => {
     if (tab === 'my-activity') {
         document.getElementById('view-my-activity').classList.remove('hidden'); 
         document.getElementById('view-matching-reqs').classList.add('hidden');
-        tabMine.style.background = '#1e3a5f'; 
-        tabMine.style.color = '#ffffff';
+        tabMine.style.background = '#ffffff'; 
+        tabMine.style.color = '#1e3a5f';
         tabMatching.style.background = 'transparent'; 
-        tabMatching.style.color = '#64748b';
+        tabMatching.style.color = '#ffffff';
     } else {
         document.getElementById('view-my-activity').classList.add('hidden'); 
         document.getElementById('view-matching-reqs').classList.remove('hidden');
-        tabMatching.style.background = '#1e3a5f'; 
-        tabMatching.style.color = '#ffffff';
+        tabMatching.style.background = '#ffffff'; 
+        tabMatching.style.color = '#1e3a5f';
         tabMine.style.background = 'transparent'; 
-        tabMine.style.color = '#64748b';
+        tabMine.style.color = '#ffffff';
         document.getElementById('act-notif-badge').classList.add('hidden');
     }
 };
@@ -347,9 +283,12 @@ window.navTo = (pageId, skipHistory = false) => {
     }
     
     if (pageId === 'directory') {
-        document.getElementById('filter-prof').value = '';
-        document.getElementById('filter-center').value = '';
-        document.getElementById('filter-village').innerHTML = '<option value="">القرية...</option>';
+        const profEl = document.getElementById('filter-prof');
+        const centEl = document.getElementById('filter-center');
+        const villEl = document.getElementById('filter-village');
+        if (profEl) profEl.value = '';
+        if (centEl) centEl.value = '';
+        if (villEl) villEl.innerHTML = '<option value="">القرية...</option>';
         document.getElementById('dir-search').value = '';
         if (allUsersCache.length > 0) window.filterDirectory();
     }
@@ -475,7 +414,6 @@ function initApp() {
     }
 }
 
-// توليد كروت المهن مع الكبسولة الممركزة
 function renderProfessionsGrid(list) {
     const grid = document.getElementById('professions-grid');
     if (grid.children.length > 0) return; 
@@ -492,8 +430,9 @@ function renderProfessionsGrid(list) {
 }
 
 window.updateVillages = (prefix = 'signup') => {
-    const centerSelect = document.getElementById(`${prefix}-center`);
-    const villageSelect = document.getElementById(`${prefix}-village`);
+    const centerSelect = document.getElementById(`${prefix}-center`) || document.getElementById('cat-filter-center');
+    const villageSelect = document.getElementById(`${prefix}-village`) || document.getElementById('cat-filter-village');
+    if (!centerSelect || !villageSelect) return;
     const selectedCenter = centerSelect.value;
     villageSelect.innerHTML = '<option value="">القرية...</option>';
     if (selectedCenter && sharkiaData[selectedCenter]) {
@@ -504,20 +443,23 @@ window.updateVillages = (prefix = 'signup') => {
             villageSelect.appendChild(opt);
         });
     }
-    if (prefix === 'filter') makeCustomDropdown('filter-village', 'القرية...');
 };
 
 function populateCenters(prefix = 'signup') {
-    const centerSelect = document.getElementById(`${prefix}-center`);
-    if (!centerSelect) return;
-    centerSelect.innerHTML = '<option value="">المركز...</option>';
-    Object.keys(sharkiaData).forEach(center => {
-        const opt = document.createElement('option'); 
-        opt.value = center; 
-        opt.innerText = center;
-        centerSelect.appendChild(opt);
+    const centerSelects = [
+        document.getElementById(`${prefix}-center`),
+        document.getElementById('cat-filter-center')
+    ].filter(Boolean);
+
+    centerSelects.forEach(sel => {
+        sel.innerHTML = '<option value="">المركز...</option>';
+        Object.keys(sharkiaData).forEach(center => {
+            const opt = document.createElement('option'); 
+            opt.value = center; 
+            opt.innerText = center;
+            sel.appendChild(opt);
+        });
     });
-    if (prefix === 'filter') makeCustomDropdown('filter-center', 'المركز...');
 }
 
 let searchTimeout;
@@ -527,7 +469,7 @@ window.debouncedSearch = (type) => {
         if (type === 'prof') window.filterProfessions();
         if (type === 'dir') window.filterDirectory();
         if (type === 'cat') window.filterCategory();
-    }, 500);
+    }, 400);
 };
 
 window.toggleSearchClearBtn = () => {
@@ -802,7 +744,7 @@ function renderNotificationsList() {
         </div>`;
     }).join('');
     
-    document.getElementById('notif-list').innerHTML = html || '<p style="text-align: center; font-size: 10px; color: #cbd5e1; padding: 16px 0;">لا توجد إشعارات حالياً</p>';
+    document.getElementById('notif-list').innerHTML = html || '<p style="text-align: center; font-size: 9.5px; color: #cbd5e1; padding: 14px 0;">لا توجد إشعارات حالياً</p>';
     
     if (unreadCount > 0 && userProfile?.settings?.notifEnabled) {
         document.getElementById('notif-dot').classList.remove('hidden');
@@ -821,12 +763,12 @@ window.toggleNotifPanel = () => {
     }
 };
 
-// تصميم كروت المحادثات بسطرين فقط ومقاسات منضبطة
+// كروت المحادثات بسطرين مع النقطة الحمراء فوق صورة البروفايل مباشرة
 window.renderChatsUI = function() {
     if (isGuest) return;
     const list = document.getElementById('chat-history-list');
     if (myChatsCache.length === 0) { 
-        list.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 24px 0; font-weight: bold;">لا توجد محادثات سابقة</p>'; 
+        list.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 25px 0; font-weight: bold;">لا توجد محادثات سابقة</p>'; 
         document.getElementById('chat-nav-dot').classList.add('hidden'); 
         return; 
     }
@@ -849,7 +791,13 @@ window.renderChatsUI = function() {
 
         return `
            <div onclick="window.openChat('${otherId}')" class="chat-history-card">
-               <img src="${window.getCloudinaryUrl(otherUser.photoURL, 'thumb')}" loading="lazy" class="chat-avatar">
+               <!-- الصورة وفي زاويتها النقطة الحمراء مباشرة -->
+               <div class="chat-avatar-wrap">
+                   <img src="${window.getCloudinaryUrl(otherUser.photoURL, 'thumb')}" loading="lazy" class="chat-avatar">
+                   ${isNew ? '<span class="chat-unread-dot"></span>' : ''}
+               </div>
+
+               <!-- كبسولة النصوص الهادئة بسطرين فقط -->
                <div class="chat-info-block">
                    <div class="chat-name-row">
                        <h4 class="chat-user-name">${escapeHTML(otherUser.name)}</h4>
@@ -857,7 +805,6 @@ window.renderChatsUI = function() {
                    </div>
                    <p class="chat-snippet-text" style="${isNew ? 'font-weight: 900; color: #1e3a5f;' : ''}">${escapeHTML(c.lastMessage || '...')}</p>
                </div>
-               ${isNew ? '<div class="chat-unread-dot"></div>' : ''}
            </div>
         `;
     }).join('');
@@ -876,31 +823,33 @@ window.toggleJobsFilterModal = () => {
     if (modal) modal.classList.toggle('hidden');
 };
 
-// إنشاء بطاقات الوظائف: السطر الأول الصورة واسم الناشر وتاريخ النشر أقصى اليسار
+// إنشاء بطاقات الوظائف: السطر الأول الصورة واسم الناشر وتاريخ النشر، والسطر الثاني المسمى متوسط في قلب السطر
 function createJobCard(id, j) {
     const hasPhone = j.contactPhone && j.contactPhone.length > 5;
     const isMyPost = !isGuest && j.uid === currentUser?.uid;
 
     return `
         <div class="job-feed-card">
-            <!-- السطر الأول: الصورة والاسم وتاريخ النشر أقصى اليسار -->
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
-                    <img src="${window.getCloudinaryUrl(j.posterPhoto || 'https://via.placeholder.com/40', 'thumb')}" loading="lazy" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1; flex-shrink: 0;">
-                    <div style="font-size: 11px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            <!-- السطر الأول: الصورة في اليمين، واسم الناشر، وتاريخ النشر أقصى اليسار -->
+            <div class="job-header-capsule">
+                <div style="display: flex; align-items: center; gap: 7px; min-width: 0;">
+                    <img src="${window.getCloudinaryUrl(j.posterPhoto || 'https://via.placeholder.com/40', 'thumb')}" loading="lazy">
+                    <div style="font-size: 11px; font-weight: 800; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                         <span style="color: #64748b; font-size: 9.5px; font-weight: normal;">الناشر:</span> ${escapeHTML(j.posterName)}
                     </div>
                 </div>
-                <div style="font-size: 9.5px; color: #64748b; font-weight: 600; flex-shrink: 0;" dir="ltr">
+                <div style="font-size: 9px; color: #64748b; font-weight: 700; flex-shrink: 0;" dir="ltr">
                     تاريخ النشر: ${new Date(j.createdAt).toLocaleDateString('ar-EG')}
                 </div>
             </div>
 
-            <!-- السطر الثاني: الوظيفة والشارات -->
-            <div style="font-size: 12px; font-weight: 900; color: #1e3a5f; margin: 2px 0;">
-                ${escapeHTML(j.title)}
+            <!-- السطر الثاني: الوظيفة المتاحة متوسطة في قلب السطر بالكامل -->
+            <div class="job-title-centered">
+                <span style="color: #cbd5e1; font-size: 10px; font-weight: bold;">الوظيفة المتاحة:</span>
+                <strong style="color: #F2A51A; font-size: 12.5px; font-weight: 900; margin-right: 4px;">${escapeHTML(j.title)}</strong>
             </div>
 
+            <!-- شارات الدوام والراتب والشيفت والساعات -->
             <div class="job-badges-wrap">
                 <span class="job-badge-item">الدوام: ${j.jobType === 'part' ? 'جزئي' : 'كامل'}</span>
                 <span class="job-badge-item">الراتب: ${j.salary ? escapeHTML(j.salary) + ' ج.م' : 'غير محدد'}</span>
@@ -908,13 +857,15 @@ function createJobCard(id, j) {
                 <span class="job-badge-item">الساعات: ${j.hours ? escapeHTML(j.hours) : 'غير محدد'}</span>
             </div>
 
+            <!-- صندوق الشروط والتفاصيل الملموم -->
             <div class="job-desc-box">
                 <span style="color: #64748b; font-weight: 800; font-size: 9px; display: block; margin-bottom: 2px;">التفاصيل والشروط:</span>
                 <span>${escapeHTML(j.desc)}</span>
             </div>
 
+            <!-- أزرار الإجراءات الملونة -->
             <div class="job-actions-wrap">
-                ${!isMyPost ? `<button onclick="window.openChat('${j.uid}')" class="btn-job-action btn-job-chat">محادثة فورية</button>` : '<span style="flex: 1; text-align: center; font-size: 11px; font-weight: 800; color: #64748b; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 8px;">إعلانك الخاص</span>'}
+                ${!isMyPost ? `<button onclick="window.openChat('${j.uid}')" class="btn-job-action btn-job-chat">محادثة فورية</button>` : '<span style="flex: 1; text-align: center; font-size: 11px; font-weight: 800; color: #ffffff; padding: 6px; background: rgba(0,0,0,0.25); border-radius: 9px;">إعلانك الخاص</span>'}
                 ${hasPhone && !isMyPost ? `<a href="https://wa.me/20${j.contactPhone}" target="_blank" class="btn-job-action btn-job-whatsapp">واتساب WhatsApp</a>` : ''}
             </div>
         </div>
@@ -941,7 +892,7 @@ window.filterJobsList = () => {
     }
 
     if (filtered.length === 0) {
-        list.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 24px 0; font-weight: bold;">لا توجد وظائف مطابقة لخيارات الفلترة</p>';
+        list.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 25px 0; font-weight: bold;">لا توجد وظائف مطابقة لخيارات الفلترة</p>';
         return;
     }
 
@@ -952,7 +903,6 @@ function startListeners() {
     globalUnsubs.forEach(u => u());
     globalUnsubs = [];
 
-    // مراقبة حسابات المستخدمين
     const unsubProfiles = onSnapshot(collection(db, 'artifacts', APP_ID, 'public', 'data', 'profiles'), (snap) => {
         allUsersCache = [];
         snap.forEach(d => {
@@ -970,7 +920,6 @@ function startListeners() {
     });
     globalUnsubs.push(unsubProfiles);
 
-    // مراقبة قسم الوظائف الشاغرة
     const unsubJobs = onSnapshot(query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'requests'), where('type', '==', 'job')), (snap) => {
         allJobsCache = [];
         snap.forEach(d => {
@@ -993,7 +942,6 @@ function startListeners() {
     });
     globalUnsubs.push(unsubJobs);
 
-    // مراقبة المحادثات
     if (isGuest) return;
 
     const chatQuery = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'chats'), where('users', 'array-contains', currentUser.uid));
@@ -1037,7 +985,6 @@ function startListeners() {
     });
     globalUnsubs.push(unsubChats);
 
-    // مراقبة طلبات الخدمات
     if (userProfile?.role === 'provider') {
         const q = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'requests'), where('type', '==', 'service'));
         const unsubReqs = onSnapshot(q, (snap) => {
@@ -1049,7 +996,7 @@ function startListeners() {
             let hasNewMatching = false;
            
             if (userProfile.settings?.pauseRequests) {
-                container.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 20px 0; font-weight: bold;">أنت في وضع إيقاف تلقي الطلبات. يمكنك تفعيله من الإعدادات.</p>';
+                container.innerHTML = '<p style="text-align: center; color: #cbd5e1; padding: 20px 0; font-weight: bold;">أنت في وضع إيقاف تلقي الطلبات. يمكنك تفعيله من الإعدادات.</p>';
                 renderNotificationsList();
                 return;
             }
@@ -1072,24 +1019,24 @@ function startListeners() {
                 const reqPhoto = req.requesterPhoto || 'https://via.placeholder.com/40';
 
                 html.push(`
-                    <div class="custom-card-box" style="position: relative; margin-bottom: 8px;">
+                    <div class="custom-card-box" style="position: relative; margin-bottom: 7px;">
                         ${isNew ? '<div style="position: absolute; top: 6px; right: 6px; background: #ef4444; color: #fff; font-size: 8.5px; font-weight: bold; padding: 1px 6px; border-radius: 9999px;">جديد</div>' : ''}
-                        <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px;">
-                            <img src="${window.getCloudinaryUrl(reqPhoto, 'thumb')}" loading="lazy" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1;">
-                            <div style="flex: 1; min-width: 0;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
-                                    <span style="font-size: 11.5px; font-weight: 800;">طالب الخدمة: ${escapeHTML(req.requesterName)}</span>
-                                    <span style="font-size: 9px; color: #94a3b8;" dir="ltr">${new Date(req.createdAt).toLocaleDateString('ar-EG')}</span>
+                        <div class="soft-text-capsule" style="margin-bottom: 6px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <img src="${window.getCloudinaryUrl(reqPhoto, 'thumb')}" loading="lazy" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1;">
+                                    <span style="font-size: 11px; font-weight: 800;">طالب الخدمة: ${escapeHTML(req.requesterName)}</span>
                                 </div>
-                                <div style="font-size: 11px; font-weight: 800; color: #1e3a5f;">الوظيفة المطلوبة: ${escapeHTML(req.profession)}</div>
-                                <div style="background: rgba(0,0,0,0.02); border: 0.75px solid #cbd5e1; border-radius: 8px; padding: 6px; margin-top: 4px; font-size: 10.5px; line-height: 1.5; max-height: 60px; overflow-y: auto;">
-                                    ${escapeHTML(req.desc)}
-                                </div>
+                                <span style="font-size: 9px; color: #64748b;" dir="ltr">${new Date(req.createdAt).toLocaleDateString('ar-EG')}</span>
+                            </div>
+                            <div style="font-size: 10.5px; font-weight: 800; color: #1e3a5f;">الوظيفة المطلوبة: ${escapeHTML(req.profession)}</div>
+                            <div style="font-size: 10px; line-height: 1.4; max-height: 50px; overflow-y: auto; color: #1e293b; margin-top: 2px;">
+                                ${escapeHTML(req.desc)}
                             </div>
                         </div>
                         <div style="display: flex; gap: 6px;">
-                            <button onclick="window.openChat('${req.uid}')" class="btn-job-action btn-job-chat" style="height: 30px;">محادثة</button>
-                            ${hasPhone ? `<a href="https://wa.me/20${req.phone}" target="_blank" class="btn-job-action btn-job-whatsapp" style="height: 30px;">واتساب WhatsApp</a>` : ''}
+                            <button onclick="window.openChat('${req.uid}')" class="btn-job-action btn-job-chat" style="height: 32px;">محادثة</button>
+                            ${hasPhone ? `<a href="https://wa.me/20${req.phone}" target="_blank" class="btn-job-action btn-job-whatsapp" style="height: 32px;">واتساب WhatsApp</a>` : ''}
                         </div>
                     </div>
                 `);
@@ -1127,7 +1074,6 @@ function startListeners() {
     });
     globalUnsubs.push(unsubRevs);
 
-    // مراقبة نشاط المستخدم الخاص
     const unsubActivity = onSnapshot(query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'requests'), where('uid', '==', currentUser.uid)), (snap) => {
         const list = document.getElementById('my-activity'); 
         list.innerHTML = '';
@@ -1146,19 +1092,19 @@ function startListeners() {
             el.style.display = 'flex';
             el.style.alignItems = 'flex-start';
             el.style.gap = '8px';
-            el.style.marginBottom = '8px';
+            el.style.marginBottom = '7px';
             el.innerHTML = `
-                <div style="flex: 1; min-width: 0;">
+                <div class="soft-text-capsule" style="flex: 1; min-width: 0;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
-                        <span style="font-size: 11px; font-weight: 700; color: #94a3b8;">${isJob ? 'طلب توظيف' : 'طلب خدمة'}</span>
-                        <span style="font-size: 9px; color: #94a3b8;" dir="ltr">${new Date(act.createdAt).toLocaleDateString('ar-EG')}</span>
+                        <span style="font-size: 10px; font-weight: 700; color: #64748b;">${isJob ? 'طلب توظيف' : 'طلب خدمة'}</span>
+                        <span style="font-size: 8.5px; color: #64748b;" dir="ltr">${new Date(act.createdAt).toLocaleDateString('ar-EG')}</span>
                     </div>
-                    <div style="font-size: 12px; font-weight: 800; color: #1e3a5f; margin-bottom: 2px;">${isJob ? escapeHTML(act.title) : escapeHTML(act.profession)}</div>
-                    <div style="background: rgba(0,0,0,0.02); border: 0.75px solid #cbd5e1; border-radius: 8px; padding: 6px; font-size: 10.5px; line-height: 1.4; max-height: 50px; overflow-y: auto;">
+                    <div style="font-size: 11px; font-weight: 800; color: #1e3a5f; margin-bottom: 2px;">${isJob ? escapeHTML(act.title) : escapeHTML(act.profession)}</div>
+                    <div style="font-size: 9.5px; line-height: 1.4; max-height: 50px; overflow-y: auto;">
                         ${escapeHTML(act.desc) || 'لا يوجد وصف'}
                     </div>
                 </div>
-                <button onclick="window.deleteRequest('${act.id}')" style="width: 32px; height: 32px; border-radius: 8px; background: #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 0.75px solid #fecaca;">
+                <button onclick="window.deleteRequest('${act.id}')" style="width: 32px; height: 32px; border-radius: 8px; background: #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 0.75px solid #fecaca; margin-top: 2px;">
                     <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                 </button>
             `;
@@ -1196,12 +1142,10 @@ window.openUserProfilePage = async (userStr) => {
     
     if (!user.settings?.hidePhone) {
         const justPhone = user.phone.replace('+20', '');
-        actionsDiv.innerHTML = `<a href="https://wa.me/20${justPhone}" target="_blank" class="btn-job-action btn-job-whatsapp" style="height: 36px; border-radius: 10px;">واتساب WhatsApp</a>`;
+        actionsDiv.innerHTML = `<a href="https://wa.me/20${justPhone}" target="_blank" class="btn-job-action btn-job-whatsapp">واتساب WhatsApp</a>`;
     }
     const chatBtn = document.createElement('button');
     chatBtn.className = "btn-job-action btn-job-chat";
-    chatBtn.style.height = "36px";
-    chatBtn.style.borderRadius = "10px";
     chatBtn.innerText = "محادثة فورية";
     chatBtn.onclick = () => { window.openChat(user.uid); };
     actionsDiv.appendChild(chatBtn);
@@ -1211,11 +1155,11 @@ window.openUserProfilePage = async (userStr) => {
     setTimeout(() => window.scrollTo(0, 0), 10);
 };
 
-// تحميل التقييمات
+// تحميل وعرض التقييمات
 async function loadReviewsToPage(targetId) {
     const list = document.getElementById('user-profile-reviews-list'); 
     const starsDisplay = document.getElementById('user-profile-stars');
-    list.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 12px; font-weight: bold;">جاري التحميل...</p>';
+    list.innerHTML = '<p style="text-align: center; color: #cbd5e1; padding: 12px; font-weight: bold;">جاري التحميل...</p>';
     
     const q = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'reviews'), where('toId', '==', targetId));
     const snap = await getDocs(q);
@@ -1223,7 +1167,7 @@ async function loadReviewsToPage(targetId) {
     let totalStars = 0;
     
     if (snap.empty) { 
-        list.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 12px; font-weight: bold;">لا توجد تقييمات حتى الآن</p>'; 
+        list.innerHTML = '<p style="text-align: center; color: #cbd5e1; padding: 12px; font-weight: bold;">لا توجد تقييمات حتى الآن</p>'; 
         starsDisplay.innerText = '0.0'; 
     } else {
         const reviews = []; 
@@ -1302,7 +1246,6 @@ document.getElementById('form-message').onsubmit = async (e) => {
     }
 };
 
-// فتح المحادثة
 window.openChat = async (uid) => {
     if (!window.requireAuth()) return;
     document.getElementById('messages-container').innerHTML = '';
@@ -1407,30 +1350,30 @@ window.clearFilter = () => {
     const centerFilter = document.getElementById('filter-center');
     if (centerFilter) {
         centerFilter.value = '';
-        makeCustomDropdown('filter-center', 'المركز...');
+    }
+    const catCenter = document.getElementById('cat-filter-center');
+    if (catCenter) {
+        catCenter.value = '';
     }
     
     const villageFilter = document.getElementById('filter-village');
     if (villageFilter) {
         villageFilter.innerHTML = '<option value="">القرية...</option>';
-        makeCustomDropdown('filter-village', 'القرية...');
+    }
+    const catVillage = document.getElementById('cat-filter-village');
+    if (catVillage) {
+        catVillage.innerHTML = '<option value="">القرية...</option>';
     }
     
     const currentPage = navStack[navStack.length - 1];
     if (currentPage === 'category-details') {
         const profFilter = document.getElementById('filter-prof');
-        if (profFilter) {
-            profFilter.value = currentActiveCategory;
-            makeCustomDropdown('filter-prof', 'اختر المهنة...');
-        }
+        if (profFilter) profFilter.value = currentActiveCategory;
         document.getElementById('cat-search').value = '';
         window.filterCategory();
     } else {
         const profFilter = document.getElementById('filter-prof');
-        if (profFilter) {
-            profFilter.value = '';
-            makeCustomDropdown('filter-prof', 'اختر المهنة...');
-        }
+        if (profFilter) profFilter.value = '';
         document.getElementById('dir-search').value = '';
         window.filterDirectory();
     }
@@ -1541,12 +1484,11 @@ window.openCategory = (profName) => {
     const profFilter = document.getElementById('filter-prof');
     if (profFilter) {
         profFilter.value = profName;
-        makeCustomDropdown('filter-prof', 'اختر المهنة...');
     }
     window.filterCategory();
 };
 
-// إنشاء بطاقات الأعضاء: التزام دقيق بسطرين فقط مع الصورة في اليمين متوسطة
+// إنشاء بطاقات الأعضاء: التزام دقيق بسطرين مع الصورة في اليمين متوسطة
 function createUserCard(u) {
     const userStr = encodeURIComponent(JSON.stringify(u));
     const joinDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString('ar-EG') : 'غير متوفر';
@@ -1560,13 +1502,14 @@ function createUserCard(u) {
         <!-- الصورة في اليمين متوسطة بين السطرين -->
         <img src="${window.getCloudinaryUrl(u.photoURL, 'thumb')}" loading="lazy" class="member-card-avatar">
         
+        <!-- كبسولة النصوص الهادئة بسطرين محكمين -->
         <div class="member-card-content">
             <!-- السطر الأول: اسم العضو وفي أقصى اليسار تاريخ الانضمام -->
             <div class="member-card-row">
                 <span style="font-size: 11px; font-weight: 800; color: #1e293b; overflow: hidden; text-overflow: ellipsis;">
                     <span style="color: #64748b; font-size: 9.5px; font-weight: normal;">اسم العضو:</span> ${escapeHTML(u.name)}
                 </span>
-                <span style="font-size: 9.5px; color: #64748b; font-weight: 600; flex-shrink: 0;" dir="ltr">
+                <span style="font-size: 9px; color: #64748b; font-weight: 600; flex-shrink: 0;" dir="ltr">
                     تاريخ انضمام العضو: ${joinDate}
                 </span>
             </div>
@@ -1659,17 +1602,17 @@ window.switchAddMode = (mode) => {
     if (mode === 'req') {
         formReq.classList.remove('hidden'); 
         formJob.classList.add('hidden');
-        btnReq.style.background = '#1e3a5f'; 
-        btnReq.style.color = '#ffffff'; 
-        btnJob.style.background = '#e2e8f0'; 
-        btnJob.style.color = '#475569'; 
+        btnReq.style.background = '#ffffff'; 
+        btnReq.style.color = '#1e3a5f'; 
+        btnJob.style.background = 'rgba(0,0,0,0.25)'; 
+        btnJob.style.color = '#ffffff'; 
     } else {
         formReq.classList.add('hidden'); 
         formJob.classList.remove('hidden');
-        btnJob.style.background = '#1e3a5f'; 
-        btnJob.style.color = '#ffffff'; 
-        btnReq.style.background = '#e2e8f0'; 
-        btnReq.style.color = '#475569'; 
+        btnJob.style.background = '#ffffff'; 
+        btnJob.style.color = '#1e3a5f'; 
+        btnReq.style.background = 'rgba(0,0,0,0.25)'; 
+        btnReq.style.color = '#ffffff'; 
     }
 };
 
