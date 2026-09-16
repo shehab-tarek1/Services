@@ -137,20 +137,26 @@ window.getCloudinaryUrl = (url, size = 'thumb') => {
     return `${parts[0]}/upload/q_auto,f_auto/${parts[1]}`;
 };
 
+// منع تكرار رسائل التوست المنبثقة وتنظيف القديمة فوراً
 window.showToast = (msg, type = 'success') => {
     const box = document.getElementById('toast-box');
+    if (!box) return;
+    box.innerHTML = ''; // تنظيف أي توست معروض فوراً لمنع التراكم عند الضغط المتكرر
     const el = document.createElement('div'); 
     el.className = `toast-msg ${type}`; 
     el.innerText = msg;
     box.appendChild(el);
     requestAnimationFrame(() => el.classList.add('show'));
-    setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
+    setTimeout(() => { 
+        el.classList.remove('show'); 
+        setTimeout(() => el.remove(), 250); 
+    }, 2500);
 };
 
 window.hideLoader = () => document.getElementById('loader').classList.add('hidden');
 window.showLoader = () => document.getElementById('loader').classList.remove('hidden');
 
-// فتح وإغلاق شريط الفلترة بالسطرين
+// فتح وإغلاق أشرطة الفلترة
 window.openFilterModal = (source) => {
     if (source === 'directory') {
         const bar = document.getElementById('dir-filter-bar');
@@ -233,7 +239,7 @@ window.updateBottomNav = (pageId) => {
 };
 
 // ==========================================================================
-// هندسة الرجوع الذكي (خطوة واحدة فقط بدون تراكم أو تعليق)
+// هندسة الرجوع الذكي (Single-Step Smart Navigation)
 // ==========================================================================
 let currentPageId = 'home';
 history.replaceState({ pageId: 'home' }, "", window.location.pathname);
@@ -289,7 +295,6 @@ window.navTo = (pageId, skipHistory = false) => {
         if (allJobsCache.length > 0) window.filterJobsList();
     }
 
-    // إدارة السجل الذكي: التبويبات الرئيسية تستبدل الحالة لمنع تراكم 10 ضغطات رجوع
     if (!skipHistory) {
         if (mainTabPages.includes(pageId)) {
             history.replaceState({ pageId: pageId }, "", window.location.pathname);
@@ -328,7 +333,7 @@ window.navTo = (pageId, skipHistory = false) => {
     if (pageId === 'chat' && typeof window.renderChatsUI === 'function') window.renderChatsUI();
 };
 
-// الرجوع الذكي: يرجع خطوة واحدة للرئيسية أو الصفحة السابقة مباشرة
+// الرجوع الذكي: خطوة واحدة فقط بدون تراكم
 window.goBack = () => {
     if (mainTabPages.includes(currentPageId) && currentPageId !== 'home') {
         window.navTo('home');
@@ -376,6 +381,22 @@ window.addEventListener('popstate', async (e) => {
     if (pageId === 'chat' && typeof window.renderChatsUI === 'function') window.renderChatsUI();
 });
 
+// تفعيل انسيابية إخفاء الهيدر السفلي عند السكرول لأسفل وظهوره عند الصعود
+let lastScrollY = window.scrollY;
+window.addEventListener('scroll', () => {
+    const nav = document.getElementById('nav-bar');
+    if (!nav) return;
+    const currentScrollY = window.scrollY;
+    if (currentScrollY > lastScrollY && currentScrollY > 70) {
+        nav.style.transform = 'translateY(130%)';
+        nav.style.opacity = '0';
+    } else {
+        nav.style.transform = 'translateY(0)';
+        nav.style.opacity = '1';
+    }
+    lastScrollY = currentScrollY;
+}, { passive: true });
+
 function initApp() {
     renderProfessionsGrid(professions);
     populateCenters('filter');
@@ -410,7 +431,7 @@ function renderProfessionsGrid(list) {
     grid.innerHTML = html;
 }
 
-// تحديث القرى فورياً بدون أي تجمد
+// تحديث القرى فورياً في كل حقول الفلترة
 window.updateVillages = (prefix = 'signup') => {
     const centerSelects = [
         document.getElementById(`${prefix}-center`),
@@ -464,7 +485,7 @@ window.debouncedSearch = (type) => {
         if (type === 'prof') window.filterProfessions();
         if (type === 'dir') window.filterDirectory();
         if (type === 'cat') window.filterCategory();
-    }, 400);
+    }, 350);
 };
 
 window.toggleSearchClearBtn = () => {
@@ -718,9 +739,17 @@ window.toggleTheme = async () => {
     }
 };
 
+// منع تكرار الإشعارات نهائياً وعرضها بألوان واضحة ناصعة
 function renderNotificationsList() {
     if (isGuest) return;
     let allNotifs = [...reqNotifs, ...reviewNotifs, ...(window.chatNotifsGlobal || [])];
+    
+    // إزالة أي إشعار مكرر بالاعتماد على معرّف الإشعار (Deduplication)
+    const uniqueMap = new Map();
+    allNotifs.forEach(n => {
+        if (!uniqueMap.has(n.id)) uniqueMap.set(n.id, n);
+    });
+    allNotifs = Array.from(uniqueMap.values());
     allNotifs.sort((a, b) => b.time - a.time);
     
     let unreadCount = 0;
@@ -815,12 +844,12 @@ window.toggleJobsFilterModal = () => {
     if (modal) modal.classList.toggle('hidden');
 };
 
-// إنشاء بطاقات الوظائف: عنوان تعريفي وتوسيط المسمى + رسالة استفسار ذكية للواتساب
+// إنشاء بطاقات الوظائف: عنوان تعريفي وتوسيط المسمى + رسالة استفسار واتساب ذكية
 function createJobCard(id, j) {
     const hasPhone = j.contactPhone && j.contactPhone.length > 5;
     const isMyPost = !isGuest && j.uid === currentUser?.uid;
 
-    // رسالة استفسار واتساب احترافية جاهزة ببيانات الوظيفة
+    // رسالة استفسار واتساب ذكية ومجهزة ببيانات الوظيفة كاملة
     const waInquiryMsg = encodeURIComponent(`السلام عليكم، بخصوص إعلان وظيفة (${j.title}) المنشور على دليل الشرقية (الراتب: ${j.salary ? j.salary + ' ج.م' : 'غير محدد'}، الدوام: ${j.jobType === 'part' ? 'جزئي' : 'كامل'}). أود الاستفسار عن تفاصيل التقدم للوظيفة.`);
 
     return `
@@ -1150,6 +1179,7 @@ window.openUserProfilePage = async (userStr) => {
     setTimeout(() => window.scrollTo(0, 0), 10);
 };
 
+// تحميل التقييمات
 async function loadReviewsToPage(targetId) {
     const list = document.getElementById('user-profile-reviews-list'); 
     const starsDisplay = document.getElementById('user-profile-stars');
@@ -1240,6 +1270,7 @@ document.getElementById('form-message').onsubmit = async (e) => {
     }
 };
 
+// فتح المحادثة
 window.openChat = async (uid) => {
     if (!window.requireAuth()) return;
     document.getElementById('messages-container').innerHTML = '';
@@ -1469,7 +1500,7 @@ window.openCategory = (profName) => {
     window.filterCategory();
 };
 
-// إنشاء بطاقات الأعضاء: السطر الثاني العنوان في أقصى اليمين، وتوضيح الصفة أقصى اليسار بلون موحد
+// إنشاء بطاقات الأعضاء: السطر الثاني العنوان في أقصى اليمين، والصفة في أقصى اليسار بنفس اللون الأزرق السماوي
 function createUserCard(u) {
     const userStr = encodeURIComponent(JSON.stringify(u));
     const joinDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString('ar-EG') : 'غير متوفر';
@@ -1494,7 +1525,7 @@ function createUserCard(u) {
                 </span>
             </div>
 
-            <!-- السطر الثاني: العنوان في أقصى اليمين، والصفة في أقصى اليسار بنفس اللون الأزرق السماوي الموحد -->
+            <!-- السطر الثاني: العنوان أقصى اليمين، والتوضيح أقصى اليسار بنفس اللون الأزرق الموحد -->
             <div class="member-card-row">
                 <span style="font-size: 9.5px; color: #64748b; font-weight: 600; overflow: hidden; text-overflow: ellipsis;">
                     العنوان: ${escapeHTML(finalLocation)}
