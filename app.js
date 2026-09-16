@@ -219,6 +219,11 @@ window.switchActivityTab = (tab) => {
     } else {
         document.getElementById('view-my-activity').classList.add('hidden'); 
         document.getElementById('view-matching-reqs').classList.remove('hidden');
+        
+        // إخفاء النقطة الحمراء وتحديث وقت المشاهدة
+        if (currentUser) {
+            localStorage.setItem(`matchingSeen_${currentUser.uid}`, Date.now().toString());
+        }
         document.getElementById('act-notif-badge')?.classList.add('hidden');
     }
 };
@@ -399,7 +404,6 @@ window.addEventListener('scroll', () => {
     if (!nav) return;
     const currentScrollY = window.scrollY;
     
-    // عند قمة الصفحة يبقى الهيدر ظاهراً دائماً
     if (currentScrollY <= 25) {
         nav.style.transform = 'translateY(0)';
         nav.style.opacity = '1';
@@ -866,7 +870,7 @@ window.toggleJobsFilterModal = () => {
     if (modal) modal.classList.toggle('hidden');
 };
 
-// إنشاء بطاقات الوظائف: عنوان تعريفي وتوسيط المسمى + رسالة استفسار واتساب ذكية
+// إنشاء بطاقات الوظائف مع زر محادثة حيوي وزر إعلانك الخاص المذهب
 function createJobCard(id, j) {
     const hasPhone = j.contactPhone && j.contactPhone.length > 5;
     const isMyPost = !isGuest && j.uid === currentUser?.uid;
@@ -907,9 +911,9 @@ function createJobCard(id, j) {
                 <span>${escapeHTML(j.desc)}</span>
             </div>
 
-            <!-- أزرار الإجراءات (مع الاستفسار الجاهز في الواتساب) -->
+            <!-- أزرار الإجراءات (زر محادثة أنيق بأزرق سماوي وزر إعلانك الخاص المذهب) -->
             <div class="job-actions-wrap">
-                ${!isMyPost ? `<button onclick="window.openChat('${j.uid}')" class="btn-job-action btn-job-chat">محادثة فورية</button>` : '<span style="flex: 1; text-align: center; font-size: 11px; font-weight: 800; color: #ffffff; padding: 6px; background: rgba(0,0,0,0.25); border-radius: 9px;">إعلانك الخاص</span>'}
+                ${!isMyPost ? `<button onclick="window.openChat('${j.uid}')" class="btn-job-action btn-job-chat">محادثة فورية</button>` : '<span class="badge-my-post">إعلانك الخاص ★</span>'}
                 ${hasPhone && !isMyPost ? `<a href="https://wa.me/20${j.contactPhone}?text=${waInquiryMsg}" target="_blank" class="btn-job-action btn-job-whatsapp">واتساب WhatsApp</a>` : ''}
             </div>
         </div>
@@ -963,9 +967,9 @@ function startListeners() {
     });
     globalUnsubs.push(unsubProfiles);
 
+    // استماع الوظائف وفرزها تنازلياً من الأحدث إلى الأقدم
     const unsubJobs = onSnapshot(query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'requests'), where('type', '==', 'job')), (snap) => {
         allJobsCache = [];
-        // منع تراكم وتكرار إشعارات الوظائف
         reqNotifs = reqNotifs.filter(n => !n.text.startsWith('📢'));
 
         snap.forEach(d => {
@@ -983,6 +987,9 @@ function startListeners() {
             }
         });
         
+        // الترتيب الصارم للوظائف: الأحدث أولاً
+        allJobsCache.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
         window.filterJobsList();
         if (!isGuest && userProfile?.role === 'provider') renderNotificationsList();
     });
@@ -1031,37 +1038,44 @@ function startListeners() {
     });
     globalUnsubs.push(unsubChats);
 
+    // استماع طلبات العملاء وفرزها تنازلياً مع النقطة الحمراء التنبيهية
     if (userProfile?.role === 'provider') {
         const q = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'requests'), where('type', '==', 'service'));
         const unsubReqs = onSnapshot(q, (snap) => {
             const container = document.getElementById('matching-reqs-list'); 
             if (!container) return;
             container.innerHTML = '';
-            // تفريغ إشعارات الطلبات لتجديدها بدون تكرار
             reqNotifs = reqNotifs.filter(n => !n.text.startsWith('🔔')); 
             
+            const matchingDocs = [];
+            snap.forEach(d => {
+                const req = { id: d.id, ...d.data() };
+                if (req.uid === currentUser.uid || req.profession !== userProfile.profession) return; 
+                matchingDocs.push(req);
+            });
+
+            // الترتيب الصارم لطلبات العملاء: الأحدث أولاً
+            matchingDocs.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
             const html = []; 
             let hasNewMatching = false;
-           
+            const lastMatchingSeen = parseInt(localStorage.getItem(`matchingSeen_${currentUser.uid}`) || '0');
+
             if (userProfile.settings?.pauseRequests) {
                 container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 25px 0; font-weight: bold;">أنت في وضع إيقاف تلقي الطلبات. يمكنك تفعيله من الإعدادات.</p>';
                 renderNotificationsList();
                 return;
             }
 
-            snap.forEach(d => {
-                const req = d.data();
-                if (req.uid === currentUser.uid || req.profession !== userProfile.profession) return; 
-
+            matchingDocs.forEach(req => {
                 reqNotifs.push({ 
-                    id: d.id, 
+                    id: req.id, 
                     time: new Date(req.createdAt).getTime(), 
                     text: `🔔 يوجد طلب جديد لمهنتك (${req.profession}) من ${req.requesterName}` 
                 });
 
                 const hasPhone = req.phone && req.phone.length > 5;
-                const notifKey = `notifSeen_${currentUser.uid}`;
-                const isNew = new Date(req.createdAt).getTime() > parseInt(localStorage.getItem(notifKey) || '0');
+                const isNew = new Date(req.createdAt).getTime() > lastMatchingSeen;
                 if (isNew) hasNewMatching = true;
 
                 const reqPhoto = req.requesterPhoto || 'https://via.placeholder.com/40';
@@ -1105,10 +1119,13 @@ function startListeners() {
                 container.innerHTML = html.join('');
             }
 
-            if (hasNewMatching) {
-                const badge = document.getElementById('act-notif-badge');
-                if (badge && document.getElementById('view-matching-reqs').classList.contains('hidden')) {
+            // إظهار النقطة الحمراء فوق زر طلبات تناسب مهنتي
+            const badge = document.getElementById('act-notif-badge');
+            if (badge) {
+                if (hasNewMatching) {
                     badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
                 }
             }
             renderNotificationsList();
@@ -1131,6 +1148,7 @@ function startListeners() {
     });
     globalUnsubs.push(unsubRevs);
 
+    // استماع سجل النشاط الخاص بي وفرزه من الأحدث للأقدم
     const unsubActivity = onSnapshot(query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'requests'), where('uid', '==', currentUser.uid)), (snap) => {
         const list = document.getElementById('my-activity'); 
         if (!list) return;
@@ -1142,6 +1160,9 @@ function startListeners() {
             list.innerHTML = '<div style="text-align: center; padding: 30px 0; color: var(--text-muted); font-weight: bold;">لا يوجد نشاط مسجل حتى الآن</div>'; 
             return; 
         }
+
+        // الترتيب الصارم لسجل النشاط: الأحدث أولاً
+        docs.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
 
         docs.forEach((act) => {
             const el = document.createElement('div');
@@ -1539,7 +1560,7 @@ window.openCategory = (profName) => {
     window.filterCategory();
 };
 
-// إنشاء بطاقات الأعضاء: السطر الثاني العنوان في أقصى اليمين، والصفة في أقصى اليسار بلون أزرق ناصع
+// إنشاء بطاقات الأعضاء
 function createUserCard(u) {
     const userStr = encodeURIComponent(JSON.stringify(u));
     const joinDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString('ar-EG') : 'غير متوفر';
@@ -1564,7 +1585,7 @@ function createUserCard(u) {
                 </span>
             </div>
 
-            <!-- السطر الثاني: العنوان أقصى اليمين، والتوضيح أقصى اليسار بلون أزرق ناصع متناسق -->
+            <!-- السطر الثاني: العنوان أقصى اليمين، والصفة أقصى اليسار بلون أزرق ناصع -->
             <div class="member-card-row">
                 <span style="font-size: 10px; color: var(--text-label); font-weight: 700; overflow: hidden; text-overflow: ellipsis;">
                     العنوان: ${escapeHTML(finalLocation)}
