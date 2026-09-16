@@ -20,7 +20,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
 
     <!-- محرك التنسيقات الماسي المتناسق 100% -->
     <style>
@@ -281,6 +280,7 @@
 
         .dark .search-inner-soft svg { color: #cbd5e1; }
 
+        /* حماية الحقول المدمجة من الإطار الداخلي المشوه */
         .search-inner-soft input,
         .search-inner-soft input:focus {
             width: 100%;
@@ -890,7 +890,7 @@
             margin-bottom: 0 !important;
         }
 
-        /* دوائر ومربعات الاختيار (تفعيلها بأخضر زمردي ناصع وواضح جداً) */
+        /* دوائر ومربعات الاختيار (تفعيلها بأخضر زمردي ناصع وواضح جداً في صفحة الإعدادات) */
         input[type="radio"], input[type="checkbox"] {
             width: 17px !important;
             height: 17px !important;
@@ -1345,7 +1345,7 @@
                 </div>
             </div>
 
-            <!-- حاوية الفلترة بصفين -->
+            <!-- حاوية الفلترة بصفين: زر ✕ أقصى اليمين، والصف الثاني للأزرار -->
             <div id="jobs-filter-modal" class="hidden filter-panel-2row">
                 <div class="filter-row-top">
                     <button onclick="window.toggleJobsFilterModal()" class="btn-close-filter-red" title="إغلاق">✕</button>
