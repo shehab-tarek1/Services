@@ -137,19 +137,30 @@ window.getCloudinaryUrl = (url, size = 'thumb') => {
     return `${parts[0]}/upload/q_auto,f_auto/${parts[1]}`;
 };
 
-// منع تكرار رسائل التوست المنبثقة وتنظيف القديمة فوراً
+// منع تكرار رسائل التوست نهائياً وتنظيف القديم مع مؤقت مركزي محمي
+let toastTimer = null;
 window.showToast = (msg, type = 'success') => {
     const box = document.getElementById('toast-box');
     if (!box) return;
-    box.innerHTML = ''; // تنظيف أي توست معروض فوراً لمنع التراكم عند الضغط المتكرر
+    
+    if (toastTimer) {
+        clearTimeout(toastTimer);
+        toastTimer = null;
+    }
+    
+    box.innerHTML = ''; 
     const el = document.createElement('div'); 
     el.className = `toast-msg ${type}`; 
     el.innerText = msg;
     box.appendChild(el);
+    
     requestAnimationFrame(() => el.classList.add('show'));
-    setTimeout(() => { 
+    toastTimer = setTimeout(() => { 
         el.classList.remove('show'); 
-        setTimeout(() => el.remove(), 250); 
+        setTimeout(() => {
+            el.remove();
+            toastTimer = null;
+        }, 250); 
     }, 2500);
 };
 
@@ -381,14 +392,25 @@ window.addEventListener('popstate', async (e) => {
     if (pageId === 'chat' && typeof window.renderChatsUI === 'function') window.renderChatsUI();
 });
 
-// تفعيل انسيابية إخفاء الهيدر السفلي عند السكرول لأسفل وظهوره عند الصعود
+// تفعيل انسيابية إخفاء الهيدر السفلي عند السكرول لأسفل وظهوره عند الصعود مع حد حركي مرن
 let lastScrollY = window.scrollY;
 window.addEventListener('scroll', () => {
     const nav = document.getElementById('nav-bar');
     if (!nav) return;
     const currentScrollY = window.scrollY;
+    
+    // عند قمة الصفحة يبقى الهيدر ظاهراً دائماً
+    if (currentScrollY <= 25) {
+        nav.style.transform = 'translateY(0)';
+        nav.style.opacity = '1';
+        lastScrollY = currentScrollY;
+        return;
+    }
+
+    if (Math.abs(currentScrollY - lastScrollY) < 6) return;
+
     if (currentScrollY > lastScrollY && currentScrollY > 70) {
-        nav.style.transform = 'translateY(130%)';
+        nav.style.transform = 'translateY(140%)';
         nav.style.opacity = '0';
     } else {
         nav.style.transform = 'translateY(0)';
@@ -739,7 +761,7 @@ window.toggleTheme = async () => {
     }
 };
 
-// منع تكرار الإشعارات نهائياً وعرضها بألوان واضحة ناصعة
+// منع تكرار الإشعارات نهائياً وعرضها بألوان واضحة عالية التباين
 function renderNotificationsList() {
     if (isGuest) return;
     let allNotifs = [...reqNotifs, ...reviewNotifs, ...(window.chatNotifsGlobal || [])];
@@ -763,11 +785,11 @@ function renderNotificationsList() {
         <div class="notif-item-card">
             ${isNew ? '<span class="notif-unread-badge"></span>' : ''}
             <p class="notif-item-text">${escapeHTML(n.text)}</p>
-            <span class="notif-item-time">${new Date(n.time).toLocaleString('ar-EG')}</span>
+            <span class="notif-item-time" dir="ltr">${new Date(n.time).toLocaleString('ar-EG')}</span>
         </div>`;
     }).join('');
     
-    document.getElementById('notif-list').innerHTML = html || '<p style="text-align: center; font-size: 9.5px; color: #cbd5e1; padding: 14px 0;">لا توجد إشعارات حالياً</p>';
+    document.getElementById('notif-list').innerHTML = html || '<p style="text-align: center; font-size: 10px; color: rgba(255,255,255,0.75); padding: 14px 0; font-weight: 700;">لا توجد إشعارات حالياً</p>';
     
     if (unreadCount > 0 && userProfile?.settings?.notifEnabled) {
         document.getElementById('notif-dot').classList.remove('hidden');
@@ -791,7 +813,7 @@ window.renderChatsUI = function() {
     if (isGuest) return;
     const list = document.getElementById('chat-history-list');
     if (myChatsCache.length === 0) { 
-        list.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 25px 0; font-weight: bold;">لا توجد محادثات سابقة</p>'; 
+        list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 25px 0; font-weight: bold;">لا توجد محادثات سابقة</p>'; 
         document.getElementById('chat-nav-dot').classList.add('hidden'); 
         return; 
     }
@@ -824,7 +846,7 @@ window.renderChatsUI = function() {
                        <h4 class="chat-user-name">${escapeHTML(otherUser.name)}</h4>
                        <span class="chat-time-tag">${time}</span>
                    </div>
-                   <p class="chat-snippet-text" style="${isNew ? 'font-weight: 900; color: #1e3a5f;' : ''}">${escapeHTML(c.lastMessage || '...')}</p>
+                   <p class="chat-snippet-text" style="${isNew ? 'font-weight: 900; color: #0284c7;' : ''}">${escapeHTML(c.lastMessage || '...')}</p>
                </div>
            </div>
         `;
@@ -849,7 +871,6 @@ function createJobCard(id, j) {
     const hasPhone = j.contactPhone && j.contactPhone.length > 5;
     const isMyPost = !isGuest && j.uid === currentUser?.uid;
 
-    // رسالة استفسار واتساب ذكية ومجهزة ببيانات الوظيفة كاملة
     const waInquiryMsg = encodeURIComponent(`السلام عليكم، بخصوص إعلان وظيفة (${j.title}) المنشور على دليل الشرقية (الراتب: ${j.salary ? j.salary + ' ج.م' : 'غير محدد'}، الدوام: ${j.jobType === 'part' ? 'جزئي' : 'كامل'}). أود الاستفسار عن تفاصيل التقدم للوظيفة.`);
 
     return `
@@ -858,19 +879,19 @@ function createJobCard(id, j) {
             <div class="job-header-capsule">
                 <div style="display: flex; align-items: center; gap: 7px; min-width: 0;">
                     <img src="${window.getCloudinaryUrl(j.posterPhoto || 'https://via.placeholder.com/40', 'thumb')}" loading="lazy">
-                    <div style="font-size: 11px; font-weight: 800; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        <span style="color: #64748b; font-size: 9.5px; font-weight: normal;">الناشر:</span> ${escapeHTML(j.posterName)}
+                    <div style="font-size: 11px; font-weight: 800; color: var(--capsule-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <span style="color: var(--text-label); font-size: 9.5px; font-weight: 700;">الناشر:</span> ${escapeHTML(j.posterName)}
                     </div>
                 </div>
-                <div style="font-size: 9px; color: #64748b; font-weight: 700; flex-shrink: 0;" dir="ltr">
+                <div style="font-size: 9px; color: var(--text-label); font-weight: 700; flex-shrink: 0;" dir="ltr">
                     تاريخ النشر: ${new Date(j.createdAt).toLocaleDateString('ar-EG')}
                 </div>
             </div>
 
             <!-- السطر الثاني: الوظيفة المتاحة متوسطة في قلب السطر بالكامل -->
             <div class="job-title-centered">
-                <span style="color: #cbd5e1; font-size: 10.5px; font-weight: bold;">الوظيفة المتاحة:</span>
-                <strong style="color: #F2A51A; font-size: 13px; font-weight: 900; margin-right: 4px;">${escapeHTML(j.title)}</strong>
+                <span style="color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 800;">الوظيفة المتاحة:</span>
+                <strong style="color: #F2A51A; font-size: 13.5px; font-weight: 900; margin-right: 4px;">${escapeHTML(j.title)}</strong>
             </div>
 
             <!-- شارات الدوام والراتب والشيفت والساعات -->
@@ -882,7 +903,7 @@ function createJobCard(id, j) {
             </div>
 
             <div class="job-desc-box">
-                <span style="color: #64748b; font-weight: 800; font-size: 9px; display: block; margin-bottom: 2px;">التفاصيل والشروط:</span>
+                <span style="color: var(--text-label); font-weight: 800; font-size: 9.5px; display: block; margin-bottom: 2px;">التفاصيل والشروط:</span>
                 <span>${escapeHTML(j.desc)}</span>
             </div>
 
@@ -915,7 +936,7 @@ window.filterJobsList = () => {
     }
 
     if (filtered.length === 0) {
-        list.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 25px 0; font-weight: bold;">لا توجد وظائف مطابقة لخيارات الفلترة</p>';
+        list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 25px 0; font-weight: bold;">لا توجد وظائف مطابقة لخيارات الفلترة</p>';
         return;
     }
 
@@ -944,6 +965,9 @@ function startListeners() {
 
     const unsubJobs = onSnapshot(query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'requests'), where('type', '==', 'job')), (snap) => {
         allJobsCache = [];
+        // منع تراكم وتكرار إشعارات الوظائف
+        reqNotifs = reqNotifs.filter(n => !n.text.startsWith('📢'));
+
         snap.forEach(d => {
             const j = { id: d.id, ...d.data() };
             allJobsCache.push(j);
@@ -1013,13 +1037,14 @@ function startListeners() {
             const container = document.getElementById('matching-reqs-list'); 
             if (!container) return;
             container.innerHTML = '';
-            reqNotifs = reqNotifs.filter(n => !n.text.includes('يوجد طلب جديد لمهنتك')); 
+            // تفريغ إشعارات الطلبات لتجديدها بدون تكرار
+            reqNotifs = reqNotifs.filter(n => !n.text.startsWith('🔔')); 
             
             const html = []; 
             let hasNewMatching = false;
            
             if (userProfile.settings?.pauseRequests) {
-                container.innerHTML = '<p style="text-align: center; color: #cbd5e1; padding: 20px 0; font-weight: bold;">أنت في وضع إيقاف تلقي الطلبات. يمكنك تفعيله من الإعدادات.</p>';
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 25px 0; font-weight: bold;">أنت في وضع إيقاف تلقي الطلبات. يمكنك تفعيله من الإعدادات.</p>';
                 renderNotificationsList();
                 return;
             }
@@ -1042,23 +1067,32 @@ function startListeners() {
                 const reqPhoto = req.requesterPhoto || 'https://via.placeholder.com/40';
 
                 html.push(`
-                    <div class="custom-card-box" style="position: relative; margin-bottom: 7px;">
-                        ${isNew ? '<div style="position: absolute; top: 6px; right: 6px; background: #ef4444; color: #fff; font-size: 8.5px; font-weight: bold; padding: 1px 6px; border-radius: 9999px;">جديد</div>' : ''}
-                        <div class="soft-text-capsule" style="margin-bottom: 6px;">
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
-                                <div style="display: flex; align-items: center; gap: 6px;">
-                                    <img src="${window.getCloudinaryUrl(reqPhoto, 'thumb')}" loading="lazy" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1;">
-                                    <span style="font-size: 11px; font-weight: 800;">طالب الخدمة: ${escapeHTML(req.requesterName)}</span>
+                    <div class="custom-card-box" style="position: relative; margin-bottom: 8px; padding: 10px 12px; border-radius: 14px;">
+                        ${isNew ? '<div style="position: absolute; top: 8px; right: 8px; background: #ef4444; color: #fff; font-size: 8.5px; font-weight: 900; padding: 2px 7px; border-radius: 9999px; box-shadow: 0 2px 6px rgba(239,68,68,0.35);">جديد</div>' : ''}
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; padding-left: ${isNew ? '40px' : '0'};">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <img src="${window.getCloudinaryUrl(reqPhoto, 'thumb')}" loading="lazy" style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.7); box-shadow: 0 2px 5px rgba(0,0,0,0.15);">
+                                <div>
+                                    <span style="font-size: 9px; color: rgba(255,255,255,0.8); font-weight: 700; display: block;">طالب الخدمة:</span>
+                                    <strong style="font-size: 11.5px; font-weight: 900; color: #ffffff;">${escapeHTML(req.requesterName)}</strong>
                                 </div>
-                                <span style="font-size: 9px; color: #64748b;" dir="ltr">${new Date(req.createdAt).toLocaleDateString('ar-EG')}</span>
                             </div>
-                            <div style="font-size: 10.5px; font-weight: 800; color: #1e3a5f;">الوظيفة المطلوبة: ${escapeHTML(req.profession)}</div>
-                            <div style="font-size: 10px; line-height: 1.4; max-height: 50px; overflow-y: auto; color: #1e293b; margin-top: 2px;">
+                            <span style="font-size: 9px; color: #cbd5e1; font-weight: 700; background: rgba(0,0,0,0.2); padding: 2px 7px; border-radius: 6px;" dir="ltr">${new Date(req.createdAt).toLocaleDateString('ar-EG')}</span>
+                        </div>
+
+                        <div class="soft-text-capsule" style="margin-bottom: 8px;">
+                            <div style="font-size: 11px; font-weight: 900; color: #0284c7; margin-bottom: 3px; display: flex; align-items: center; gap: 4px;">
+                                <span style="color: var(--text-label); font-size: 9.5px; font-weight: 700;">المهنة المطلوبة:</span>
+                                <span>${escapeHTML(req.profession)}</span>
+                            </div>
+                            <div style="font-size: 10.5px; line-height: 1.5; max-height: 60px; overflow-y: auto; color: var(--capsule-text); font-weight: 600;">
                                 ${escapeHTML(req.desc)}
                             </div>
                         </div>
-                        <div style="display: flex; gap: 6px;">
-                            <button onclick="window.openChat('${req.uid}')" class="btn-job-action btn-job-chat" style="height: 32px;">محادثة</button>
+
+                        <div class="job-actions-wrap">
+                            <button onclick="window.openChat('${req.uid}')" class="btn-job-action btn-job-chat" style="height: 32px;">محادثة فورية</button>
                             ${hasPhone ? `<a href="https://wa.me/20${req.phone}" target="_blank" class="btn-job-action btn-job-whatsapp" style="height: 32px;">واتساب WhatsApp</a>` : ''}
                         </div>
                     </div>
@@ -1066,7 +1100,7 @@ function startListeners() {
             });
            
             if (html.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 20px 0; font-weight: bold;">لا توجد طلبات تناسبك حالياً</p>';
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 25px 0; font-weight: bold;">لا توجد طلبات تناسبك حالياً</p>';
             } else {
                 container.innerHTML = html.join('');
             }
@@ -1105,7 +1139,7 @@ function startListeners() {
         snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
         
         if (docs.length === 0) { 
-            list.innerHTML = '<div style="text-align: center; padding: 24px 0; color: #94a3b8; font-weight: bold;">لا يوجد نشاط مسجل حتى الآن</div>'; 
+            list.innerHTML = '<div style="text-align: center; padding: 30px 0; color: var(--text-muted); font-weight: bold;">لا يوجد نشاط مسجل حتى الآن</div>'; 
             return; 
         }
 
@@ -1113,24 +1147,29 @@ function startListeners() {
             const el = document.createElement('div');
             const isJob = act.type === 'job';
             el.className = `custom-card-box`;
-            el.style.display = 'flex';
-            el.style.alignItems = 'flex-start';
-            el.style.gap = '8px';
-            el.style.marginBottom = '7px';
+            el.style.marginBottom = '8px';
+            el.style.padding = '10px 12px';
+            el.style.borderRadius = '14px';
             el.innerHTML = `
-                <div class="soft-text-capsule" style="flex: 1; min-width: 0;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
-                        <span style="font-size: 10px; font-weight: 700; color: #64748b;">${isJob ? 'طلب توظيف' : 'طلب خدمة'}</span>
-                        <span style="font-size: 8.5px; color: #64748b;" dir="ltr">${new Date(act.createdAt).toLocaleDateString('ar-EG')}</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 9.5px; font-weight: 800; background: ${isJob ? 'linear-gradient(135deg, #F2A51A, #d97706)' : 'linear-gradient(135deg, #0284c7, #0369a1)'}; color: #ffffff; padding: 2px 8px; border-radius: 9999px; box-shadow: 0 1px 4px rgba(0,0,0,0.15);">
+                            ${isJob ? '💼 إعلان وظيفة' : '🛠️ طلب خدمة'}
+                        </span>
+                        <span style="font-size: 11.5px; font-weight: 900; color: #ffffff;">
+                            ${isJob ? escapeHTML(act.title) : escapeHTML(act.profession)}
+                        </span>
                     </div>
-                    <div style="font-size: 11px; font-weight: 800; color: #1e3a5f; margin-bottom: 2px;">${isJob ? escapeHTML(act.title) : escapeHTML(act.profession)}</div>
-                    <div style="font-size: 9.5px; line-height: 1.4; max-height: 50px; overflow-y: auto;">
-                        ${escapeHTML(act.desc) || 'لا يوجد وصف'}
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span style="font-size: 9px; color: #cbd5e1; font-weight: 700; background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 6px;" dir="ltr">${new Date(act.createdAt).toLocaleDateString('ar-EG')}</span>
+                        <button onclick="window.deleteRequest('${act.id}')" title="حذف" style="width: 28px; height: 28px; border-radius: 8px; background: #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 0.75px solid #fecaca; cursor: pointer; transition: transform 0.15s ease;">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                        </button>
                     </div>
                 </div>
-                <button onclick="window.deleteRequest('${act.id}')" style="width: 32px; height: 32px; border-radius: 8px; background: #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 0.75px solid #fecaca; margin-top: 2px;">
-                    <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                </button>
+                <div class="soft-text-capsule" style="font-size: 10.5px; line-height: 1.5; max-height: 60px; overflow-y: auto; font-weight: 600;">
+                    ${escapeHTML(act.desc) || 'لا يوجد وصف مضاف'}
+                </div>
             `;
             list.appendChild(el);
         });
@@ -1454,7 +1493,7 @@ window.filterCategory = () => {
     cont.innerHTML = '';
     
     if (filteredCatItems.length === 0) { 
-        cont.innerHTML = `<div style="text-align: center; padding: 24px 0; color: #94a3b8; font-weight: bold;">لا توجد نتائج مسجلة في هذا التخصص حالياً</div>`; 
+        cont.innerHTML = `<div style="text-align: center; padding: 24px 0; color: var(--text-muted); font-weight: bold;">لا توجد نتائج مسجلة في هذا التخصص حالياً</div>`; 
         return; 
     }
     renderMoreCategory();
@@ -1500,7 +1539,7 @@ window.openCategory = (profName) => {
     window.filterCategory();
 };
 
-// إنشاء بطاقات الأعضاء: السطر الثاني العنوان في أقصى اليمين، والصفة في أقصى اليسار بنفس اللون الأزرق السماوي
+// إنشاء بطاقات الأعضاء: السطر الثاني العنوان في أقصى اليمين، والصفة في أقصى اليسار بلون أزرق ناصع
 function createUserCard(u) {
     const userStr = encodeURIComponent(JSON.stringify(u));
     const joinDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString('ar-EG') : 'غير متوفر';
@@ -1517,20 +1556,20 @@ function createUserCard(u) {
         <div class="member-card-content">
             <!-- السطر الأول: اسم العضو يميناً وتاريخ الانضمام أقصى اليسار -->
             <div class="member-card-row">
-                <span style="font-size: 11px; font-weight: 800; color: #1e293b; overflow: hidden; text-overflow: ellipsis;">
-                    <span style="color: #64748b; font-size: 9.5px; font-weight: normal;">اسم العضو:</span> ${escapeHTML(u.name)}
+                <span style="font-size: 11.5px; font-weight: 800; color: var(--capsule-text); overflow: hidden; text-overflow: ellipsis;">
+                    <span style="color: var(--text-label); font-size: 9.5px; font-weight: 700;">اسم العضو:</span> ${escapeHTML(u.name)}
                 </span>
-                <span style="font-size: 9px; color: #64748b; font-weight: 600; flex-shrink: 0;" dir="ltr">
+                <span style="font-size: 9px; color: var(--text-label); font-weight: 700; flex-shrink: 0;" dir="ltr">
                     تاريخ انضمام العضو: ${joinDate}
                 </span>
             </div>
 
-            <!-- السطر الثاني: العنوان أقصى اليمين، والتوضيح أقصى اليسار بنفس اللون الأزرق الموحد -->
+            <!-- السطر الثاني: العنوان أقصى اليمين، والتوضيح أقصى اليسار بلون أزرق ناصع متناسق -->
             <div class="member-card-row">
-                <span style="font-size: 9.5px; color: #64748b; font-weight: 600; overflow: hidden; text-overflow: ellipsis;">
+                <span style="font-size: 10px; color: var(--text-label); font-weight: 700; overflow: hidden; text-overflow: ellipsis;">
                     العنوان: ${escapeHTML(finalLocation)}
                 </span>
-                <span style="font-size: 10.5px; font-weight: 800; color: #0284c7; flex-shrink: 0; margin-right: 8px;">
+                <span style="font-size: 10.5px; font-weight: 900; color: #0284c7; flex-shrink: 0; margin-right: 8px;">
                     ${roleText}
                 </span>
             </div>
