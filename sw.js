@@ -1,7 +1,7 @@
-const CACHE_NAME = 'dalil-sharkia-v3.1';
-const DYNAMIC_CACHE = 'dalil-sharkia-dynamic-v3.2';
+const CACHE_NAME = 'dalil-sharkia-v3.3';
+const DYNAMIC_CACHE = 'dalil-sharkia-dynamic-v3.3';
 
-// تم استخدام مسارات نسبية (./) لتجنب أخطاء الاستضافة في المجلدات الفرعية
+// مسارات الملفات الأساسية المعتمدة للتخزين المسبق
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -11,14 +11,13 @@ const ASSETS_TO_CACHE = [
   './icons/icon-192x192.png'
 ];
 
-// التثبيت والتخزين الأولي (مع منع الفشل الشامل)
+// التثبيت والتخزين الأولي (مع معالجة الأخطاء لكل ملف على حدة)
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // معالجة كل ملف على حدة لتجنب فشل الكاش بالكامل إذا كان ملف واحد مفقوداً
       return Promise.allSettled(
         ASSETS_TO_CACHE.map(asset => 
-          cache.add(asset).catch(err => console.warn('لم يتم العثور على الملف ليتم تخزينه:', asset))
+          cache.add(asset).catch(err => console.warn('تنبيه: تعذر تخزين الملف في الكاش:', asset, err))
         )
       );
     })
@@ -26,14 +25,14 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// التفعيل ومسح الكاش القديم عند وجود تحديث
+// التفعيل ومسح الكاش القديم تلقائياً فور توفر الإصدار الجديد
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME && cacheName !== DYNAMIC_CACHE) {
-            console.log('جاري مسح الكاش القديم:', cacheName);
+            console.log('جاري مسح الكاش القديم لتطبيق التحديث الجديد:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -43,14 +42,21 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// اعتراض الطلبات والتأكد من العمل أوفلاين
+// اعتراض الطلبات والتأكد من العمل بكفاءة أوفلاين
 self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url);
 
-  // تجاهل طلبات قواعد البيانات (فايربيز) ورفع الصور (Cloudinary)
+  // تجاهل أي بروتوكولات غير http و https (مثل إضافات المتصفح)
+  if (requestUrl.protocol !== 'http:' && requestUrl.protocol !== 'https:') {
+    return;
+  }
+
+  // تجاهل طلبات قواعد البيانات (فايربيز) ورفع الصور (Cloudinary) والطلبات غير التابعة لـ GET
   if (
     requestUrl.hostname.includes('firestore.googleapis.com') || 
     requestUrl.hostname.includes('identitytoolkit.googleapis.com') ||
+    requestUrl.hostname.includes('firebaseio.com') ||
+    requestUrl.hostname.includes('firebaseapp.com') ||
     requestUrl.hostname.includes('cloudinary.com') ||
     event.request.method !== 'GET'
   ) {
@@ -72,34 +78,32 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. طلبات الملفات الثابتة (صور، خطوط، تنسيقات، JS) -> نمط الاستجابة من الكاش أولاً
+  // 2. طلبات الملفات الثابتة والصور والخطوط (Cache First مع التحديث بالخلفية)
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        // الاستجابة من الكاش فوراً للسرعة، وتحديث الكاش في الخلفية
+        // الاستجابة من الكاش فوراً، وتحديث النسخة في الخلفية
         fetch(event.request).then(networkResponse => {
             if (networkResponse && networkResponse.ok) {
                 caches.open(DYNAMIC_CACHE).then(cache => cache.put(event.request, networkResponse));
             }
-        }).catch(() => {}); // تجاهل الخطأ في الخلفية
-        
+        }).catch(() => {});
+
         return cachedResponse;
       }
 
-      // إذا لم يكن في الكاش، جربه من الإنترنت واحفظه
+      // إذا لم يكن في الكاش، يتم جلبه من الشبكة وحفظه
       return fetch(event.request).then((networkResponse) => {
-        // التحقق من نجاح الاستجابة قبل التخزين (لمنع تخزين 404 أو 500)
-        // يُسمح بنوع 'opaque' لأنه يخص طلبات خارجية ناجحة من سيرفرات لا تدعم CORS بالكامل (مثل بعض الصور)
         if (!networkResponse || (!networkResponse.ok && networkResponse.type !== 'opaque')) {
             return networkResponse;
         }
-        
+
         return caches.open(DYNAMIC_CACHE).then((cache) => {
           cache.put(event.request, networkResponse.clone());
           return networkResponse;
         });
       }).catch(() => {
-         // إذا كان الطلب لصورة وفشل الإنترنت، يمكن مستقبلاً إرجاع صورة افتراضية هنا
+         // في حالة فشل الاتصال وعدم توفر الملف في الكاش
       });
     })
   );
