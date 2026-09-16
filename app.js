@@ -87,7 +87,7 @@ function getProfImage(profName) {
 }
 
 let isGuest = true;
-let currentUser = null, userProfile = null, navStack = ['home'], currentChatId = null;
+let currentUser = null, userProfile = null, currentChatId = null;
 let allUsersCache = [], myChatsCache = [], allJobsCache = [], chatListener = null, currentModalUserId = null;
 let tempSelectedFile = null;
 let globalUnsubs = [];
@@ -150,7 +150,7 @@ window.showToast = (msg, type = 'success') => {
 window.hideLoader = () => document.getElementById('loader').classList.add('hidden');
 window.showLoader = () => document.getElementById('loader').classList.remove('hidden');
 
-// فتح وإغلاق شريط الفلترة بالسطرين الملمومين
+// فتح وإغلاق شريط الفلترة بالسطرين
 window.openFilterModal = (source) => {
     if (source === 'directory') {
         const bar = document.getElementById('dir-filter-bar');
@@ -196,32 +196,20 @@ window.openActivityTab = (tab) => {
 
 window.switchActivityTab = (tab) => {
     window.scrollTo(0, 0);
-    const tabMine = document.getElementById('tab-act-mine');
-    const tabMatching = document.getElementById('tab-act-matching');
     if (tab === 'my-activity') {
         document.getElementById('view-my-activity').classList.remove('hidden'); 
         document.getElementById('view-matching-reqs').classList.add('hidden');
-        tabMine.style.background = '#ffffff'; 
-        tabMine.style.color = '#1e3a5f';
-        tabMatching.style.background = 'transparent'; 
-        tabMatching.style.color = '#ffffff';
     } else {
         document.getElementById('view-my-activity').classList.add('hidden'); 
         document.getElementById('view-matching-reqs').classList.remove('hidden');
-        tabMatching.style.background = '#ffffff'; 
-        tabMatching.style.color = '#1e3a5f';
-        tabMine.style.background = 'transparent'; 
-        tabMine.style.color = '#ffffff';
-        document.getElementById('act-notif-badge').classList.add('hidden');
+        document.getElementById('act-notif-badge')?.classList.add('hidden');
     }
 };
 
 // تحديث شريط الهيدر السفلي الكبسولي العائم (5 أزرار متساوية)
 window.updateBottomNav = (pageId) => {
     const btns = document.querySelectorAll('.nav-btn');
-    btns.forEach(b => {
-        b.classList.remove('active');
-    });
+    btns.forEach(b => b.classList.remove('active'));
 
     const navMap = {
         'home': 0, 
@@ -244,9 +232,13 @@ window.updateBottomNav = (pageId) => {
     }
 };
 
-history.replaceState({ pageId: 'exit_trap' }, "", window.location.pathname);
-history.pushState({ pageId: 'home' }, "", window.location.pathname);
+// ==========================================================================
+// هندسة الرجوع الذكي (خطوة واحدة فقط بدون تراكم أو تعليق)
+// ==========================================================================
+let currentPageId = 'home';
+history.replaceState({ pageId: 'home' }, "", window.location.pathname);
 
+const mainTabPages = ['home', 'jobs', 'directory', 'chat', 'profile'];
 const pageTitles = {
     'home': 'الرئيسية',
     'jobs': 'الوظائف الشاغرة',
@@ -266,11 +258,11 @@ window.navTo = (pageId, skipHistory = false) => {
         if (!window.requireAuth()) return;
     }
     
-    if (navStack[navStack.length - 1] === pageId && !skipHistory) return;
+    if (currentPageId === pageId && !skipHistory) return;
 
     window.scrollTo(0, 0);
 
-    if (navStack[navStack.length - 1] === 'add' && pageId !== 'add') {
+    if (currentPageId === 'add' && pageId !== 'add') {
         window.clearForms();
     }
 
@@ -297,20 +289,15 @@ window.navTo = (pageId, skipHistory = false) => {
         if (allJobsCache.length > 0) window.filterJobsList();
     }
 
+    // إدارة السجل الذكي: التبويبات الرئيسية تستبدل الحالة لمنع تراكم 10 ضغطات رجوع
     if (!skipHistory) {
-        const bottomNavPages = ['home', 'jobs', 'directory', 'chat', 'profile', 'activity'];
-        const index = navStack.indexOf(pageId);
-        if (bottomNavPages.includes(pageId) && index !== -1 && index < navStack.length - 1) {
-            const steps = index - (navStack.length - 1);
-            history.go(steps);
-            return; 
+        if (mainTabPages.includes(pageId)) {
+            history.replaceState({ pageId: pageId }, "", window.location.pathname);
         } else {
-            if (navStack[navStack.length - 1] !== pageId) {
-                navStack.push(pageId);
-                history.pushState({ pageId: pageId }, "", window.location.pathname);
-            }
+            history.pushState({ pageId: pageId }, "", window.location.pathname);
         }
     }
+    currentPageId = pageId;
 
     if (pageId === 'chat-room') { 
         document.getElementById('page-chat-room').classList.remove('hidden'); 
@@ -341,22 +328,18 @@ window.navTo = (pageId, skipHistory = false) => {
     if (pageId === 'chat' && typeof window.renderChatsUI === 'function') window.renderChatsUI();
 };
 
+// الرجوع الذكي: يرجع خطوة واحدة للرئيسية أو الصفحة السابقة مباشرة
 window.goBack = () => {
-    history.back(); 
+    if (mainTabPages.includes(currentPageId) && currentPageId !== 'home') {
+        window.navTo('home');
+    } else {
+        history.back();
+    }
 };
 
 window.addEventListener('popstate', async (e) => {
-    if (!e.state || e.state.pageId === 'exit_trap') {
-        return; 
-    }
-
-    const pageId = e.state.pageId;
-    const index = navStack.indexOf(pageId);
-    if (index !== -1) {
-        navStack = navStack.slice(0, index + 1);
-    } else {
-        navStack.push(pageId);
-    }
+    const pageId = (e.state && e.state.pageId) ? e.state.pageId : 'home';
+    currentPageId = pageId;
 
     if (pageId !== 'directory') document.getElementById('dir-list').innerHTML = '';
     if (pageId !== 'category-details') document.getElementById('cat-list-container').innerHTML = '';
@@ -402,11 +385,9 @@ function initApp() {
         if (headerAddBtn) headerAddBtn.classList.remove('hidden');
         document.getElementById('page-title').innerHTML = `مرحباً بك <span style="color: #F2A51A; font-weight: 900; margin: 0 4px;">${escapeHTML(userProfile.name)}</span>`;
         if (userProfile.role === 'provider') {
-            document.getElementById('tab-act-matching').classList.remove('hidden');
-            document.getElementById('btn-profile-matching').classList.remove('hidden');
+            document.getElementById('btn-profile-matching')?.classList.remove('hidden');
         } else {
-            document.getElementById('tab-act-matching').classList.add('hidden');
-            document.getElementById('btn-profile-matching').classList.add('hidden');
+            document.getElementById('btn-profile-matching')?.classList.add('hidden');
         }
     } else {
         if (headerAddBtn) headerAddBtn.classList.add('hidden');
@@ -429,20 +410,34 @@ function renderProfessionsGrid(list) {
     grid.innerHTML = html;
 }
 
+// تحديث القرى فورياً بدون أي تجمد
 window.updateVillages = (prefix = 'signup') => {
-    const centerSelect = document.getElementById(`${prefix}-center`) || document.getElementById('cat-filter-center');
-    const villageSelect = document.getElementById(`${prefix}-village`) || document.getElementById('cat-filter-village');
-    if (!centerSelect || !villageSelect) return;
-    const selectedCenter = centerSelect.value;
-    villageSelect.innerHTML = '<option value="">القرية...</option>';
-    if (selectedCenter && sharkiaData[selectedCenter]) {
-        sharkiaData[selectedCenter].forEach(village => {
-            const opt = document.createElement('option'); 
-            opt.value = village; 
-            opt.innerText = village;
-            villageSelect.appendChild(opt);
-        });
+    const centerSelects = [
+        document.getElementById(`${prefix}-center`),
+        document.getElementById('cat-filter-center')
+    ].filter(Boolean);
+
+    const villageSelects = [
+        document.getElementById(`${prefix}-village`),
+        document.getElementById('cat-filter-village')
+    ].filter(Boolean);
+
+    let selectedCenter = '';
+    for (const cs of centerSelects) {
+        if (cs.value) { selectedCenter = cs.value; break; }
     }
+
+    villageSelects.forEach(vs => {
+        vs.innerHTML = '<option value="">القرية...</option>';
+        if (selectedCenter && sharkiaData[selectedCenter]) {
+            sharkiaData[selectedCenter].forEach(village => {
+                const opt = document.createElement('option'); 
+                opt.value = village; 
+                opt.innerText = village;
+                vs.appendChild(opt);
+            });
+        }
+    });
 };
 
 function populateCenters(prefix = 'signup') {
@@ -678,7 +673,7 @@ onAuthStateChanged(auth, async (user) => {
 
                 initApp(); 
                 startListeners(); 
-                if (navStack[navStack.length - 1] === 'auth') {
+                if (currentPageId === 'auth') {
                     window.navTo('home', true);
                 }
             } else {
@@ -694,9 +689,8 @@ onAuthStateChanged(auth, async (user) => {
     } else {
         isGuest = true;
         window.clearForms();
-        navStack = ['home'];
-        history.replaceState({ pageId: 'exit_trap' }, "", window.location.pathname);
-        history.pushState({ pageId: 'home' }, "", window.location.pathname);
+        currentPageId = 'home';
+        history.replaceState({ pageId: 'home' }, "", window.location.pathname);
 
         document.getElementById('header-avatar').src = 'icons/icon-192x192.png';
         
@@ -791,13 +785,11 @@ window.renderChatsUI = function() {
 
         return `
            <div onclick="window.openChat('${otherId}')" class="chat-history-card">
-               <!-- الصورة وفي زاويتها النقطة الحمراء مباشرة -->
                <div class="chat-avatar-wrap">
                    <img src="${window.getCloudinaryUrl(otherUser.photoURL, 'thumb')}" loading="lazy" class="chat-avatar">
                    ${isNew ? '<span class="chat-unread-dot"></span>' : ''}
                </div>
 
-               <!-- كبسولة النصوص الهادئة بسطرين فقط -->
                <div class="chat-info-block">
                    <div class="chat-name-row">
                        <h4 class="chat-user-name">${escapeHTML(otherUser.name)}</h4>
@@ -810,7 +802,7 @@ window.renderChatsUI = function() {
     }).join('');
     
     list.innerHTML = html;
-    const chatTabActive = navStack[navStack.length - 1] === 'chat';
+    const chatTabActive = currentPageId === 'chat';
     if (hasUnreadChatsForTab && !chatTabActive) {
         document.getElementById('chat-nav-dot').classList.remove('hidden');
     } else {
@@ -823,14 +815,17 @@ window.toggleJobsFilterModal = () => {
     if (modal) modal.classList.toggle('hidden');
 };
 
-// إنشاء بطاقات الوظائف: السطر الأول الصورة واسم الناشر وتاريخ النشر، والسطر الثاني المسمى متوسط في قلب السطر
+// إنشاء بطاقات الوظائف: عنوان تعريفي وتوسيط المسمى + رسالة استفسار ذكية للواتساب
 function createJobCard(id, j) {
     const hasPhone = j.contactPhone && j.contactPhone.length > 5;
     const isMyPost = !isGuest && j.uid === currentUser?.uid;
 
+    // رسالة استفسار واتساب احترافية جاهزة ببيانات الوظيفة
+    const waInquiryMsg = encodeURIComponent(`السلام عليكم، بخصوص إعلان وظيفة (${j.title}) المنشور على دليل الشرقية (الراتب: ${j.salary ? j.salary + ' ج.م' : 'غير محدد'}، الدوام: ${j.jobType === 'part' ? 'جزئي' : 'كامل'}). أود الاستفسار عن تفاصيل التقدم للوظيفة.`);
+
     return `
         <div class="job-feed-card">
-            <!-- السطر الأول: الصورة في اليمين، واسم الناشر، وتاريخ النشر أقصى اليسار -->
+            <!-- السطر الأول: الصورة واسم الناشر وتاريخ النشر أقصى اليسار -->
             <div class="job-header-capsule">
                 <div style="display: flex; align-items: center; gap: 7px; min-width: 0;">
                     <img src="${window.getCloudinaryUrl(j.posterPhoto || 'https://via.placeholder.com/40', 'thumb')}" loading="lazy">
@@ -845,8 +840,8 @@ function createJobCard(id, j) {
 
             <!-- السطر الثاني: الوظيفة المتاحة متوسطة في قلب السطر بالكامل -->
             <div class="job-title-centered">
-                <span style="color: #cbd5e1; font-size: 10px; font-weight: bold;">الوظيفة المتاحة:</span>
-                <strong style="color: #F2A51A; font-size: 12.5px; font-weight: 900; margin-right: 4px;">${escapeHTML(j.title)}</strong>
+                <span style="color: #cbd5e1; font-size: 10.5px; font-weight: bold;">الوظيفة المتاحة:</span>
+                <strong style="color: #F2A51A; font-size: 13px; font-weight: 900; margin-right: 4px;">${escapeHTML(j.title)}</strong>
             </div>
 
             <!-- شارات الدوام والراتب والشيفت والساعات -->
@@ -857,16 +852,15 @@ function createJobCard(id, j) {
                 <span class="job-badge-item">الساعات: ${j.hours ? escapeHTML(j.hours) : 'غير محدد'}</span>
             </div>
 
-            <!-- صندوق الشروط والتفاصيل الملموم -->
             <div class="job-desc-box">
                 <span style="color: #64748b; font-weight: 800; font-size: 9px; display: block; margin-bottom: 2px;">التفاصيل والشروط:</span>
                 <span>${escapeHTML(j.desc)}</span>
             </div>
 
-            <!-- أزرار الإجراءات الملونة -->
+            <!-- أزرار الإجراءات (مع الاستفسار الجاهز في الواتساب) -->
             <div class="job-actions-wrap">
                 ${!isMyPost ? `<button onclick="window.openChat('${j.uid}')" class="btn-job-action btn-job-chat">محادثة فورية</button>` : '<span style="flex: 1; text-align: center; font-size: 11px; font-weight: 800; color: #ffffff; padding: 6px; background: rgba(0,0,0,0.25); border-radius: 9px;">إعلانك الخاص</span>'}
-                ${hasPhone && !isMyPost ? `<a href="https://wa.me/20${j.contactPhone}" target="_blank" class="btn-job-action btn-job-whatsapp">واتساب WhatsApp</a>` : ''}
+                ${hasPhone && !isMyPost ? `<a href="https://wa.me/20${j.contactPhone}?text=${waInquiryMsg}" target="_blank" class="btn-job-action btn-job-whatsapp">واتساب WhatsApp</a>` : ''}
             </div>
         </div>
     `;
@@ -912,9 +906,8 @@ function startListeners() {
             }
         });
         
-        const currentPage = navStack[navStack.length - 1];
-        if (currentPage === 'category-details') window.filterCategory();
-        else if (currentPage === 'directory') window.filterDirectory();
+        if (currentPageId === 'category-details') window.filterCategory();
+        else if (currentPageId === 'directory') window.filterDirectory();
         
         if (!isGuest) window.renderChatsUI(); 
     });
@@ -989,6 +982,7 @@ function startListeners() {
         const q = query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'requests'), where('type', '==', 'service'));
         const unsubReqs = onSnapshot(q, (snap) => {
             const container = document.getElementById('matching-reqs-list'); 
+            if (!container) return;
             container.innerHTML = '';
             reqNotifs = reqNotifs.filter(n => !n.text.includes('يوجد طلب جديد لمهنتك')); 
             
@@ -1076,6 +1070,7 @@ function startListeners() {
 
     const unsubActivity = onSnapshot(query(collection(db, 'artifacts', APP_ID, 'public', 'data', 'requests'), where('uid', '==', currentUser.uid)), (snap) => {
         const list = document.getElementById('my-activity'); 
+        if (!list) return;
         list.innerHTML = '';
         const docs = []; 
         snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
@@ -1155,7 +1150,6 @@ window.openUserProfilePage = async (userStr) => {
     setTimeout(() => window.scrollTo(0, 0), 10);
 };
 
-// تحميل وعرض التقييمات
 async function loadReviewsToPage(targetId) {
     const list = document.getElementById('user-profile-reviews-list'); 
     const starsDisplay = document.getElementById('user-profile-stars');
@@ -1313,7 +1307,7 @@ window.openChat = async (uid) => {
         });
         box.innerHTML = html.join(''); 
         box.scrollTop = box.scrollHeight;
-        if (navStack[navStack.length - 1] === 'chat-room') localStorage.setItem(chatSeenKey, Date.now().toString());
+        if (currentPageId === 'chat-room') localStorage.setItem(chatSeenKey, Date.now().toString());
     });
 };
 
@@ -1336,37 +1330,26 @@ window.confirmDeleteChat = async () => {
 };
 
 window.applyFilter = () => {
-    document.getElementById('filter-modal-wrap').classList.add('hidden');
-    const currentPage = navStack[navStack.length - 1];
-    if (currentPage === 'category-details') {
+    if (currentPageId === 'category-details') {
         window.filterCategory();
     } else {
-        if (currentPage === 'home') window.navTo('directory');
+        if (currentPageId === 'home') window.navTo('directory');
         window.filterDirectory();
     }
 };
 
 window.clearFilter = () => {
     const centerFilter = document.getElementById('filter-center');
-    if (centerFilter) {
-        centerFilter.value = '';
-    }
+    if (centerFilter) centerFilter.value = '';
     const catCenter = document.getElementById('cat-filter-center');
-    if (catCenter) {
-        catCenter.value = '';
-    }
+    if (catCenter) catCenter.value = '';
     
     const villageFilter = document.getElementById('filter-village');
-    if (villageFilter) {
-        villageFilter.innerHTML = '<option value="">القرية...</option>';
-    }
+    if (villageFilter) villageFilter.innerHTML = '<option value="">القرية...</option>';
     const catVillage = document.getElementById('cat-filter-village');
-    if (catVillage) {
-        catVillage.innerHTML = '<option value="">القرية...</option>';
-    }
+    if (catVillage) catVillage.innerHTML = '<option value="">القرية...</option>';
     
-    const currentPage = navStack[navStack.length - 1];
-    if (currentPage === 'category-details') {
+    if (currentPageId === 'category-details') {
         const profFilter = document.getElementById('filter-prof');
         if (profFilter) profFilter.value = currentActiveCategory;
         document.getElementById('cat-search').value = '';
@@ -1378,15 +1361,13 @@ window.clearFilter = () => {
         window.filterDirectory();
     }
     
-    const bar = document.getElementById('dir-filter-bar');
-    if (bar) bar.classList.add('hidden');
-    const catBar = document.getElementById('cat-filter-bar');
-    if (catBar) catBar.classList.add('hidden');
-    document.getElementById('filter-modal-wrap').classList.add('hidden');
+    document.getElementById('dir-filter-bar')?.classList.add('hidden');
+    document.getElementById('cat-filter-bar')?.classList.add('hidden');
+    document.getElementById('filter-modal-wrap')?.classList.add('hidden');
 };
 
 window.filterDirectory = () => {
-    const term = document.getElementById('dir-search').value.trim();
+    const term = (document.getElementById('dir-search')?.value || '').trim();
     const center = document.getElementById('filter-center')?.value || '';
     const village = document.getElementById('filter-village')?.value || '';
     const prof = document.getElementById('filter-prof')?.value || '';
@@ -1422,7 +1403,7 @@ function renderMoreDirectory() {
 }
 
 window.filterCategory = () => {
-    const term = document.getElementById('cat-search').value.trim();
+    const term = (document.getElementById('cat-search')?.value || '').trim();
     const center = document.getElementById('cat-filter-center')?.value || document.getElementById('filter-center')?.value || '';
     const village = document.getElementById('cat-filter-village')?.value || document.getElementById('filter-village')?.value || '';
     const prof = document.getElementById('filter-prof')?.value || '';
@@ -1467,8 +1448,8 @@ window.addEventListener('scroll', () => {
     if (!isScrolling) {
         window.requestAnimationFrame(() => {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 300) {
-                if (!document.getElementById('page-directory').classList.contains('hidden')) renderMoreDirectory();
-                if (!document.getElementById('page-category-details').classList.contains('hidden')) renderMoreCategory();
+                if (currentPageId === 'directory') renderMoreDirectory();
+                if (currentPageId === 'category-details') renderMoreCategory();
             }
             isScrolling = false;
         });
@@ -1488,7 +1469,7 @@ window.openCategory = (profName) => {
     window.filterCategory();
 };
 
-// إنشاء بطاقات الأعضاء: التزام دقيق بسطرين مع الصورة في اليمين متوسطة
+// إنشاء بطاقات الأعضاء: السطر الثاني العنوان في أقصى اليمين، وتوضيح الصفة أقصى اليسار بلون موحد
 function createUserCard(u) {
     const userStr = encodeURIComponent(JSON.stringify(u));
     const joinDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString('ar-EG') : 'غير متوفر';
@@ -1502,9 +1483,8 @@ function createUserCard(u) {
         <!-- الصورة في اليمين متوسطة بين السطرين -->
         <img src="${window.getCloudinaryUrl(u.photoURL, 'thumb')}" loading="lazy" class="member-card-avatar">
         
-        <!-- كبسولة النصوص الهادئة بسطرين محكمين -->
         <div class="member-card-content">
-            <!-- السطر الأول: اسم العضو وفي أقصى اليسار تاريخ الانضمام -->
+            <!-- السطر الأول: اسم العضو يميناً وتاريخ الانضمام أقصى اليسار -->
             <div class="member-card-row">
                 <span style="font-size: 11px; font-weight: 800; color: #1e293b; overflow: hidden; text-overflow: ellipsis;">
                     <span style="color: #64748b; font-size: 9.5px; font-weight: normal;">اسم العضو:</span> ${escapeHTML(u.name)}
@@ -1514,13 +1494,13 @@ function createUserCard(u) {
                 </span>
             </div>
 
-            <!-- السطر الثاني: عميل أو مقدم خدمة وفي اليسار العنوان (ممنوع ينكسروا لسطر ثالث) -->
+            <!-- السطر الثاني: العنوان في أقصى اليمين، والصفة في أقصى اليسار بنفس اللون الأزرق السماوي الموحد -->
             <div class="member-card-row">
-                <span style="font-size: 10.5px; font-weight: 800; color: ${isClient ? '#0284c7' : '#1e3a5f'}; overflow: hidden; text-overflow: ellipsis;">
-                    ${roleText}
-                </span>
-                <span style="font-size: 9.5px; color: #64748b; font-weight: 600; flex-shrink: 0; margin-right: 8px;">
+                <span style="font-size: 9.5px; color: #64748b; font-weight: 600; overflow: hidden; text-overflow: ellipsis;">
                     العنوان: ${escapeHTML(finalLocation)}
+                </span>
+                <span style="font-size: 10.5px; font-weight: 800; color: #0284c7; flex-shrink: 0; margin-right: 8px;">
+                    ${roleText}
                 </span>
             </div>
         </div>
@@ -1687,7 +1667,7 @@ window.logout = async () => {
 
     document.getElementById('notif-dot').classList.add('hidden');
     document.getElementById('chat-nav-dot').classList.add('hidden');
-    document.getElementById('act-notif-badge').classList.add('hidden');
+    document.getElementById('act-notif-badge')?.classList.add('hidden');
     
     const headerAddBtn = document.getElementById('header-add-btn');
     if (headerAddBtn) headerAddBtn.classList.add('hidden');
@@ -1700,10 +1680,10 @@ window.logout = async () => {
     reqNotifs = []; 
     reviewNotifs = []; 
     window.chatNotifsGlobal = []; 
-    navStack = ['home'];
     isGuest = true;
     currentActiveCategory = "";
     
+    currentPageId = 'home';
     history.replaceState({ pageId: 'home' }, "", window.location.pathname);
     await signOut(auth); 
 };
