@@ -25,7 +25,9 @@
     --text-main: #0f172a;
     --text-muted: #475569;
     --gold: #F2A51A;
-    --emerald: #20B486;
+    --azure: #0284c7;
+    --azure-hover: #0369a1;
+    --emerald: #10b981;
     --rose: #ef4444;
 }
 
@@ -40,6 +42,8 @@
     --text-label: #cbd5e1;
     --text-main: #ffffff;
     --text-muted: #cbd5e1;
+    --azure: #0284c7;
+    --azure-hover: #38bdf8;
 }
 
 html, body {
@@ -142,7 +146,7 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
 
 .dark #app-header {
     background: linear-gradient(135deg, #162638, #122334) !important;
-    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 #app-header * { color: #ffffff !important; }
@@ -199,7 +203,7 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
     border-radius: 50% !important;
 }
 
-/* 5. شريط وحاوية البحث الكبسولية الفخمة */
+/* 5. شريط وحاوية البحث الكبسولية */
 .search-sticky-wrapper {
     position: sticky !important;
     top: calc(50px + env(safe-area-inset-top)) !important;
@@ -379,7 +383,7 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 1px 4px rgba(32, 180, 134, 0.3) !important;
+    box-shadow: 0 1px 4px rgba(16, 185, 129, 0.3) !important;
 }
 
 .btn-filter-reset {
@@ -459,7 +463,7 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
     text-overflow: ellipsis !important;
 }
 
-/* 7. هيكلة كروت وبطاقات الأعضاء (عالية الوضوح والتباين) */
+/* 7. كروت الأعضاء والبطاقات الماسية */
 .member-2line-card,
 .job-feed-card,
 .chat-history-card,
@@ -639,19 +643,39 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
 
 .btn-job-action:active { transform: scale(0.97); }
 
+/* زر محادثة فورية الجديد بأزرق سماوي ملكي مريح وجذاب */
 .btn-job-chat,
 #user-profile-actions button,
 #view-jobs button:not([class*="green"]):not([class*="whatsapp"]),
 #matching-reqs-list button:not([class*="green"]):not([class*="whatsapp"]) {
-    background: linear-gradient(135deg, #1e3a5f, #122334) !important;
+    background: linear-gradient(135deg, var(--azure), var(--azure-hover)) !important;
     border: 0.75px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3) !important;
 }
 
+/* زر الواتساب الزمردي */
 .btn-job-whatsapp,
 #user-profile-actions a,
 #view-jobs a,
 #matching-reqs-list a {
-    background: var(--emerald) !important;
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* شارة إعلانك الخاص المذهبة */
+.badge-my-post {
+    flex: 1 !important;
+    height: 34px !important;
+    border-radius: 10px !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    color: var(--gold) !important;
+    background: rgba(242, 165, 26, 0.12) !important;
+    border: 1px solid rgba(242, 165, 26, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
 }
 
 /* 9. بطاقات الرسائل والمحادثات */
@@ -747,23 +771,25 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
     right: 12px !important;
     max-width: 330px !important;
     margin: 0 auto !important;
-    background: linear-gradient(135deg, #2b4c6f, #1b3557) !important;
+    background: linear-gradient(135deg, #1e3a5f, #0f2744) !important;
     color: #ffffff !important;
     border-radius: 16px !important;
     border: 1px solid rgba(255, 255, 255, 0.25) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45) !important;
     z-index: 120 !important;
     padding: 12px 14px !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
 }
 
 .dark #notif-panel {
-    background: linear-gradient(135deg, #182a3d, #101c29) !important;
+    background: linear-gradient(135deg, #162638, #0b1520) !important;
     border-color: #3b5a78 !important;
 }
 
 .notif-item-card {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border: 0.75px solid rgba(255, 255, 255, 0.22) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 0.75px solid rgba(255, 255, 255, 0.18) !important;
     border-radius: 10px !important;
     padding: 8px 10px !important;
     margin-bottom: 6px !important;
@@ -774,8 +800,8 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
 }
 
 .dark .notif-item-card {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 .notif-unread-badge {
@@ -786,6 +812,7 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
     height: 6.5px !important;
     background-color: var(--rose) !important;
     border-radius: 50% !important;
+    box-shadow: 0 0 6px var(--rose) !important;
 }
 
 .notif-item-text {
@@ -800,6 +827,12 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
     font-size: 9px !important;
     color: #cbd5e1 !important;
     font-weight: 700 !important;
+}
+
+/* نبض ضوئي ناعم للنقطة الحمراء */
+@keyframes pulseDot {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 6px rgba(239, 68, 68, 0.7); }
+    50% { transform: scale(1.15); box-shadow: 0 0 12px rgba(239, 68, 68, 0.95); }
 }
 
 /* 11. كروت التقييمات وشارات النجوم الذهبية */
@@ -926,7 +959,7 @@ textarea:focus {
     margin-bottom: 0 !important;
 }
 
-/* حماية دوائر الاختيار من التضخم */
+/* حماية دوائر الاختيار */
 input[type="radio"], input[type="checkbox"] {
     width: 15px !important;
     height: 15px !important;
