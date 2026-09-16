@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- محرك التنسيقات الماسي المستقل 100% -->
+    <!-- محرك التنسيقات الماسي المتناسق 100% -->
     <style>
         .hidden { display: none !important; }
 
@@ -42,7 +42,9 @@
             --text-label: #475569;
             --text-main: #0f172a;
             --gold: #F2A51A;
-            --emerald: #20B486;
+            --azure: #0284c7;
+            --azure-hover: #0369a1;
+            --emerald: #10b981;
             --rose: #ef4444;
         }
 
@@ -56,6 +58,8 @@
             --capsule-text: #ffffff;
             --text-label: #cbd5e1;
             --text-main: #ffffff;
+            --azure: #0284c7;
+            --azure-hover: #38bdf8;
         }
 
         html, body {
@@ -218,7 +222,7 @@
             padding-right: 10px;
         }
 
-        /* شريط وحاوية البحث الماسية مع نقل التحديد للخارج لمنع تشوه المستطيل الداخلي */
+        /* شريط وحاوية البحث الماسية */
         .search-sticky-wrapper {
             position: sticky;
             top: calc(50px + env(safe-area-inset-top));
@@ -245,7 +249,6 @@
 
         .dark .search-outer-pill { border-color: #3b5a78; }
 
-        /* التوهج يذهب للحاوية الكبسولية الخارجية بالكامل وليس للداخل */
         .search-outer-pill:focus-within {
             border-color: var(--gold) !important;
             box-shadow: 0 0 0 2px rgba(242, 165, 26, 0.35), 0 4px 14px rgba(30, 58, 95, 0.2) !important;
@@ -277,7 +280,6 @@
 
         .dark .search-inner-soft svg { color: #cbd5e1; }
 
-        /* حقل الإدخال الداخلي محمي تماماً من أي إطار داخلي يشوه الكبسولة */
         .search-inner-soft input,
         .search-inner-soft input:focus {
             width: 100%;
@@ -322,7 +324,7 @@
             stroke-width: 2.2;
         }
 
-        /* شريط الفلترة بصفين: زر الإغلاق ✕ أقصى اليمين، والصف الثاني للأزرار */
+        /* شريط الفلترة بصفين */
         .filter-panel-2row {
             background: var(--header-bg);
             border: 0.75px solid rgba(255, 255, 255, 0.25);
@@ -400,7 +402,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 1px 4px rgba(32, 180, 134, 0.3);
+            box-shadow: 0 1px 4px rgba(16, 185, 129, 0.3);
         }
 
         .btn-filter-reset {
@@ -480,7 +482,7 @@
             text-overflow: ellipsis;
         }
 
-        /* خلفية البطاقات والكبسولات عالية التباين والوضوح */
+        /* كروت وبطاقات المحتوى الماسية */
         .member-2line-card,
         .job-feed-card,
         .chat-history-card,
@@ -723,21 +725,44 @@
             padding: 0 8px !important;
             box-shadow: 0 2px 6px rgba(0,0,0,0.12) !important;
             border: none !important;
+            transition: transform 0.15s ease !important;
         }
 
+        .btn-job-action:active { transform: scale(0.97); }
+
+        /* زر محادثة فورية الجديد بأزرق سماوي ملكي مريح وجذاب */
         .btn-job-chat,
         #user-profile-actions button,
         #view-jobs button:not([class*="green"]):not([class*="whatsapp"]),
         #matching-reqs-list button:not([class*="green"]):not([class*="whatsapp"]) {
-            background: linear-gradient(135deg, #1e3a5f, #122334) !important;
+            background: linear-gradient(135deg, var(--azure), var(--azure-hover)) !important;
             border: 0.75px solid rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3) !important;
         }
 
+        /* زر الواتساب الزمردي */
         .btn-job-whatsapp,
         #user-profile-actions a,
         #view-jobs a,
         #matching-reqs-list a {
-            background: var(--emerald) !important;
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+        }
+
+        /* شارة إعلانك الخاص المذهبة */
+        .badge-my-post {
+            flex: 1 !important;
+            height: 34px !important;
+            border-radius: 10px !important;
+            font-size: 11px !important;
+            font-weight: 800 !important;
+            color: var(--gold) !important;
+            background: rgba(242, 165, 26, 0.12) !important;
+            border: 1px solid rgba(242, 165, 26, 0.4) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
         }
 
         .review-item-card {
@@ -798,7 +823,6 @@
 
         textarea { height: auto; padding: 7px 10px; resize: vertical; }
 
-        /* التركيز المنضبط للحقول العادية (مع استثناء الحقول داخل الكبسولات) */
         input:not([type="radio"]):not([type="checkbox"]):not([type="file"]):focus, 
         select:focus, 
         textarea:focus {
@@ -911,23 +935,25 @@
             right: 12px;
             max-width: 330px;
             margin: 0 auto;
-            background: linear-gradient(135deg, #2b4c6f, #1b3557) !important;
+            background: linear-gradient(135deg, #1e3a5f, #0f2744) !important;
             color: #ffffff !important;
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
             z-index: 120;
             padding: 12px 14px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .dark #notif-panel {
-            background: linear-gradient(135deg, #182a3d, #101c29) !important;
+            background: linear-gradient(135deg, #162638, #0b1520) !important;
             border-color: #3b5a78;
         }
 
         .notif-item-card {
-            background: rgba(255, 255, 255, 0.12) !important;
-            border: 0.75px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: 0.75px solid rgba(255, 255, 255, 0.18);
             border-radius: 10px;
             padding: 8px 10px;
             margin-bottom: 6px;
@@ -938,8 +964,8 @@
         }
 
         .dark .notif-item-card {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06) !important;
+            border-color: rgba(255, 255, 255, 0.12);
         }
 
         .notif-unread-badge {
@@ -950,6 +976,7 @@
             height: 6.5px;
             background-color: var(--rose);
             border-radius: 50%;
+            box-shadow: 0 0 6px var(--rose);
         }
 
         .notif-item-text {
@@ -985,6 +1012,12 @@
         }
 
         .btn-logout-capsule:active { transform: scale(0.97); }
+
+        /* نبض ضوئي ناعم للنقطة الحمراء فوق زر طلبات تناسب مهنتي */
+        @keyframes pulseDot {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 6px rgba(239, 68, 68, 0.7); }
+            50% { transform: scale(1.15); box-shadow: 0 0 12px rgba(239, 68, 68, 0.95); }
+        }
 
         /* بطاقة الدخول العائمة */
         .auth-container-modern {
@@ -1084,7 +1117,7 @@
             padding: 14px; backdrop-filter: blur(4px);
         }
 
-        /* رسائل التوست (Toast) المنبثقة غير المتكررة */
+        /* رسائل التوست (Toast) المنبثقة */
         #toast-box { 
             position: fixed; 
             top: calc(14px + env(safe-area-inset-top)); 
@@ -1240,7 +1273,7 @@
                         <input type="text" id="signup-custom-prof" placeholder="اكتب الخدمة المخصصة..." class="hidden" style="border-color: #60a5fa;">
                     </div>
 
-                    <button type="submit" style="width: 100%; height: 34px; border-radius: 9px; font-size: 11px; font-weight: 800; color: #ffffff; background: var(--emerald); box-shadow: 0 2px 8px rgba(32, 180, 134, 0.3);">إنشاء الحساب</button>
+                    <button type="submit" style="width: 100%; height: 34px; border-radius: 9px; font-size: 11px; font-weight: 800; color: #ffffff; background: var(--emerald); box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);">إنشاء الحساب</button>
                 </form>
             </div>
         </section>
@@ -1390,7 +1423,7 @@
                         <input type="tel" id="req-phone" placeholder="رقم الواتساب (اختياري)" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" dir="ltr">
                         <span class="phone-code-badge" dir="ltr">+20</span>
                     </div>
-                    <button type="submit" style="width: 100%; height: 34px; border-radius: 9px; font-size: 11px; font-weight: 800; color: #ffffff; background: var(--emerald); box-shadow: 0 2px 8px rgba(32,180,134,0.3);">نشر الطلب الآن</button>
+                    <button type="submit" style="width: 100%; height: 34px; border-radius: 9px; font-size: 11px; font-weight: 800; color: #ffffff; background: var(--emerald); box-shadow: 0 2px 8px rgba(16,185,129,0.3);">نشر الطلب الآن</button>
                 </form>
 
                 <form id="form-job" class="hidden">
@@ -1421,7 +1454,7 @@
                     </div>
 
                     <textarea id="job-desc" rows="3" placeholder="اكتب شروط وتفاصيل الوظيفة..." required></textarea>
-                    <button type="submit" style="width: 100%; height: 34px; border-radius: 9px; font-size: 11px; font-weight: 800; color: #ffffff; background: var(--emerald); box-shadow: 0 2px 8px rgba(32,180,134,0.3);">نشر الوظيفة</button>
+                    <button type="submit" style="width: 100%; height: 34px; border-radius: 9px; font-size: 11px; font-weight: 800; color: #ffffff; background: var(--emerald); box-shadow: 0 2px 8px rgba(16,185,129,0.3);">نشر الوظيفة</button>
                 </form>
             </div>
         </section>
@@ -1452,9 +1485,10 @@
                     <span style="color: #cbd5e1;">←</span>
                 </button>
 
-                <button id="btn-profile-matching" onclick="window.openActivityTab('matching')" class="hidden custom-card-box" style="height: 42px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; margin-bottom: 0; font-size: 11.5px; font-weight: 800; cursor: pointer;">
-                    <span style="color: #ffffff;">🎯 طلبات جديدة تناسب مهنتي</span>
-                    <span id="act-notif-badge" class="hidden" style="background: var(--rose); color: #ffffff; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8.5px; font-weight: bold;">!</span>
+                <!-- زر طلبات تناسب مهنتي مع النقطة الحمراء النبضية التنبيهية -->
+                <button id="btn-profile-matching" onclick="window.openActivityTab('matching')" class="hidden custom-card-box" style="height: 42px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; margin-bottom: 0; font-size: 11.5px; font-weight: 800; cursor: pointer; position: relative;">
+                    <span style="color: #ffffff; display: flex; align-items: center; gap: 6px;">🎯 طلبات جديدة تناسب مهنتي</span>
+                    <span id="act-notif-badge" class="hidden" style="background: var(--rose); color: #ffffff; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 900; animation: pulseDot 1.8s infinite;">!</span>
                 </button>
 
                 <button onclick="window.logout()" class="btn-logout-capsule">
