@@ -20,6 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
     <!-- محرك التنسيقات الماسي المتناسق 100% -->
     <style>
@@ -730,7 +731,7 @@
 
         .btn-job-action:active { transform: scale(0.97); }
 
-        /* زر محادثة فورية الجديد بأزرق سماوي ملكي مريح وجذاب */
+        /* زر محادثة فورية بأزرق سماوي ملكي */
         .btn-job-chat,
         #user-profile-actions button,
         #view-jobs button:not([class*="green"]):not([class*="whatsapp"]),
@@ -763,6 +764,34 @@
             align-items: center !important;
             justify-content: center !important;
             text-align: center !important;
+        }
+
+        /* ==========================================================================
+           تنسيق فقاعات الرسائل في الشات (Chat Bubbles)
+           ========================================================================== */
+        .chat-bubble-me {
+            background: linear-gradient(135deg, #0284c7, #0369a1) !important;
+            color: #ffffff !important;
+            border-radius: 14px 14px 2px 14px !important;
+            padding: 8px 12px !important;
+            max-width: 80% !important;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25) !important;
+            word-break: break-word !important;
+        }
+
+        .chat-bubble-other {
+            background-color: var(--capsule-bg) !important;
+            color: var(--capsule-text) !important;
+            border: var(--capsule-border) !important;
+            border-radius: 14px 14px 14px 2px !important;
+            padding: 8px 12px !important;
+            max-width: 80% !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+            word-break: break-word !important;
+        }
+
+        .chat-bubble-me span, .chat-bubble-other span {
+            color: inherit !important;
         }
 
         .review-item-card {
@@ -861,14 +890,15 @@
             margin-bottom: 0 !important;
         }
 
+        /* دوائر ومربعات الاختيار (تفعيلها بأخضر زمردي ناصع وواضح جداً) */
         input[type="radio"], input[type="checkbox"] {
-            width: 15px !important;
-            height: 15px !important;
-            min-width: 15px !important;
-            min-height: 15px !important;
+            width: 17px !important;
+            height: 17px !important;
+            min-width: 17px !important;
+            min-height: 17px !important;
             margin: 0 4px !important;
             cursor: pointer;
-            accent-color: #1e3a5f;
+            accent-color: #10b981 !important;
             display: inline-block !important;
             vertical-align: middle;
         }
@@ -1315,7 +1345,7 @@
                 </div>
             </div>
 
-            <!-- حاوية الفلترة بصفين: زر ✕ أقصى اليمين، والصف الثاني للأزرار -->
+            <!-- حاوية الفلترة بصفين -->
             <div id="jobs-filter-modal" class="hidden filter-panel-2row">
                 <div class="filter-row-top">
                     <button onclick="window.toggleJobsFilterModal()" class="btn-close-filter-red" title="إغلاق">✕</button>
