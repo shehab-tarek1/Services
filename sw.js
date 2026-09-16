@@ -1,5 +1,5 @@
-const CACHE_NAME = 'dalil-sharkia-v3.3';
-const DYNAMIC_CACHE = 'dalil-sharkia-dynamic-v3.3';
+const CACHE_NAME = 'dalil-sharkia-v3.4';
+const DYNAMIC_CACHE = 'dalil-sharkia-dynamic-v3.4';
 
 // مسارات الملفات الأساسية المعتمدة للتخزين المسبق
 const ASSETS_TO_CACHE = [
