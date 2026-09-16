@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- محرك التنسيقات الماسي المستقل 100% بدون أي اعتماد خارجي -->
+    <!-- محرك التنسيقات الماسي المستقل 100% بدون أي تيلويند -->
     <style>
         .hidden { display: none !important; }
 
@@ -38,8 +38,9 @@
             --card-border: 0.75px solid rgba(255, 255, 255, 0.25);
             --capsule-bg: #F8FAFC;
             --capsule-border: 0.5px solid #cbd5e1;
-            --capsule-text: #1e293b;
-            --text-main: #1e293b;
+            --capsule-text: #0f172a;
+            --text-label: #334155;
+            --text-main: #0f172a;
             --gold: #F2A51A;
             --emerald: #20B486;
             --rose: #ef4444;
@@ -50,16 +51,17 @@
             --page-bg: #16283a;
             --card-bg: linear-gradient(135deg, #20374e, #182c3f);
             --card-border: 0.75px solid #3b5a78;
-            --capsule-bg: #2b4966;
-            --capsule-border: 0.5px solid #486d8f;
+            --capsule-bg: #233a50;
+            --capsule-border: 0.5px solid #3a5b7c;
             --capsule-text: #ffffff;
-            --text-main: #f8fafc;
+            --text-label: #cbd5e1;
+            --text-main: #ffffff;
         }
 
         html, body {
             min-height: 100vh;
             min-height: 100dvh;
-            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif !important;
+            font-family: 'Cairo', sans-serif !important;
             -webkit-tap-highlight-color: transparent;
             background-color: var(--page-bg) !important;
             color: var(--text-main) !important;
@@ -83,6 +85,10 @@
             justify-content: center;
             background: var(--header-bg);
             transition: opacity 0.25s ease;
+        }
+
+        .dark #loader {
+            background: linear-gradient(135deg, #162638, #122334) !important;
         }
 
         #loader.hidden {
@@ -142,6 +148,11 @@
             z-index: 100;
         }
 
+        .dark #app-header {
+            background: linear-gradient(135deg, #162638, #122334) !important;
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
         #app-header * { color: #ffffff; }
 
         #header-avatar {
@@ -196,7 +207,7 @@
             border-radius: 50%;
         }
 
-        /* الحاوية الأم لكافة الصفحات */
+        /* الحاوية الأم */
         #app-view {
             padding-top: calc(56px + env(safe-area-inset-top));
             padding-bottom: calc(76px + env(safe-area-inset-bottom));
@@ -207,7 +218,7 @@
             padding-right: 10px;
         }
 
-        /* شريط وحاوية البحث الماسية */
+        /* شريط وحاوية البحث الماسية مع نقل التحديد للخارج لمنع تشوه المستطيل الداخلي */
         .search-sticky-wrapper {
             position: sticky;
             top: calc(50px + env(safe-area-inset-top));
@@ -229,9 +240,16 @@
             max-width: 600px;
             margin: 0 auto;
             width: 100%;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
         .dark .search-outer-pill { border-color: #3b5a78; }
+
+        /* التوهج يذهب للحاوية الكبسولية الخارجية بالكامل وليس للداخل */
+        .search-outer-pill:focus-within {
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 2px rgba(242, 165, 26, 0.3), 0 4px 14px rgba(30, 58, 95, 0.2) !important;
+        }
 
         .search-inner-soft {
             flex: 1;
@@ -244,7 +262,7 @@
         }
 
         .dark .search-inner-soft {
-            background-color: #2b4966 !important;
+            background-color: #233a50 !important;
         }
 
         .search-inner-soft svg {
@@ -257,23 +275,24 @@
             margin-left: 5px;
         }
 
-        .dark .search-inner-soft svg { color: #94a3b8; }
+        .dark .search-inner-soft svg { color: #cbd5e1; }
 
+        /* الحقل الداخلي بدون أي إطار أو ظل لعدم تشويه الحاوية */
         .search-inner-soft input {
             width: 100%;
             border: none !important;
             outline: none !important;
             background: transparent !important;
             font-size: 11px;
-            font-weight: 600;
-            color: #1e293b;
+            font-weight: 700;
+            color: var(--text-main);
             padding: 0;
             margin: 0 !important;
             box-shadow: none !important;
         }
 
-        .dark .search-inner-soft input { color: #ffffff !important; }
         .search-inner-soft input::placeholder { color: #64748b; }
+        .dark .search-inner-soft input::placeholder { color: #94a3b8; }
 
         .btn-filter-funnel-icon {
             width: 33px;
@@ -292,7 +311,7 @@
         }
 
         .dark .btn-filter-funnel-icon {
-            background-color: #2b4966;
+            background-color: #233a50;
             color: var(--gold);
         }
 
@@ -357,7 +376,7 @@
         }
 
         .dark .filter-row-top select {
-            background-color: #2b4966;
+            background-color: #233a50;
             border-color: #3b5a78;
             color: #ffffff;
         }
@@ -397,7 +416,7 @@
         }
 
         .dark .btn-filter-reset {
-            background-color: #2b4966;
+            background-color: #233a50;
             color: #f8fafc;
             border-color: #3b5a78;
         }
@@ -459,7 +478,7 @@
             text-overflow: ellipsis;
         }
 
-        /* خلفية البطاقات بلون تدرج الهيدر وكبسولات النصوص المريحة */
+        /* خلفية البطاقات بتدرج الهيدر وكبسولات النصوص الفضية الناصعة */
         .member-2line-card,
         .job-feed-card,
         .chat-history-card,
@@ -592,22 +611,18 @@
 
         .chat-time-tag {
             font-size: 8.5px !important;
-            color: #64748b !important;
+            color: var(--text-label) !important;
             font-weight: 700 !important;
             flex-shrink: 0 !important;
         }
 
-        .dark .chat-time-tag { color: #cbd5e1 !important; }
-
         .chat-snippet-text {
             font-size: 10px !important;
-            color: #64748b !important;
+            color: var(--text-label) !important;
             white-space: nowrap !important;
             overflow: hidden !important;
             text-overflow: ellipsis !important;
         }
-
-        .dark .chat-snippet-text { color: #cbd5e1 !important; }
 
         .job-feed-card,
         #view-jobs > div {
@@ -756,14 +771,12 @@
         .review-stars { color: var(--gold) !important; font-size: 10.5px !important; letter-spacing: 1px !important; }
         .review-comment { font-size: 10px !important; line-height: 1.4 !important; }
 
-        /* ==========================================================================
-           نظام إضاءة وتمييز الحقول النشطة (Active Input Glow)
-           ========================================================================== */
+        /* الحقول العامة وإضاءة الحقل النشط المنضبطة */
         input:not([type="radio"]):not([type="checkbox"]):not([type="file"]), 
         select, 
         textarea {
             border: 0.75px solid #cbd5e1;
-            background-color: #ffffff; /* غير النشط أبيض ناصع/هادئ */
+            background-color: #ffffff;
             border-radius: 10px;
             font-size: 11px;
             padding: 0 10px;
@@ -780,16 +793,14 @@
 
         textarea { height: auto; padding: 7px 10px; resize: vertical; }
 
-        /* الحقل النشط: لون أغمق مع هالة وإضاءة كحلية أنيقة */
         input:not([type="radio"]):not([type="checkbox"]):not([type="file"]):focus, 
         select:focus, 
         textarea:focus {
-            background-color: #EEF4F9 !important; /* لون أغمق للحقل النشط */
+            background-color: #EEF4F9 !important;
             border-color: #1e3a5f !important;
-            box-shadow: 0 0 0 2.5px rgba(30, 85, 120, 0.25), 0 0 10px rgba(30, 85, 120, 0.15) !important;
+            box-shadow: 0 0 0 2px rgba(30, 85, 120, 0.25), 0 0 8px rgba(30, 85, 120, 0.12) !important;
         }
 
-        /* الحقول في الوضع الداكن */
         .dark input:not([type="radio"]):not([type="checkbox"]):not([type="file"]), 
         .dark select, 
         .dark textarea {
@@ -798,13 +809,12 @@
             color: #ffffff;
         }
 
-        /* الحقل النشط في الوضع الداكن: إضاءة وهالة ذهبية ملكية مشعة */
         .dark input:not([type="radio"]):not([type="checkbox"]):not([type="file"]):focus, 
         .dark select:focus, 
         .dark textarea:focus {
             background-color: #1a3045 !important;
             border-color: var(--gold) !important;
-            box-shadow: 0 0 0 2.5px rgba(242, 165, 26, 0.3), 0 0 12px rgba(242, 165, 26, 0.2) !important;
+            box-shadow: 0 0 0 2px rgba(242, 165, 26, 0.3), 0 0 10px rgba(242, 165, 26, 0.18) !important;
         }
 
         input[type="radio"], input[type="checkbox"] {
@@ -835,7 +845,7 @@
         .phone-input-wrap:focus-within {
             background-color: #EEF4F9 !important;
             border-color: #1e3a5f !important;
-            box-shadow: 0 0 0 2.5px rgba(30, 85, 120, 0.25), 0 0 10px rgba(30, 85, 120, 0.15) !important;
+            box-shadow: 0 0 0 2px rgba(30, 85, 120, 0.25), 0 0 8px rgba(30, 85, 120, 0.12) !important;
         }
 
         .dark .phone-input-wrap {
@@ -846,7 +856,7 @@
         .dark .phone-input-wrap:focus-within {
             background-color: #1a3045 !important;
             border-color: var(--gold) !important;
-            box-shadow: 0 0 0 2.5px rgba(242, 165, 26, 0.3), 0 0 12px rgba(242, 165, 26, 0.2) !important;
+            box-shadow: 0 0 0 2px rgba(242, 165, 26, 0.3), 0 0 10px rgba(242, 165, 26, 0.18) !important;
         }
 
         .phone-input-wrap input {
@@ -877,67 +887,10 @@
         .dark .phone-code-badge {
             background-color: #162638;
             color: #cbd5e1;
-            border-color: #3b5a78;
+            border-color: #334155;
         }
 
         select[style*="display: none"] { display: none !important; }
-
-        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 8px; }
-        .custom-select {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 10px;
-            border: 0.75px solid #cbd5e1;
-            border-radius: 10px;
-            background-color: #ffffff;
-            height: 36px;
-            font-size: 11px;
-            cursor: pointer;
-            box-shadow: 0 1px 3px rgba(30, 58, 95, 0.04);
-            transition: all 0.2s ease;
-        }
-
-        .custom-select:hover {
-            background-color: #EEF4F9;
-            border-color: #1e3a5f;
-        }
-
-        .dark .custom-select {
-            background-color: #243d54;
-            border-color: #3b5a78;
-            color: #ffffff;
-        }
-
-        .dark .custom-select:hover {
-            background-color: #1a3045;
-            border-color: var(--gold);
-        }
-
-        .custom-options {
-            position: absolute;
-            top: calc(100% + 3px);
-            left: 0;
-            right: 0;
-            border: 0.75px solid #cbd5e1;
-            border-radius: 12px;
-            background-color: #ffffff;
-            z-index: 99999 !important;
-            max-height: 140px;
-            overflow-y: auto;
-            display: none;
-            box-shadow: 0 6px 16px rgba(30, 58, 95, 0.12);
-        }
-
-        .dark .custom-options {
-            background-color: #243d54;
-            border-color: #3b5a78;
-        }
-
-        .custom-options.open { display: block; }
-        .custom-option { padding: 6px 10px; font-size: 10.5px; cursor: pointer; }
-        .custom-option:hover { background-color: #EEF3F8; color: #1e3a5f; }
-        .dark .custom-option:hover { background-color: #16283a; color: var(--gold); }
 
         /* صندوق الإشعارات الماسي (أفتح من لون الهيدر بدرجة) */
         #notif-panel {
@@ -962,8 +915,8 @@
         }
 
         .notif-item-card {
-            background: rgba(255, 255, 255, 0.12);
-            border: 0.75px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 0.75px solid rgba(255, 255, 255, 0.25);
             border-radius: 9px;
             padding: 6px 8px;
             margin-bottom: 5px;
@@ -988,13 +941,13 @@
             font-weight: 700;
             padding-right: 8px;
             line-height: 1.4;
-            color: #ffffff;
+            color: #ffffff !important;
         }
 
         .notif-item-time {
-            font-size: 8px;
-            color: #cbd5e1;
-            font-weight: 600;
+            font-size: 8.5px;
+            color: #cbd5e1 !important;
+            font-weight: 700;
         }
 
         /* كبسولة تسجيل الخروج الحمراء */
@@ -1047,16 +1000,16 @@
             border-color: #3b5a78;
         }
 
-        /* الهيدر السفلي الكبسولي العائم مع مراعاة مساحة أمان الآيفون */
+        /* الهيدر السفلي الكبسولي العائم مع انسيابية الاختفاء التلقائي عند التمرير لأسفل */
         #nav-bar {
             position: fixed;
-            bottom: calc(10px + env(safe-area-inset-bottom));
+            bottom: calc(6px + env(safe-area-inset-bottom)) !important;
             left: 0;
             right: 0;
             margin: 0 auto;
             width: 92%;
             max-width: 440px;
-            height: 50px;
+            height: 48px !important;
             border-radius: 18px;
             background: rgba(243, 246, 249, 0.96);
             backdrop-filter: blur(12px);
@@ -1068,6 +1021,7 @@
             justify-content: space-around;
             align-items: center;
             padding: 0 2px;
+            transition: transform 0.3s ease, opacity 0.3s ease !important;
         }
 
         .dark #nav-bar {
@@ -1088,34 +1042,20 @@
             transition: all 0.15s ease;
         }
 
-        .nav-btn svg { width: 17px; height: 17px; margin-bottom: 2px; }
+        .nav-btn svg { width: 17px; height: 17px; margin-bottom: 1px; }
         .nav-btn span { font-size: 8.5px; font-weight: 700; }
         .nav-btn.active { color: #1e3a5f; transform: scale(1.04); }
         .dark .nav-btn.active { color: var(--gold); }
 
-        /* الشات */
-        .chat-bubble-me {
-            background: linear-gradient(135deg, #365570, #1e3a5f);
-            color: #ffffff;
-            border-radius: 15px 15px 4px 15px;
-            padding: 7px 11px;
-            max-width: 80%;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .chat-bubble-other {
-            background: linear-gradient(135deg, #365570, #1e3a5f);
-            color: #ffffff;
-            border: 0.75px solid rgba(255, 255, 255, 0.25);
-            border-radius: 15px 15px 15px 4px;
-            padding: 7px 11px;
-            max-width: 80%;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-        }
-
-        .dark .chat-bubble-other {
-            background: linear-gradient(135deg, #162638, #122334);
-            border-color: #3b5a78;
+        #chat-nav-dot {
+            position: absolute !important;
+            top: 4px !important;
+            right: calc(50% - 14px) !important;
+            width: 6.5px !important;
+            height: 6.5px !important;
+            background-color: #3b82f6 !important;
+            border-radius: 50% !important;
+            box-shadow: 0 0 4px #3b82f6;
         }
 
         .full-screen-modal { position: fixed; inset: 0; z-index: 150; background-color: var(--page-bg); display: flex; flex-direction: column; }
@@ -1126,7 +1066,18 @@
             padding: 14px; backdrop-filter: blur(4px);
         }
 
-        #toast-box { position: fixed; top: calc(14px + env(safe-area-inset-top)); left: 0; right: 0; display: flex; justify-content: center; z-index: 99999; pointer-events: none; }
+        /* رسائل التوست (Toast) المنبثقة غير المتكررة */
+        #toast-box { 
+            position: fixed; 
+            top: calc(14px + env(safe-area-inset-top)); 
+            left: 0; 
+            right: 0; 
+            display: flex; 
+            justify-content: center; 
+            z-index: 999999; 
+            pointer-events: none; 
+        }
+
         .toast-msg {
             background: var(--header-bg);
             color: #ffffff; padding: 6px 15px; border: 0.75px solid rgba(255, 255, 255, 0.3);
@@ -1194,11 +1145,11 @@
 
     <!-- لوحة الإشعارات المنسدلة -->
     <div id="notif-panel" class="hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; border-bottom: 0.75px solid rgba(255,255,255,0.2); padding-bottom: 3px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; border-bottom: 0.75px solid rgba(255,255,255,0.25); padding-bottom: 4px;">
             <h3 style="font-size: 10.5px; font-weight: 800; color: #ffffff;">الإشعارات والتنبيهات</h3>
             <button onclick="window.toggleNotifPanel()" style="color: #ffffff; font-weight: bold; font-size: 11px;">✕</button>
         </div>
-        <div id="notif-list" style="max-height: 190px; overflow-y: auto;">
+        <div id="notif-list" style="max-height: 200px; overflow-y: auto;">
             <p style="text-align: center; font-size: 9.5px; color: #cbd5e1; padding: 14px 0;">لا توجد إشعارات حالياً</p>
         </div>
     </div>
@@ -1283,6 +1234,7 @@
                 <button id="tab-home-jobs"></button>
             </div>
 
+            <!-- شريط البحث (بدون أي تشوه أو بروز للحقل الداخلي) -->
             <div id="prof-search-box" class="search-sticky-wrapper">
                 <div class="search-outer-pill">
                     <div class="search-inner-soft">
@@ -1312,7 +1264,7 @@
                 </div>
             </div>
 
-            <!-- شريط فلترة الوظائف: زر الإغلاق ✕ أقصى اليمين، والصف الثاني للأزرار -->
+            <!-- حاوية الفلترة بصفين: زر ✕ أقصى اليمين، والصف الثاني للأزرار -->
             <div id="jobs-filter-modal" class="hidden filter-panel-2row">
                 <div class="filter-row-top">
                     <button onclick="window.toggleJobsFilterModal()" class="btn-close-filter-red" title="إغلاق">✕</button>
@@ -1353,7 +1305,6 @@
                 </div>
             </div>
 
-            <!-- شريط فلترة الأقسام بصفين ملمومين -->
             <div id="cat-filter-bar" class="hidden filter-panel-2row">
                 <div class="filter-row-top">
                     <button onclick="document.getElementById('cat-filter-bar').classList.add('hidden')" class="btn-close-filter-red" title="إغلاق">✕</button>
@@ -1383,7 +1334,6 @@
                 </div>
             </div>
 
-            <!-- شريط فلترة الدليل بصفين ملمومين -->
             <div id="dir-filter-bar" class="hidden filter-panel-2row">
                 <div class="filter-row-top">
                     <button onclick="document.getElementById('dir-filter-bar').classList.add('hidden')" class="btn-close-filter-red" title="إغلاق">✕</button>
@@ -1496,7 +1446,7 @@
             </div>
         </section>
 
-        <!-- ACTIVITY PAGE (بدون حاوية أزرار التبديل - تبدأ مباشرة بمحتوى منظم ونظيف) -->
+        <!-- ACTIVITY PAGE (بدون حاوية أزرار التبديل - تبدأ مباشرة بمحتوى منظم) -->
         <section id="page-activity" class="page-section hidden max-w-3xl mx-auto">
             <div id="view-my-activity"><div id="my-activity"></div></div>
             <div id="view-matching-reqs" class="hidden"><div id="matching-reqs-list"></div></div>
@@ -1639,7 +1589,7 @@
         </div>
     </div>
 
-    <!-- FILTER MODAL DROPDOWN -->
+    <!-- FILTER MODAL DROPDOWN (للطوارئ) -->
     <div id="filter-modal-wrap" class="hidden">
         <div id="filter-modal-backdrop" onclick="document.getElementById('filter-modal-wrap').classList.add('hidden')" style="position: fixed; inset: 0; z-index: 130; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);"></div>
 
@@ -1697,7 +1647,7 @@
         </form>
     </div>
 
-    <!-- الهيدر السفلي الكبسولي العائم -->
+    <!-- الهيدر السفلي الكبسولي العائم الانسيابي -->
     <nav id="nav-bar">
         <!-- 1. الخدمات -->
         <button onclick="window.navTo('home')" class="nav-btn active">
